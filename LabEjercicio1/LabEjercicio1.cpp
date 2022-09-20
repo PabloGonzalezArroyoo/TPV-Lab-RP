@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include <tuple>
 
 using namespace std;
 
@@ -15,19 +14,41 @@ struct Coche {
 };
 
 struct ListaCoches {
-    Coche* elems = new Coche[cap]; // Array dinámico
+    Coche* elems; // Array dinámico
     int cap;
     int cont;
 };
 
+struct Fecha {
+    int dia;
+    int mes;
+    int anio;
+};
+
 struct Alquiler {
     Coche* car;
-    string date;
+    Fecha date;
     int days;
+
+
+    bool operator<(const Alquiler& other) {
+        if (date.anio < other.date.anio) return true;
+        else if (date.anio == other.date.anio) {
+
+            if (date.mes < other.date.mes) return true;
+            else if (date.mes == other.date.mes) {
+
+                if (date.dia < other.date.dia) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else return false;
+    }
 };
 
 struct ListaAlquileres {
-    Alquiler* elems = new Alquiler[cap];
+    Alquiler* elems;
     int cap;
     int cont;
 };
@@ -49,7 +70,7 @@ bool cargarCoches(ListaCoches& lc) {
             in >> lc.elems[i].price;
             in.get();
             getline(in, lc.elems[i].model);
-            cout << lc.elems[i].code << " " << lc.elems[i].price << " " << lc.elems[i].model << endl;
+            std::cout << lc.elems[i].code << " " << lc.elems[i].price << " " << lc.elems[i].model << endl;
             i++;
         }
 
@@ -68,10 +89,37 @@ Coche* buscarCoche(ListaCoches lc, int code) {
             car = &lc.elems[i];
             found = true;
         }
-        else i++;
+        i++;
     }
 
     return car;
+}
+
+Fecha Split(string date) {
+    int anio = 0, mes = 0, dia = 0;
+    Fecha f;
+
+    int i = 0; int contador = 0;
+    string c = "";
+    for (int i = 0; i < date.size(); i++) {
+        if (date[i] == '/' && contador == 0) {
+            dia = stoi(c);
+            c = "";
+            contador++;
+        }
+        else if (date[i] == '/' && contador == 1) {
+            mes = stoi(c);
+            c = "";
+            contador++;
+        }
+        else c += date[i];
+    }
+    anio = stoi(c);
+    f.dia = dia;
+    f.mes = mes;
+    f.anio = anio;
+
+    return f;
 }
 
 bool leerAlquileres(ListaAlquileres& la, ListaCoches lc) {
@@ -88,13 +136,17 @@ bool leerAlquileres(ListaAlquileres& la, ListaCoches lc) {
         for (int i = 0; i < n; i++) {
             int code;
             in >> code;
-            la.elems[i].car = buscarCoche(lc, code);
-
-            in >> la.elems[i].date;
+            string date;
+            in >> date;
             in.get();
-            getline(in, lc.elems[i].model);
-            cout << lc.elems[i].code << " " << lc.elems[i].price << " " << lc.elems[i].model << endl;
-            i++;
+            int days;
+            in >> days;
+
+            la.elems[i].date = Split(date);
+            la.elems[i].car = buscarCoche(lc, code);
+            la.elems[i].days = days;
+            // cout << i << " - ";
+            // cout << (la.elems[i].car)->model << " " << la.elems[i].date.anio << " " << la.elems[i].days << endl;
         }
 
         in.close();
@@ -102,64 +154,24 @@ bool leerAlquileres(ListaAlquileres& la, ListaCoches lc) {
     }
 }
 
-tuple<int, int, int> Split(string date) {
-    int anio, mes, dia;
-
-    int i = 0; int contador = 0;
-    string c = "";
-    for (int i = 0; i < date.size(); i++) {
-        c += date[i];
-        
-        if (c == "/" && contador == 0) {
-            dia = stoi(c);
-            c = "";
-            contador++;
-        }
-        else if (c == "/" && contador == 1) {
-            mes = stoi(c);
-            c = "";
-            contador++;
-        }
-    }
-
-    anio = stoi(c);
-
-    return make_tuple(anio, mes, dia);
-}
-
-// Ver si fecha1 es menor que fecha2
-bool compararFechas(Alquiler al1, Alquiler al2) {
-    tuple<int, int, int> fecha1 = Split(al1.date);
-    tuple<int, int, int> fecha2 = Split(al2.date);
-    
-    int anio1 = get<0>(fecha1); int mes1 = get<1>(fecha1); int dia1 = get<2>(fecha1);
-    int anio2 = get<0>(fecha2); int mes2 = get<1>(fecha2); int dia2 = get<2>(fecha2);
-    
-    if (anio1 < anio2) return true;
-    else if (anio1 == anio2) {
-
-        if (mes1 < mes2) return true;
-        else if (mes1 == mes2) {
-
-            if (dia1 < dia2) return true;
-            else return false;
-        }
-        else return false;
-    }
-    else return false;
-}
-
 void ordenaAlquileres(ListaAlquileres& la)
 {
-    sort(la.elems[0].date, la.elems[la.cont-1].date, compararFechas(la.elems[0], la.elems[la.cont - 1]));
+    sort(&(la.elems[0]), &(la.elems[la.cont]));
 }
 
 void mostrarAlquileres(ListaAlquileres la)
 {
     for (int i = 0; i < la.cont; i++)
     {
-        cout << la.elems[i].date << " " << la.elems[i].car->model << " " << la.elems[i].days 
-            << " dia(s) por " << la.elems[i].car->price * la.elems[i].days << " euros " << endl;
+        if (la.elems[i].car != nullptr) {
+            std::cout << la.elems[i].date.dia << "/" << la.elems[i].date.mes << "/" << la.elems[i].date.anio << " "
+                << la.elems[i].car->model << " " << la.elems[i].days << " dia(s) por "
+                << la.elems[i].car->price * la.elems[i].days << " euros " << endl;
+        }
+        else {
+            std::cout << la.elems[i].date.dia << "/" << la.elems[i].date.mes << "/" << la.elems[i].date.anio << " " <<
+                "ERROR: Modelo inexistente" << endl;
+        }
     }
 }
 
@@ -168,12 +180,15 @@ int main()
     // Inicialización de la lista de coches
     ListaCoches lc;
     bool readLc = cargarCoches(lc);
-    if (readLc) cout << "\nLEIDO COCHES.TXT\n";
-    else cout << "\nNO LEIDO COCHES.TXT\n";
+    if (readLc) std::cout << "\nLEIDO COCHES.TXT\n";
+    else std::cout << "\nNO LEIDO COCHES.TXT\n";
 
     // Inicialización de la lista de alquileres
     ListaAlquileres la;
     bool readLa = leerAlquileres(la, lc);
-    if (readLa) cout << "\nLEIDO RENT.TXT\n";
-    else cout << "\nNO LEIDO RENT.TXT\n";
+    if (readLa) std::cout << "\n\nLEIDO RENT.TXT\n";
+    else std::cout << "\nNO LEIDO RENT.TXT\n";
+
+    ordenaAlquileres(la);
+    mostrarAlquileres(la);
 }
