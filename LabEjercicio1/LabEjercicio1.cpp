@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ struct Coche {
 };
 
 struct ListaCoches {
-    Coche* elems; // Array dinámico
+    Coche* elems = new Coche[cap]; // Array dinámico
     int cap;
     int cont;
 };
@@ -25,7 +26,7 @@ struct Alquiler {
 };
 
 struct ListaAlquileres {
-    Alquiler* elems;
+    Alquiler* elems = new Alquiler[cap];
     int cap;
     int cont;
 };
@@ -99,6 +100,20 @@ Coche* buscarCoche(ListaCoches lc, int code) {
     }
 
     return car;
+}
+
+void ordenaAlquileres(ListaAlquileres& la)
+{
+    sort(la.elems[0].date, la.elems[la.cont-1].date);
+}
+
+void mostrarAlquileres(ListaAlquileres la)
+{
+    for (int i = 0; i < la.cont; i++)
+    {
+        cout << la.elems[i].date << " " << la.elems[i].car->model << " " << la.elems[i].days 
+            << " dia(s) por " << la.elems[i].car->price * la.elems[i].days << " euros " << endl;
+    }
 }
 
 int main()
