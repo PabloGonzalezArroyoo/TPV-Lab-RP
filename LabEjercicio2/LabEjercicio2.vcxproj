@@ -18,6 +18,26 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="coches.txt" />
+    <Text Include="rent.txt" />
+    <Text Include="salida.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Alquiler.cpp" />
+    <ClCompile Include="Coche.cpp" />
+    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="ListaAlquileres.cpp" />
+    <ClCompile Include="ListaCoches.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Alquiler.h" />
+    <ClInclude Include="Coche.h" />
+    <ClInclude Include="Date.h" />
+    <ClInclude Include="ListaAlquileres.h" />
+    <ClInclude Include="ListaCoches.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,9 +146,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="LabEjercicio2.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
