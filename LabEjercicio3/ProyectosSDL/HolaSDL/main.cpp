@@ -21,20 +21,83 @@ void firstTest() {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	// Textura
-	SDL_Texture* texture; // Variable para la textura
-	string filename = "../images/background1.png"; // Nombre del fichero con la imagen
+	SDL_Texture* txtBg;												// Textura del background
+	string filename = "../images/background1.png";					// Nombre del fichero con la imagen
 	SDL_Surface* surface = IMG_Load(filename.c_str());
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_FreeSurface(surface); // Se borra la estructura auxiliar
+	txtBg = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);										// Se borra la estructura auxiliar
+
+	// Textura perro
+	SDL_Texture* txtDog;											// Textura del perro
+	filename = "../images/dog.png";									// Nombre del fichero con la imagen
+	surface = IMG_Load(filename.c_str());
+	txtDog = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);										// Se borra la estructura auxiliar
+
+	// Textura helicoptero
+	SDL_Texture* txtHel;											// Textura del helicoptero
+	filename = "../images/helicopter.png";							// Nombre del fichero con la imagen
+	surface = IMG_Load(filename.c_str());
+	txtHel = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);										// Se borra la estructura auxiliar
+
+	// Posición del perro por pantalla
+	int textW, textH;												// Para saber el tamaño de la textura
+	SDL_QueryTexture(txtDog, nullptr, nullptr, &textW, &textH);
+	SDL_Rect srcDog, destDog;
+	srcDog.w = textW / 6, srcDog.h = textH;							// Tamaño frame textura
+	uint cellW = winWidth / 6, cellH = winHeight / 6;				// Dividir pantalla en matriz de X celdas
+	destDog.w = cellW, destDog.h = cellH;							// Tamaño de de la celda de salida
+	srcDog.x = srcDog.y = 0;										// Celda (0, 0) del origen
+	destDog.x = 0 * cellW, destDog.y = 4 * cellH;					// Celda (0, 4) proporcional de destino
+
+	// Posición del helicoptero por pantalla
+	SDL_QueryTexture(txtHel, nullptr, nullptr, &textW, &textH);		// Para saber el tamaño de la textura
+	SDL_Rect srcHel, destHel;
+	srcHel.w = textW / 5, srcHel.h = textH;							// Tamaño frame textura
+	destHel.w = cellW, destHel.h = cellH;							// Tamaño de de la celda de salida
+	srcHel.x = srcHel.y = 0;										// Celda (0, 0) del origen
+	destHel.x = 5 * cellW, destHel.y = 0 * cellH;					// Celda (5, 0) proporcional de destino
+
+	// Constantes de tiempo de animaciones
+	const int refreshDog = 100;
+	const int refreshHel = 200;
+	const int timeLimit = 5000;
 
 	// Renderizado
 	if (window == nullptr || renderer == nullptr)
 		cout << "Error cargando SDL" << endl;
 	else {
-		SDL_RenderCopy(renderer, texture, nullptr, nullptr);
-		SDL_RenderPresent(renderer); // Muestra la escena
-		SDL_Delay(5000);
+		uint32_t startTime = SDL_GetTicks(), frameTime;					// Variables de control de flujo y tiempo
+		SDL_Event event; bool exit = false;
+		while (!exit) {													// Mientras hay eventos pendientes y no se ha salido
+			if (false) exit = true;										// Si quit, entonces salir
+			else {
+				frameTime = SDL_GetTicks() - startTime;					// Tiempo desde la última actualización (delta time)
+				
+				if (frameTime >= timeLimit) exit = true;				// Salir del bucle si se superan los 5 segundos
+				else if (frameTime % 50 == 0) {							// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
+					if (destDog.x >= winWidth) destDog.x = 0;			// Volver a la posición incial
+					else destDog.x += 15;								// Mover aproximadamente 10 píxeles cada vez
+
+					if (destHel.x <= 0) destHel.x = winWidth;			// Volver a la posición incial
+					else destHel.x -= 15;								// Mover aproximadamente 10 píxeles cada vez
+				}
+			}
+			SDL_RenderClear(renderer);
+			SDL_RenderCopy(renderer, txtBg, nullptr, nullptr);			// Render textura background
+
+			srcDog.x = srcDog.w * int((SDL_GetTicks() / refreshDog) % 6);	// Seleccionar frame de la imagen origen cada X milisegundos
+			SDL_RenderCopy(renderer, txtDog, &srcDog, &destDog);		// Render perro
+
+			srcHel.x = srcHel.w * int((SDL_GetTicks() / refreshHel) % 5);	// Seleccionar frame de la imagen origen cada X milisegundos
+			SDL_RenderCopy(renderer, txtHel, &srcHel, &destHel);		// Render helicoptero
+
+			SDL_RenderPresent(renderer);								// Muestra la escena
+		}
+		// SDL_Delay(2000);												// Esperar 2 segundos
 	}
+
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
