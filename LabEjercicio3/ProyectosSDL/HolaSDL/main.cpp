@@ -69,7 +69,9 @@ void firstTest() {
 		cout << "Error cargando SDL" << endl;
 	else {
 		uint32_t startTime = SDL_GetTicks(), frameTime;					// Variables de control de flujo y tiempo
-		SDL_Event event; bool exit = false;
+		bool exit = false, dogStop = false, helStop = false;			// Control de salida
+
+		/* // Bucle sin usar eventos
 		while (!exit) {													// Mientras hay eventos pendientes y no se ha salido
 			if (false) exit = true;										// Si quit, entonces salir
 			else {
@@ -94,8 +96,44 @@ void firstTest() {
 			SDL_RenderCopy(renderer, txtHel, &srcHel, &destHel);		// Render helicoptero
 
 			SDL_RenderPresent(renderer);								// Muestra la escena
-		}
+		} */
 		// SDL_Delay(2000);												// Esperar 2 segundos
+
+		// Bucle manegando eventos
+		SDL_Event event, eventDog, eventHel;
+		while (!exit) {
+			while (SDL_PollEvent(&event) && !exit) {					// Mientras quedan eventos pendientes y no se ha salido
+				if (event.type == SDL_QUIT) exit = true;				// Salir si cerramos ventana
+				else if (event.type == SDL_KEYDOWN) {					// Si se pulsa una tecla
+					if (event.key.keysym.sym == SDLK_d) dogStop = !dogStop;	// Parar/reanudar el perro si se pulsa la tecla d
+					else if (event.key.keysym.sym == SDLK_h) helStop = !helStop; // Parar/reanudar el helicóptero si se pulsa la tecla h
+				}
+			}
+
+			frameTime = SDL_GetTicks() - startTime;						// Tiempo desde la última actualización (delta time)
+			if (!dogStop) {
+				if (frameTime % 50 == 0) {								// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
+					if (destDog.x >= winWidth) destDog.x = 0;			// Volver a la posición incial
+					else destDog.x += 15;								// Mover aproximadamente 10 píxeles cada vez
+				}
+				srcDog.x = srcDog.w * int((SDL_GetTicks() / refreshDog) % 6);	// Seleccionar frame de la imagen origen cada X milisegundos
+			}
+
+			if (!helStop) {
+				if (frameTime % 50 == 0) {								// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
+					if (destHel.x <= 0) destHel.x = winWidth;			// Volver a la posición incial
+					else destHel.x -= 15;								// Mover aproximadamente 10 píxeles cada vez
+				}
+				srcHel.x = srcHel.w * int((SDL_GetTicks() / refreshHel) % 5);	// Seleccionar frame de la imagen origen cada X milisegundos
+			}
+
+			SDL_RenderClear(renderer);
+			SDL_RenderCopy(renderer, txtBg, nullptr, nullptr);			// Render textura background
+			SDL_RenderCopy(renderer, txtDog, &srcDog, &destDog);		// Render perro
+			SDL_RenderCopy(renderer, txtHel, &srcHel, &destHel);		// Render helicoptero
+
+			SDL_RenderPresent(renderer);								// Muestra la escena
+		}
 	}
 
 	SDL_DestroyRenderer(renderer);
