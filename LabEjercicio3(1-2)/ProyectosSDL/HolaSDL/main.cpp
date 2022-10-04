@@ -60,9 +60,11 @@ void firstTest() {
 	destHel.x = 5 * cellW, destHel.y = 0 * cellH;					// Celda (5, 0) proporcional de destino
 
 	// Constantes de tiempo de animaciones
-	const int refreshDog = 100;
-	const int refreshHel = 200;
 	const int timeLimit = 5000;
+
+	// Variables velocidad
+	int dogMov = 50, dogAnim = 100;
+	int helMov = 50, helAnim = 200;
 
 	// Renderizado
 	if (window == nullptr || renderer == nullptr)
@@ -107,24 +109,28 @@ void firstTest() {
 				else if (event.type == SDL_KEYDOWN) {					// Si se pulsa una tecla
 					if (event.key.keysym.sym == SDLK_d) dogStop = !dogStop;	// Parar/reanudar el perro si se pulsa la tecla d
 					else if (event.key.keysym.sym == SDLK_h) helStop = !helStop; // Parar/reanudar el helicóptero si se pulsa la tecla h
+					else if (event.key.keysym.sym == SDLK_f) { dogMov /= 2; dogAnim /= 2; }
+					else if (event.key.keysym.sym == SDLK_s) { dogMov *= 2; dogAnim *= 2; }
+					else if (event.key.keysym.sym == SDLK_j) { helMov /= 2; helAnim /= 2; }
+					else if (event.key.keysym.sym == SDLK_g) { helMov *= 2; helAnim *= 2; }
 				}
 			}
 
 			frameTime = SDL_GetTicks() - startTime;						// Tiempo desde la última actualización (delta time)
 			if (!dogStop) {
-				if (frameTime % 50 == 0) {								// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
+				if (frameTime % dogMov == 0) {							// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
 					if (destDog.x >= winWidth) destDog.x = 0;			// Volver a la posición incial
 					else destDog.x += 15;								// Mover aproximadamente 10 píxeles cada vez
 				}
-				srcDog.x = srcDog.w * int((SDL_GetTicks() / refreshDog) % 6);	// Seleccionar frame de la imagen origen cada X milisegundos
+				srcDog.x = srcDog.w * int((SDL_GetTicks() / dogAnim) % 6);	// Seleccionar frame de la imagen origen cada X milisegundos
 			}
 
 			if (!helStop) {
-				if (frameTime % 50 == 0) {								// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
+				if (frameTime % helMov == 0) {							// Hacer un movimiento cada vez que el tiempo entre frames es divisor de 3
 					if (destHel.x <= 0) destHel.x = winWidth;			// Volver a la posición incial
 					else destHel.x -= 15;								// Mover aproximadamente 10 píxeles cada vez
 				}
-				srcHel.x = srcHel.w * int((SDL_GetTicks() / refreshHel) % 5);	// Seleccionar frame de la imagen origen cada X milisegundos
+				srcHel.x = srcHel.w * int((SDL_GetTicks() / helAnim) % 5);	// Seleccionar frame de la imagen origen cada X milisegundos
 			}
 
 			SDL_RenderClear(renderer);
