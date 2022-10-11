@@ -1,7 +1,7 @@
 #pragma once
 #include "Texture.h"
 
-class Dog
+class Helicopter
 {
 private:
 	Texture* myTexture;
@@ -12,8 +12,8 @@ private:
 	bool stop = false;
 
 public:
-	Dog(Texture* txt);
-	~Dog();
+	Helicopter(Texture* txt);
+	~Helicopter();
 	void render();
 	void move(int winW, int winH);
 	void handleEvents(SDL_Event event);
