@@ -14,8 +14,9 @@ private:
 
 public:
 	// Constructora y destructor
-	Wall();
-	Wall(Vector2D v, uint w, uint h, Texture txt);
+	Wall() { pos = Vector2D(); w = 0, h = 0; texture = nullptr; };
+	Wall(Vector2D v, uint w, uint h, Texture* txt);
+	// Wall(Vector2D v, uint w, uint h, Texture* txt) : pos(v), w(w), h(h), texture(txt) {};
 	~Wall();
 
 	// Renderizado

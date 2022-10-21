@@ -11,8 +11,10 @@ using uint = unsigned int;
 
 int main(int argc, char* argv[]){
 	
-	Game game = Game();
-	game.run();
+	Game* game = nullptr;
+	Game g = Game();
+	game = &g;
+	game->run();
 
 	return 0;
 }

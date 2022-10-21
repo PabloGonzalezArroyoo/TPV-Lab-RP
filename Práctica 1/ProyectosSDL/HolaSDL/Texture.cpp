@@ -9,9 +9,10 @@ void Texture::wipe() {
 	w = h = 0;
 }
 
-void Texture::load(string filename, uint nRows = 1, uint nCols = 1) {
+void Texture::load(string filename, uint nRows, uint nCols) {
 	SDL_Surface* tempSurface = IMG_Load(filename.c_str());					// Cargar la imagen en una variable auxiliar
 	if (tempSurface == nullptr) throw "Error: image not found (" + filename + ") ";	// Si no la encuentra, lanza una excepción
+	cout << filename << endl;
 	wipe();																	// Destruir textura previa
 	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);			// Creamos la textura a partir de la superficie que contiene la imagen
 	if (texture == nullptr) throw "Error: texture not loaded (" + filename + ") "; // Si no se carga la textura correctamente, excepción
@@ -25,14 +26,15 @@ void Texture::load(string filename, uint nRows = 1, uint nCols = 1) {
 	SDL_FreeSurface(tempSurface);											// Borra el objeto auxiliar de la imagen
 }
 
-void Texture::render(const SDL_Rect& destRect, SDL_RendererFlip flip = SDL_FLIP_NONE) const {
+void Texture::render(const SDL_Rect& destRect, SDL_RendererFlip flip) const {
 	SDL_Rect srcRect;														// Crear rectangulo de toda la imagen origen
 	srcRect.x = 0, srcRect.y = 0;
 	srcRect.w = w, srcRect.h = h;
 	SDL_RenderCopyEx(renderer, texture, &srcRect, &destRect, 0, 0, flip);	// Renderizar una textura entera
+	std::cout << "dibujando" << endl;
 }
 
-void Texture::renderFrame(const SDL_Rect& destRect, int row, int col, int angle = 0, SDL_RendererFlip flip) const {
+void Texture::renderFrame(const SDL_Rect& destRect, int row, int col, int angle, SDL_RendererFlip flip) const {
 	SDL_Rect srcRect;
 	srcRect.x = fw * col;													// Colocarnos en el frame deseado de la imagen
 	srcRect.y = fh * row;

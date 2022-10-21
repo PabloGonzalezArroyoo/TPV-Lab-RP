@@ -1,0 +1,61 @@
+#pragma once
+#include "SDL.h"
+#include "SDL_image.h"
+// #include "Paddle.h"
+// #include "Ball.h"
+// #include "Blockmap.h"
+#include "Wall.h"
+#include <iostream>
+
+using namespace std;
+
+using uint = unsigned int;
+const uint winWidth = 800;
+const uint winHeight = 600;
+const uint frameRate = 5;
+const uint wallWidth = 15;
+const uint nTextures = 8;
+
+enum TextureName {Ball, Blocks, Digits, GameOver, Paddle, SideWall, TopWall, Winner};
+
+typedef struct {
+	string filename;
+	uint hframes, vframes;
+} TextureDescription;
+
+const TextureDescription textDescription[nTextures] = {
+	{"../images/ball2.png", 1, 1},
+	{"../images/bricks2.png", 2, 3},
+	{"../images/digits2.png", 3, 4},
+	{"../images/gameover1.png", 1, 1},
+	{"../images/paddle2.png", 1, 1},
+	{"../images/side2.png", 1, 1},
+	{"../images/topside.png", 1, 1},
+	{"../images/youwin.png", 1, 1}
+};
+
+class Game
+{
+private:
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	bool exit, gameOver, win;
+
+	// Paddle* paddle = nullptr;
+	// Ball* ball = nullptr;
+	// BlockMap* blockmap = nullptr;
+	Wall walls[3];
+	
+	Texture* textures[nTextures];
+
+public:
+	Game();
+	~Game();
+
+	void run();
+	void handleEvents();
+	void render();
+	void update();
+	void collides();
+};
+

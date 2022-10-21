@@ -21,6 +21,7 @@ private:
 public:
 	Game();
 	~Game();					// Destructor
+
 	void run();
 	void render() const;
 	void handleEvents();
