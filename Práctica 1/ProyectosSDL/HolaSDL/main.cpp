@@ -12,7 +12,7 @@ int main(int argc, char* argv[]){
 	Game* game = nullptr;
 	Game g = Game();
 	game = &g;
-	game->render();
+	game->run();
 
 	return 0;
 }

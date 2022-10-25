@@ -20,6 +20,7 @@ void Texture::load(string filename, uint nRows, uint nCols) {
 	numCols = nCols;
 	w = tempSurface->w;														// Asignar width y height
 	h = tempSurface->h;
+	cout << w << " - " << h << "\n\n";
 	fw = w / numCols;														// Dimensiones del frame
 	fh = h / numRows;
 
@@ -31,7 +32,6 @@ void Texture::render(const SDL_Rect& destRect, SDL_RendererFlip flip) const {
 	srcRect.x = 0, srcRect.y = 0;
 	srcRect.w = w, srcRect.h = h;
 	SDL_RenderCopyEx(renderer, texture, &srcRect, &destRect, 0, 0, flip);	// Renderizar una textura entera
-	std::cout << "dibujando" << endl;
 }
 
 void Texture::renderFrame(const SDL_Rect& destRect, int row, int col, int angle, SDL_RendererFlip flip) const {

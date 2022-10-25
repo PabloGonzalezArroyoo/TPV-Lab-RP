@@ -8,7 +8,6 @@ Paddle::Paddle(Vector2D v, int width, int height, Vector2D velocity, Texture* tx
 Paddle::~Paddle() {
 	pos = vel = Vector2D();
 	w = h = 0;
-	delete(texture);
 }
 
 void Paddle::render() {

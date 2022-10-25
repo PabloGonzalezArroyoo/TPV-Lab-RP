@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Vector2D.h"
-#include "Wall.h"
+//#include "Wall.h"
+//#include "Ball.h"
+//#include "Paddle.h"
 #include "checkML.h"
 
 Game::Game() {
@@ -24,16 +26,24 @@ Game::Game() {
 		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
 	}
 
-	walls[0] = Wall(Vector2D(0, 0), wallWidth, winHeight, textures[SideWall]);
-	walls[1] = Wall(Vector2D(winWidth - 15, 0), wallWidth, winHeight, textures[SideWall]);
-	walls[2] = Wall(Vector2D(0 + 15, 0), wallWidth, winHeight, textures[TopWall]);
+	//Creamos paredes (punteros)
+	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
+	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
+	walls[2] = new Wall(Vector2D(0, 0), winWidth, wallWidth, textures[TopWall], Vector2D(0, 1));
+	//Creamos un puntero a la bola
+	ball = new Ball(Vector2D(winWidth / 2, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
+	//Creamos un puntero al paddle
+	paddle = new Paddle(Vector2D(winWidth / 2 - 25, 3 * winHeight / 4), 60, 10, Vector2D(0, 0), textures[PaddleTxt]);
+
+	//Creamos el mapas de bloques
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks]);
 }
 
 Game::~Game() {
 	// delete(paddle);
-	// delete(ball);
+	delete(ball);
 	// delete(blockmap);
-	for (int i = 0; i < nTextures; i++) delete(textures[i]);
+	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -64,19 +74,37 @@ void Game::render() {
 	// To-DO
 	// Walls
 	for (int i = 0; i < 3; i++) {
-		cout << "hellothere";
-		walls[i].render();
+		walls[i]->render();
 	}
+	
 	// Ball
-	//ball->render();
+	ball->render();
 	// Paddle
-	//paddle->render();
+	paddle->render();
 	// BlockMap
-	//blockmap->render();
+	blockmap->render();
 	// Idea: punteros únicos a los distintos objetos
 	SDL_RenderPresent(renderer);
-	SDL_Delay(5000);
 }
 
-void Game::update() {}
-void Game::collides() {}
+void Game::update() {
+	// Ball
+	//ball->update();
+	
+	// Paddle
+}
+bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
+	// Ball - Walls
+	for (int i = 0; i < 3; i++) {
+		if (walls[0]->collides(rectBall, colV)) return true;
+	}
+
+	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
+
+	// Ball - Blocks
+
+	// Ball - DeadLine
+	if (rectBall.y >= winHeight - 10) return true;
+
+	return false;
+}

@@ -1,10 +1,9 @@
 #include "Block.h"
 
 // Constructora
-Block::Block(Vector2D vector, uint width, uint height, uint rows, uint cols, uint colour, Texture* txt) {
+Block::Block(Vector2D vector, uint width, uint height, uint colour, Texture* txt) {
 	posAbs = vector; 
-	w = width; h = height; 
-	r = rows; c = cols; 
+	w = width; h = height;
 	color = colour; 
 	texture = txt;
 }
@@ -13,8 +12,6 @@ Block::Block(Vector2D vector, uint width, uint height, uint rows, uint cols, uin
 Block::~Block() {
 	posAbs.~Vector2D();
 	w = h = 0;
-	texture->wipe();
-	delete(texture);
 }
 
 // Renderizado
@@ -23,5 +20,11 @@ void Block::render() {
 	dest.x = (int) posAbs.getX(); dest.y = (int) posAbs.getY();
 	dest.w = w; dest.h = h;
 
-	texture->render(dest);
+	//Calculamos la fila y la col del frame con el color
+	uint fil = 0, col = 0;
+	if (color > 3) { fil = 1; col = color - 4; }
+	else { fil = 0; col = color - 1; }
+
+
+	texture->renderFrame(dest, fil, col);
 }

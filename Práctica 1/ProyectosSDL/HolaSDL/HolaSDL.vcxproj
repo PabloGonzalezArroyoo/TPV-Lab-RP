@@ -89,9 +89,9 @@
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\level01.dat" />
-    <None Include="..\level02.dat" />
-    <None Include="..\level03.dat" />
+    <None Include="level01.dat" />
+    <None Include="level02.dat" />
+    <None Include="level03.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

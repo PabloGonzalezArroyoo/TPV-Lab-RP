@@ -1,9 +1,9 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
-// #include "Paddle.h"
-// #include "Ball.h"
-// #include "Blockmap.h"
+#include "Paddle.h"
+#include "Ball.h"
+#include "BlocksMap.h"
 #include "Wall.h"
 #include <iostream>
 
@@ -16,7 +16,7 @@ const uint frameRate = 5;
 const uint wallWidth = 15;
 const uint nTextures = 8;
 
-enum TextureName {Ball, Blocks, Digits, GameOver, Paddle, SideWall, TopWall, Winner};
+enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner};
 
 typedef struct {
 	string filename;
@@ -29,7 +29,7 @@ const TextureDescription textDescription[nTextures] = {
 	{"../images/digits2.png", 3, 4},
 	{"../images/gameover1.png", 1, 1},
 	{"../images/paddle2.png", 1, 1},
-	{"../images/side2.png", 1, 1},
+	{"../images/side.png", 1, 1},
 	{"../images/topside.png", 1, 1},
 	{"../images/youwin.png", 1, 1}
 };
@@ -41,10 +41,10 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool exit, gameOver, win;
 
-	// Paddle* paddle = nullptr;
-	// Ball* ball = nullptr;
-	// BlockMap* blockmap = nullptr;
-	Wall walls[3];
+	Paddle* paddle = nullptr;
+	Ball* ball = nullptr;
+	BlocksMap* blockmap = nullptr;
+	Wall* walls[3];
 	
 	Texture* textures[nTextures];
 
@@ -56,6 +56,6 @@ public:
 	void handleEvents();
 	void render();
 	void update();
-	void collides();
+	bool collides(SDL_Rect rectBall, Vector2D& v);
 };
 
