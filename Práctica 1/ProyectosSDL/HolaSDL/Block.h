@@ -19,5 +19,8 @@ public:
 	~Block();
 
 	void render();
+	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
+	uint getColor() { return color; };
+	SDL_Rect getDestRect();
 };
 

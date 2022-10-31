@@ -14,6 +14,7 @@ Wall::Wall(Vector2D v, uint width, uint height, Texture* txt, Vector2D colV) {
 Wall::~Wall() {
 	pos.~Vector2D();
 	w = h = 0;
+	texture = nullptr;
 }
 
 // Renderizado
@@ -21,7 +22,7 @@ void Wall::render() {
 	texture->render(getDestRect());
 }
 
-bool Wall::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
+bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {
 	collisionVector = colVector;
 	return SDL_HasIntersection(&rectBall, &getDestRect());
 }

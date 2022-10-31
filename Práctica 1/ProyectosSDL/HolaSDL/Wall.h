@@ -8,9 +8,9 @@ typedef unsigned int uint;
 class Wall
 {
 private:
-	Vector2D pos = Vector2D();
-	uint w = 0, h = 0;
-	Texture* texture = nullptr;
+	Vector2D pos;
+	uint w, h;
+	Texture* texture;
 	Vector2D colVector;
 
 public:
@@ -22,7 +22,7 @@ public:
 
 	// Renderizado
 	void render();
-	bool collides(SDL_Rect rectBall, Vector2D& colV);
+	bool collidesW(SDL_Rect rectBall, Vector2D& colV);
 	SDL_Rect getDestRect();
 };
 

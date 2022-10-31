@@ -22,4 +22,5 @@ public:
 	void update();
 	void collision();
 	SDL_Rect getDestRect();
+	Vector2D getVelocity() { return vel; };
 };

@@ -1,13 +1,17 @@
 #include "Paddle.h"
+#include <iostream>
+
+const int movVelocity = 10;
 
 // Constructora
-Paddle::Paddle(Vector2D v, int width, int height, Vector2D velocity, Texture* txt) {
-	pos = v; w = width; h = height; vel = velocity; texture = txt;
+Paddle::Paddle(Vector2D v, int width, int height, Vector2D velocity, Texture* txt, Vector2D colV) {
+	pos = v; w = width; h = height; vel = velocity; texture = txt; colVector = colV;
 }
 
 Paddle::~Paddle() {
 	pos = vel = Vector2D();
 	w = h = 0;
+	texture = nullptr;
 }
 
 void Paddle::render() {
@@ -18,8 +22,8 @@ void Paddle::render() {
 }
 
 void Paddle::update(int dir) {
-	vel = Vector2D(dir, 0);																// Crear vector dirección
-	pos = pos + vel;																	// Aplicarlo
+	vel = Vector2D(dir, 0) * movVelocity;												// Crear vector dirección
+	if (pos.getX() + vel.getX() > 15 && pos.getX() + vel.getX() < 800 - 15 - w) pos = pos + vel; // Aplicarlo
 }
 
 void Paddle::handleEvents(SDL_Event e) {
@@ -28,6 +32,14 @@ void Paddle::handleEvents(SDL_Event e) {
 	else update(0);																		// Si no se pulsa nada, se queda quieto
 }
 
-void Paddle::collision() {
+bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
+	collisionVector = colVector;
+	return SDL_HasIntersection(&rectBall, &getDestRect());
+}
 
+SDL_Rect Paddle::getDestRect() {
+	SDL_Rect dest;
+	dest.x = (int)pos.getX(); dest.y = (int)pos.getY();
+	dest.w = w; dest.h = h;
+	return dest;
 }

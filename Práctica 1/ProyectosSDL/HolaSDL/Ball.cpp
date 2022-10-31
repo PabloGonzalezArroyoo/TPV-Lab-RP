@@ -13,6 +13,8 @@ Ball::Ball(Vector2D v, Vector2D velocity, uint width, uint height, Texture* txt,
 Ball::~Ball() {
 	pos = vel = Vector2D();
 	w = h = 0;
+	texture = nullptr;
+	game = nullptr;
 }
 
 void Ball::render() {
@@ -25,10 +27,6 @@ void Ball::update() {
 		vel = vel - colVector * (2 * (vel * colVector));
 	}
 	pos = pos + vel;
-}
-
-void Ball::collision() {
-
 }
 
 SDL_Rect Ball::getDestRect() {

@@ -22,7 +22,6 @@ Game::Game() {
 	// To-DO cargar texturas
 	for (int i = 0; i < nTextures; i++) {
 		const TextureDescription& desc = textDescription[i];
-		cout << i << " " << "fil: " << desc.hframes << " col: " << desc.vframes;
 		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
 	}
 
@@ -31,20 +30,36 @@ Game::Game() {
 	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
 	walls[2] = new Wall(Vector2D(0, 0), winWidth, wallWidth, textures[TopWall], Vector2D(0, 1));
 	//Creamos un puntero a la bola
-	ball = new Ball(Vector2D(winWidth / 2, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
+	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
 	//Creamos un puntero al paddle
-	paddle = new Paddle(Vector2D(winWidth / 2 - 25, 3 * winHeight / 4), 60, 10, Vector2D(0, 0), textures[PaddleTxt]);
-
+	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), 100, 10, Vector2D(0, 0), textures[PaddleTxt], Vector2D(0, -1));
+	
 	//Creamos el mapas de bloques
-	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks]);
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], "level01");
 }
 
 Game::~Game() {
-	// delete(paddle);
+	// Borrar Paddle
+	paddle->~Paddle();
+	delete(paddle);
+	
+	// Borrar Ball
+	ball->~Ball();
+	cout << "ballD" << endl;
 	delete(ball);
-	// delete(blockmap);
-	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
+	cout << "ballDD" << endl;
 
+	// Borrar BlocksMap
+	blockmap->~BlocksMap();
+	cout << "blocksD" << endl;
+	delete(blockmap);
+	cout << "blocksDD" << endl;
+
+	// Borrar Texturas
+	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
+ 	cout << "texturesDD" << endl;
+
+	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -60,51 +75,65 @@ void Game::run() {
 			update();
 			startTime = SDL_GetTicks();
 		}
+		if (blockmap->getBlocks() == 0) win = true;
 		render();
 	}
+
+	if (gameOver || win) SDL_Delay(0);
 }
 
 void Game::handleEvents() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		paddle->handleEvents(event);
 
+		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;
+	}
 }
 
 void Game::render() {
 	SDL_RenderClear(renderer);
-
-	// To-DO
-	// Walls
-	for (int i = 0; i < 3; i++) {
-		walls[i]->render();
+	if (!gameOver && !win) {
+		// Walls
+		for (int i = 0; i < 3; i++) walls[i]->render();
+		// Ball
+		ball->render();
+		// Paddle
+		paddle->render();
+		// BlockMap
+		blockmap->render();
+	}
+	else {
+		SDL_Rect dest;
+		dest.w = 800, dest.h = 600;
+		dest.x = dest.y = 0;
+		if (gameOver) textures[GameOver]->render(dest);
+		else textures[Winner]->render(dest);
 	}
 	
-	// Ball
-	ball->render();
-	// Paddle
-	paddle->render();
-	// BlockMap
-	blockmap->render();
-	// Idea: punteros únicos a los distintos objetos
 	SDL_RenderPresent(renderer);
 }
 
 void Game::update() {
 	// Ball
-	//ball->update();
+	ball->update();
 	
 	// Paddle
 }
 bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Walls
 	for (int i = 0; i < 3; i++) {
-		if (walls[0]->collides(rectBall, colV)) return true;
+		if (walls[i]->collidesW(rectBall, colV)) return true;
 	}
 
+	// Ball - DeadLine
+	if (rectBall.y >= winHeight - 10) gameOver = true;
+
 	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
+	if (paddle->collidesP(rectBall, colV)) return true;
 
 	// Ball - Blocks
-
-	// Ball - DeadLine
-	if (rectBall.y >= winHeight - 10) return true;
-
+	if (blockmap->collidesB(rectBall, colV)) return true;
+	
 	return false;
 }
