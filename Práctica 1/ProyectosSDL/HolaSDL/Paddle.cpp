@@ -40,16 +40,17 @@ void Paddle::handleEvents(SDL_Event e) {
 }
 
 bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
-	collisionVector = colVector;
 	if (SDL_HasIntersection(&rectBall, &getDestRect())) {
-		if (pos.getX() <= rectBall.x && rectBall.x <= pos.getX() + w / 3) { // Diagonal izquierda
-			cout << "---" << endl;
-			cout << "rectBall: (" << rectBall.x << ", " << rectBall.y << ")" << endl;
-			cout << "rectPaddle: (" << getDestRect().x << ", " << getDestRect().y << ")" << endl;
-			collisionVector = Vector2D(-1, -1);
+		if (rectBall.y <= pos.getY()) {
+			double ballCenter = (rectBall.x + rectBall.w / 2);
+			double paddleCenter = pos.getX() + w / 2;
+			colVector = Vector2D((ballCenter - paddleCenter) / (w / 2), -2.5);
+			collisionVector = colVector;
 		}
-		else if (pos.getX() + w / 3 <= rectBall.x && rectBall.x <= pos.getX() + 2 * w / 3) collisionVector = Vector2D(0, -1);	// Centro
-		else if (pos.getX() + 2 * w / 3 <= rectBall.x && rectBall.x <= pos.getX() + w) collisionVector = Vector2D(1, -1);	// Diagonal derecha
+		else {
+			if (rectBall.x < pos.getX()) collisionVector = Vector2D(-1, -2.5);
+			else collisionVector = Vector2D(1, -2.5);
+		}
 		return true;
 	}
 	return false;

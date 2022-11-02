@@ -25,6 +25,8 @@ Game::Game() {
 		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
 	}
 
+	levels[0] = "level01"; levels[1] = "level02"; levels[2] = "level03";
+
 	//Creamos paredes (punteros)
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
 	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
@@ -35,7 +37,7 @@ Game::Game() {
 	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt], Vector2D(0, -1));
 	
 	//Creamos el mapas de bloques
-	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], "level01");
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]);
 }
 
 Game::~Game() {
@@ -68,6 +70,7 @@ Game::~Game() {
 void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
+	int level = 0;
 	while (!exit && !gameOver && !win) {
 		handleEvents();
 		frameTime = SDL_GetTicks() - startTime;
@@ -75,7 +78,11 @@ void Game::run() {
 			update();
 			startTime = SDL_GetTicks();
 		}
-		if (blockmap->getBlocks() == 0) win = true;
+		if (blockmap->getBlocks() == 0 && level == levels->size()) win = true;
+		else if (blockmap->getBlocks() == 0 && level != levels->size()) {
+			++level;
+			blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[level]);
+		}
 		render();
 	}
 

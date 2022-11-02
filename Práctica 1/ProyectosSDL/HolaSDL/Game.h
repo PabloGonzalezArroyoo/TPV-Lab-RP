@@ -45,6 +45,7 @@ private:
 	Ball* ball = nullptr;
 	BlocksMap* blockmap = nullptr;
 	Wall* walls[3];
+	string levels[3];
 	
 	Texture* textures[nTextures];
 

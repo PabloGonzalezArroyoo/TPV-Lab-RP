@@ -25,9 +25,7 @@ void Ball::update() {
 	Vector2D colVector;
 	if (game->collides(getDestRect(), colVector)) {
 		vel = vel - colVector * (2 * (vel * colVector));
-		cout << "noNor: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
 		vel.normalize();
-		cout << "Nor: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
 	}
 	pos = pos + vel;
 	
