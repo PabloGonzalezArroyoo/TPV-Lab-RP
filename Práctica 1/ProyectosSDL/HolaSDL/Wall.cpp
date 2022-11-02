@@ -2,12 +2,12 @@
 #include <iostream>
 
 // Constructora
-Wall::Wall(Vector2D v, uint width, uint height, Texture* txt, Vector2D colV) {
-	pos = v;
-	w = width;
-	h = height;
-	texture = txt;
-	colVector = colV;
+Wall::Wall(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _colVector) {
+	pos = _pos;
+	w = _w;
+	h = _h;
+	texture = _texture;
+	colVector = _colVector;
 }
 
 // Destructora

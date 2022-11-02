@@ -15,12 +15,11 @@ private:
 
 public: 
 	Block() { posAbs = Vector2D(); w = h = 0; color = 1; texture = nullptr; };
-	Block(Vector2D vector, uint width, uint height, uint colour, Texture* txt);
+	Block(Vector2D _posAbs, uint _w, uint _h, uint _color, Texture* _texture);
 	~Block();
 
 	void render();
 	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
-	uint getColor() { return color; };
 	SDL_Rect getDestRect();
 };
 

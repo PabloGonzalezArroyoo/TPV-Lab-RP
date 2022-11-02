@@ -15,7 +15,7 @@ public:
 	double getY() { return y; };
 
 	// Operaciones con el vector
-	double normalize();
+	void normalize();
 	Vector2D operator+(const Vector2D& other);
 	Vector2D operator-(const Vector2D& other);
 	double operator*(const Vector2D& other);	// Producto escalar

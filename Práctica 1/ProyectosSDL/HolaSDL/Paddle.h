@@ -15,7 +15,7 @@ private:
 
 public:
 	Paddle() { pos = vel = colVector = Vector2D(); w = h = 0; texture = nullptr; };
-	Paddle(Vector2D v, int width, int height, Vector2D velocity, Texture* txt, Vector2D colV);
+	Paddle(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Vector2D _colVector);
 	~Paddle();
 
 	void render();

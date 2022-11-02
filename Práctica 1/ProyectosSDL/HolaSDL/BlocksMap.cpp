@@ -39,6 +39,7 @@ BlocksMap::~BlocksMap() {
 		for (int j = 0; j < c; j++) {
 			delete(map[i][j]);
 		}
+		delete[] map[i];
 	}
 	delete[] map;
 }

@@ -2,8 +2,12 @@
 #include <cmath>
 
 // Calcula la longitud del vector
-double Vector2D::normalize() {
-	return sqrt(pow(x, 2) + pow(y, 2));
+void Vector2D::normalize() {
+	if (x > 1) x = 1;
+	else if (x < -1) x = -1;
+
+	if (y > 1) y = 1;
+	else if (y < -1) y = -1;
 }
 
 // Devuelve un nuevo vector que es el resultado de la suma de otros dos

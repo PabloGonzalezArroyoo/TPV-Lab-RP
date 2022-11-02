@@ -32,7 +32,7 @@ Game::Game() {
 	//Creamos un puntero a la bola
 	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
 	//Creamos un puntero al paddle
-	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), 100, 10, Vector2D(0, 0), textures[PaddleTxt], Vector2D(0, -1));
+	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt], Vector2D(0, -1));
 	
 	//Creamos el mapas de bloques
 	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], "level01");
@@ -79,7 +79,7 @@ void Game::run() {
 		render();
 	}
 
-	if (gameOver || win) SDL_Delay(0);
+	if (gameOver || win) SDL_Delay(2000);
 }
 
 void Game::handleEvents() {
@@ -122,9 +122,7 @@ void Game::update() {
 }
 bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Walls
-	for (int i = 0; i < 3; i++) {
-		if (walls[i]->collidesW(rectBall, colV)) return true;
-	}
+	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
 
 	// Ball - DeadLine
 	if (rectBall.y >= winHeight - 10) gameOver = true;

@@ -1,13 +1,13 @@
 #include "Ball.h"
 #include "Game.h"
 
-Ball::Ball(Vector2D v, Vector2D velocity, uint width, uint height, Texture* txt, Game* g) {
-	pos = v;
-	vel = velocity;
-	w = width;
-	h = height;
-	texture = txt;
-	game = g;
+Ball::Ball(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Game* _game) {
+	pos = _pos;
+	vel = _vel;
+	w = _w;
+	h = _h;
+	texture = _texture;
+	game = _game;
 }
 
 Ball::~Ball() {
@@ -25,8 +25,12 @@ void Ball::update() {
 	Vector2D colVector;
 	if (game->collides(getDestRect(), colVector)) {
 		vel = vel - colVector * (2 * (vel * colVector));
+		cout << "noNor: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
+		vel.normalize();
+		cout << "Nor: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
 	}
 	pos = pos + vel;
+	
 }
 
 SDL_Rect Ball::getDestRect() {

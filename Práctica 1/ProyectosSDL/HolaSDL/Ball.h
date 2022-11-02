@@ -15,12 +15,11 @@ private:
 
 public:
 	Ball() { pos = vel = Vector2D(); texture = nullptr; w = h = 0; game = nullptr; };
-	Ball(Vector2D v, Vector2D velocity, uint width, uint height, Texture* txt, Game* game);
+	Ball(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Game* _game);
 	~Ball();
 
 	void render();
 	void update();
-	void collision();
 	SDL_Rect getDestRect();
 	Vector2D getVelocity() { return vel; };
 };
