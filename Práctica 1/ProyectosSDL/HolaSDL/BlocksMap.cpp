@@ -34,6 +34,7 @@ void BlocksMap::loadMap(int width, int heigth, Texture* txt, string filename) {
 	in.close();
 }
 
+// Destructora
 BlocksMap::~BlocksMap() {
 	for (int i = 0; i < r; i++) {
 		for (int j = 0; j < c; j++) {
@@ -46,9 +47,7 @@ BlocksMap::~BlocksMap() {
 
 void BlocksMap::render() {
 	for (int i = 0; i < r; i++) {
-		for (int j = 0; j < c; j++) {
-			if (map[i][j] != nullptr) map[i][j]->render();
-		}
+		for (int j = 0; j < c; j++) if (map[i][j] != nullptr) map[i][j]->render();
 	}
 }
 

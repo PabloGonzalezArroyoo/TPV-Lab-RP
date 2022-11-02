@@ -31,12 +31,16 @@ void Block::render() {
 }
 
 bool Block::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
-	if (SDL_HasIntersection(&rectBall, &getDestRect())) {
-		if (rectBall.x < posAbs.getX()) collisionVector = Vector2D(-1, 0);			// Izquierda
-		else if (rectBall.x + rectBall.w >= posAbs.getX() + w) collisionVector = Vector2D(1, 0);	// Derecha
-		else {
-			if (rectBall.y < posAbs.getY()) collisionVector = Vector2D(0, -1);		// Cara superior
-			else collisionVector = Vector2D(0, 1);									// Cara inferior
+	SDL_Rect intersection;
+	SDL_Rect rectPaddle = getDestRect();
+	if (SDL_IntersectRect(&rectBall, &rectPaddle, &intersection)) {
+		if (intersection.w > intersection.h) {
+			if (rectBall.y < rectPaddle.y) collisionVector = Vector2D(0, -1);		// Arriba
+			else if (rectBall.y > rectPaddle.y) collisionVector = Vector2D(0, 1);	// Abajo
+		}
+		else if (intersection.w < intersection.h) {
+			if (rectBall.x < rectPaddle.x) collisionVector = Vector2D(-1, 0);		// Izquierda
+			else if (rectBall.x > rectPaddle.x) collisionVector = Vector2D(1, 0);	// Derecha
 		}
 		return true;
 	}

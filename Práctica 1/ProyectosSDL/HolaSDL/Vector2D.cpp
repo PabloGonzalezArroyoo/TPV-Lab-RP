@@ -1,7 +1,7 @@
 #include "Vector2D.h"
 #include <cmath>
 
-// Calcula la longitud del vector
+// Normaliza el vector para volverlo unitario
 void Vector2D::normalize() {
 	if (x > 1) x = 1;
 	else if (x < -1) x = -1;

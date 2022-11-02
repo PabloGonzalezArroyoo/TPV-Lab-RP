@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include "Game.h"
 
+// Constructora
 Ball::Ball(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Game* _game) {
 	pos = _pos;
 	vel = _vel;
@@ -10,6 +11,7 @@ Ball::Ball(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Ga
 	game = _game;
 }
 
+// Destructora
 Ball::~Ball() {
 	pos = vel = Vector2D();
 	w = h = 0;
@@ -17,20 +19,22 @@ Ball::~Ball() {
 	game = nullptr;
 }
 
+// Renderizado
 void Ball::render() {
 	texture->render(getDestRect());
 }
 
+// Actualiza la velocidad y la posición de la pelota en función de si colisiona o no.
 void Ball::update() {
 	Vector2D colVector;
-	if (game->collides(getDestRect(), colVector)) {
-		vel = vel - colVector * (2 * (vel * colVector));
-		vel.normalize();
+	if (game->collides(getDestRect(), colVector)) {					// Comprobar si colisiona
+		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente
+		vel.normalize();											// Normalizar el vector
 	}
-	pos = pos + vel;
-	
+	pos = pos + vel;												// Aplicar velocidad
 }
 
+// Devuelve el rectangulo destino, es decir, el del objeto en la escena
 SDL_Rect Ball::getDestRect() {
 	SDL_Rect dest;
 	dest.x = (int)pos.getX(); dest.y = (int)pos.getY();

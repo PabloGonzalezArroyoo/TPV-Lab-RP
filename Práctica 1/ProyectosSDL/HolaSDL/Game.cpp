@@ -1,10 +1,8 @@
 #include "Game.h"
 #include "Vector2D.h"
-//#include "Wall.h"
-//#include "Ball.h"
-//#include "Paddle.h"
 #include "checkML.h"
 
+// Constructora
 Game::Game() {
 	// Inicialización de la ventana
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks (Nos informa de la basura no gestionada)
@@ -40,6 +38,7 @@ Game::Game() {
 	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]);
 }
 
+// Destructora
 Game::~Game() {
 	// Borrar Paddle
 	paddle->~Paddle();
@@ -81,6 +80,7 @@ void Game::run() {
 		if (blockmap->getBlocks() == 0 && level == levels->size()) win = true;
 		else if (blockmap->getBlocks() == 0 && level != levels->size()) {
 			++level;
+			blockmap->~BlocksMap();
 			blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[level]);
 		}
 		render();
@@ -92,9 +92,9 @@ void Game::run() {
 void Game::handleEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-		paddle->handleEvents(event);
-
 		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;
+
+		paddle->handleEvents(event);
 	}
 }
 
@@ -124,9 +124,8 @@ void Game::render() {
 void Game::update() {
 	// Ball
 	ball->update();
-	
-	// Paddle
 }
+
 bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Walls
 	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
