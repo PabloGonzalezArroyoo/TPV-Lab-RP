@@ -1,7 +1,7 @@
 #include "Block.h"
 #include <iostream>
 
-// Constructora
+// Constructora sobrecargada
 Block::Block(Vector2D _posAbs, uint _w, uint _h, uint _color, Texture* _texture) {
 	posAbs = _posAbs;
 	w = _w; h = _h;
@@ -9,7 +9,7 @@ Block::Block(Vector2D _posAbs, uint _w, uint _h, uint _color, Texture* _texture)
 	texture = _texture;
 }
 
-// Destructora
+// Destructora - eliminamos el puntero y resetamos valores
 Block::~Block() {
 	posAbs.~Vector2D();
 	w = h = 0;
@@ -18,35 +18,36 @@ Block::~Block() {
 
 // Renderizado
 void Block::render() {
-	SDL_Rect dest;
-	dest.x = (int) posAbs.getX(); dest.y = (int) posAbs.getY();
-	dest.w = w; dest.h = h;
-
-	//Calculamos la fila y la col del frame con el color
+	// Calculamos la fila y la col del frame con el color
 	uint fil = 0, col = 0;
 	if (color > 3) { fil = 1; col = color - 4; }
 	else { fil = 0; col = color - 1; }
 
-	texture->renderFrame(dest, fil, col);
+	// Renderizamos el frame correspondiente al color del bloque
+	texture->renderFrame(getDestRect(), fil, col);
 }
 
+// Comprobamos colision
 bool Block::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
-	SDL_Rect intersection;
-	SDL_Rect rectPaddle = getDestRect();
-	if (SDL_IntersectRect(&rectBall, &rectPaddle, &intersection)) {
-		if (intersection.w > intersection.h) {
-			if (rectBall.y < rectPaddle.y) collisionVector = Vector2D(0, -1);		// Arriba
-			else if (rectBall.y > rectPaddle.y) collisionVector = Vector2D(0, 1);	// Abajo
+	SDL_Rect intersection;															// Área de intersección resultante de la pelota y el bloque que colisionan
+	SDL_Rect rectBlock = getDestRect();												// Rectángulo del bloque
+
+	if (SDL_IntersectRect(&rectBall, &rectBlock, &intersection)) {					// Si han colisionado, obtener área de interseccion
+		
+		if (intersection.w > intersection.h) {										// Si el área es más ancha que alta, ha colisionado con las caras horizontales
+			if (rectBall.y < rectBlock.y) collisionVector = Vector2D(0, -1);		// Arriba
+			else if (rectBall.y > rectBlock.y) collisionVector = Vector2D(0, 1);	// Abajo
 		}
-		else if (intersection.w < intersection.h) {
-			if (rectBall.x < rectPaddle.x) collisionVector = Vector2D(-1, 0);		// Izquierda
-			else if (rectBall.x > rectPaddle.x) collisionVector = Vector2D(1, 0);	// Derecha
+		else if (intersection.w < intersection.h) {									// Si el área es más alta que ancha, ha colisionado con las caras verticales
+			if (rectBall.x < rectBlock.x) collisionVector = Vector2D(-1, 0);		// Izquierda
+			else if (rectBall.x > rectBlock.x) collisionVector = Vector2D(1, 0);	// Derecha
 		}
-		return true;
+		return true;																// Confirmar colisión
 	}
-	return false;
+	return false;																	// Negar colisión
 }
 
+// Devuelve el rectangulo destino, es decir, el del objeto en la escena con las dimensiones correspondientes
 SDL_Rect Block::getDestRect() {
 	SDL_Rect dest;
 	dest.x = (int) posAbs.getX(); dest.y = (int) posAbs.getY();

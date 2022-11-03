@@ -9,8 +9,7 @@ using namespace std;
 
 typedef unsigned int uint;
 
-class Texture
-{
+class Texture {
 private:
 	SDL_Texture* texture = nullptr;
 	SDL_Renderer* renderer = nullptr;

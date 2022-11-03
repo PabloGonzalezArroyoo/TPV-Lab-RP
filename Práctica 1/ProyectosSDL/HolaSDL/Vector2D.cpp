@@ -3,6 +3,11 @@
 
 // Normaliza el vector para volverlo unitario
 void Vector2D::normalize() {
+	/*
+	x /= module();
+	y /= module();
+	*/
+	
 	if (x > 1 || (x > 0 && x < 1)) x = 1;
 	else if (x < -1 || (x < 0 && x > -1)) x = -1;
 

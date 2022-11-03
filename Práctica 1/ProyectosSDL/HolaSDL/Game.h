@@ -8,21 +8,25 @@
 #include <iostream>
 
 using namespace std;
+typedef unsigned int uint;
 
-using uint = unsigned int;
+// Constantes
 const uint winWidth = 800;
 const uint winHeight = 600;
 const uint frameRate = 5;
 const uint wallWidth = 15;
 const uint nTextures = 8;
 
+// Enum con el nº de la textura correspondiente dentro del array
 enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner};
 
+// Struct con el nombre y las dimensiones de frames del archivo
 typedef struct {
 	string filename;
 	uint hframes, vframes;
 } TextureDescription;
 
+// Descripción de las texturas (según la estructura del struct anterior)
 const TextureDescription textDescription[nTextures] = {
 	{"../images/ball2.png", 1, 1},
 	{"../images/bricks2.png", 2, 3},
@@ -34,8 +38,7 @@ const TextureDescription textDescription[nTextures] = {
 	{"../images/youwin.png", 1, 1}
 };
 
-class Game
-{
+class Game {
 private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;

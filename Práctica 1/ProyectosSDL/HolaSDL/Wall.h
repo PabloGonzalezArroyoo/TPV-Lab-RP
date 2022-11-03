@@ -5,8 +5,7 @@
 
 typedef unsigned int uint;
 
-class Wall
-{
+class Wall {
 private:
 	Vector2D pos;
 	uint w, h;

@@ -4,18 +4,17 @@
 
 typedef unsigned int uint;
 
-class BlocksMap
-{
+class BlocksMap {
 private:
 	Block*** map;
-	uint x, y, w, h, r, c;
+	uint w, h, r, c;
 	uint nBlocks;
 
 public:
-	BlocksMap(int width, int heigth, Texture* txt, string filename) { loadMap(width, heigth, txt, filename); };
+	BlocksMap(uint _w, uint _h, Texture* _texture, string filename) { loadMap(_w, _h, _texture, filename); };
 	~BlocksMap();
 	
-	void loadMap(int width, int heigth, Texture* txt, string filename);
+	void loadMap(uint _w, uint _h, Texture* _texture, string filename);
 	void render();
 	int getBlocks();
 	bool collidesB(SDL_Rect rectBall, Vector2D& collisionVector);

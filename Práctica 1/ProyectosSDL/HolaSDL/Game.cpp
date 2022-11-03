@@ -5,7 +5,7 @@
 // Constructora
 Game::Game() {
 	// Inicialización de la ventana
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks (Nos informa de la basura no gestionada)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);	// Check Memory Leaks (Nos informa de la basura no gestionada)
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("First test with SDL", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, winWidth, winHeight, SDL_WINDOW_SHOWN);
@@ -32,7 +32,7 @@ Game::Game() {
 	//Creamos un puntero a la bola
 	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
 	//Creamos un puntero al paddle
-	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt], Vector2D(0, -1));
+	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
 	
 	//Creamos el mapas de bloques
 	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]);
@@ -94,7 +94,7 @@ void Game::handleEvents() {
 	while (SDL_PollEvent(&event)) {
 		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;
 
-		paddle->handleEvents(event);
+		paddle->handleEvents(event, winWidth, wallWidth);
 	}
 }
 

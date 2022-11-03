@@ -1,6 +1,8 @@
 #pragma once
-class Vector2D
-{
+
+#include <cmath>
+
+class Vector2D {
 private:
 	double x = 0, y = 0;
 
@@ -20,4 +22,7 @@ public:
 	Vector2D operator-(const Vector2D& other);
 	double operator*(const Vector2D& other);	// Producto escalar
 	Vector2D operator*(const double e);			// Vector por escalar
+
+protected:
+	double module() { return sqrt(pow(x, 2) + pow(y, 2)); };
 };

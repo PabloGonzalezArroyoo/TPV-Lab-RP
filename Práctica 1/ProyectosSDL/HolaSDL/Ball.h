@@ -5,7 +5,7 @@
 
 typedef unsigned int uint;
 
-class Game;
+class Game; // Para solucionar dependecia circular
 class Ball {
 private:
 	Vector2D pos, vel;

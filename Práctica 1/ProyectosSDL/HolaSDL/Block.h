@@ -5,8 +5,7 @@
 
 typedef unsigned int uint;
 
-class Block
-{
+class Block {
 private:
 	Vector2D posAbs;
 	uint w, h;
