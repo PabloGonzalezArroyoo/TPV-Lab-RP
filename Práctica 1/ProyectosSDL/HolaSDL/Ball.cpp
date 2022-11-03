@@ -31,6 +31,7 @@ void Ball::update() {
 		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente
 		vel.normalize();											// Normalizar el vector
 	}
+	cout << "vel: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
 	pos = pos + vel;												// Aplicar velocidad
 }
 

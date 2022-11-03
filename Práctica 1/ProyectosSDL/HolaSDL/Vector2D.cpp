@@ -3,11 +3,11 @@
 
 // Normaliza el vector para volverlo unitario
 void Vector2D::normalize() {
-	if (x > 1) x = 1;
-	else if (x < -1) x = -1;
+	if (x > 1 || (x > 0 && x < 1)) x = 1;
+	else if (x < -1 || (x < 0 && x > -1)) x = -1;
 
-	if (y > 1) y = 1;
-	else if (y < -1) y = -1;
+	if (y > 1 || (y > 0 && y < 1)) y = 1;
+	else if (y < -1 || (y < 0 && y > -1)) y = -1;
 }
 
 // Devuelve un nuevo vector que es el resultado de la suma de otros dos
