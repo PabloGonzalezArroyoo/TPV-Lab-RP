@@ -12,8 +12,9 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, string filename) {
 	int aux;
 	ifstream in;							// Archivo de lectura
 	in.open(filename + ".dat");
-	if (!in.is_open()) cout << "ERROR";		// Si no se ha encontrado el archivo (podría ser una excepción)
+	if (!in.is_open()) throw "Error loading map"; // Si no se ha encontrado el archivo
 	in >> r; in >> c;						// Leer filas y columnas de la primera linea y guardar el tamaño
+	if (r <= 0 || c <= 0) throw "Error: columns or rows can't be equal or lower to 0"; // Si no se han introducido valores correctos de r y c
 
 	// Crear el array de arrays dinámico
 	map = new Block**[r];					// Creamos las filas (array dentro de map***)	
@@ -43,6 +44,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, string filename) {
 BlocksMap::~BlocksMap() {
 	for (int i = 0; i < r; i++) {
 		for (int j = 0; j < c; j++) {
+			map[i][j]->~Block();
 			delete(map[i][j]);				// Borramos cada puntero de la matriz
 		}
 		delete[] map[i];					// Borramos los arrays de cada columna

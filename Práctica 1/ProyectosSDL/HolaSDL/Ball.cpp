@@ -28,10 +28,8 @@ void Ball::render() {
 void Ball::update() {
 	Vector2D colVector;
 	if (game->collides(getDestRect(), colVector)) {					// Comprobar si colisiona
-		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente
-		vel.normalize();											// Normalizar el vector
+		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente										
 	}
-	cout << "vel: (" << vel.getX() << ", " << vel.getY() << ")" << endl;
 	pos = pos + vel;												// Actualizamos la posición
 }
 

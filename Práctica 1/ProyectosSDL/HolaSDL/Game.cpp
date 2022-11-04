@@ -29,8 +29,10 @@ Game::Game() {
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
 	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
 	walls[2] = new Wall(Vector2D(0, 0), winWidth, wallWidth, textures[TopWall], Vector2D(0, 1));
+
 	//Creamos un puntero a la bola
 	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
+
 	//Creamos un puntero al paddle
 	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
 	
@@ -46,9 +48,8 @@ Game::~Game() {
 	
 	// Borrar Ball
 	ball->~Ball();
-	cout << "ballD" << endl;
 	delete(ball);
-	cout << "ballDD" << endl;
+	cout << "todo bien";
 
 	// Borrar BlocksMap
 	blockmap->~BlocksMap();
@@ -63,6 +64,7 @@ Game::~Game() {
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	cout << "hola";
 	SDL_Quit();
 }
 
