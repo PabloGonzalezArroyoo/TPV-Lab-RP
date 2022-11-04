@@ -5,17 +5,14 @@
 // Constructora
 Game::Game() {
 	// Inicialización de la ventana
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);	// Check Memory Leaks (Nos informa de la basura no gestionada)
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("First test with SDL", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, winWidth, winHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr)
-		cout << "Error cargando SDL" << endl;
+	if (window == nullptr || renderer == nullptr) throw string("Error cargando SDL");
 
+	// Variables de flujo
 	gameOver = win = exit = false;
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	// To-DO cargar texturas
 	for (int i = 0; i < nTextures; i++) {
@@ -23,7 +20,9 @@ Game::Game() {
 		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
 	}
 
+	// Llenar el array de niveles con los niveles correspondientes y setear el nivel actual a 0
 	levels[0] = "level01"; levels[1] = "level02"; levels[2] = "level03";
+	currentLevel = 0;
 
 	//Creamos paredes (punteros)
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
@@ -37,41 +36,34 @@ Game::Game() {
 	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
 	
 	//Creamos el mapas de bloques
-	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]);
+	try { blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]); }
+	catch (string e) { throw e; }
 }
 
 // Destructora
 Game::~Game() {
 	// Borrar Paddle
-	paddle->~Paddle();
 	delete(paddle);
 	
 	// Borrar Ball
-	ball->~Ball();
 	delete(ball);
-	cout << "todo bien";
 
 	// Borrar BlocksMap
-	blockmap->~BlocksMap();
-	cout << "blocksD" << endl;
 	delete(blockmap);
-	cout << "blocksDD" << endl;
 
 	// Borrar Texturas
 	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
- 	cout << "texturesDD" << endl;
 
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	cout << "hola";
 	SDL_Quit();
 }
 
+// Bucle principal del juego
 void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
-	int level = 0;
 	while (!exit && !gameOver && !win) {
 		handleEvents();
 		frameTime = SDL_GetTicks() - startTime;
@@ -79,16 +71,23 @@ void Game::run() {
 			update();
 			startTime = SDL_GetTicks();
 		}
-		if (blockmap->getBlocks() == 0 && level == levels->size()) win = true;
-		else if (blockmap->getBlocks() == 0 && level != levels->size()) {
-			++level;
-			blockmap->~BlocksMap();
-			blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[level]);
-		}
 		render();
+		checkNextLevel();						// Comprobar si se ha pasado de nivel
 	}
 
 	if (gameOver || win) SDL_Delay(2000);
+}
+
+// Comprobar si se ha pasado de nivel
+void Game::checkNextLevel() {
+	if (blockmap->getBlocks() == 0 && currentLevel == levels->size()) win = true;
+	else if (blockmap->getBlocks() == 0 && currentLevel != levels->size()) {
+		++currentLevel;
+		blockmap->~BlocksMap();
+		blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]);
+		ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1));
+		SDL_Delay(1500);
+	}
 }
 
 void Game::handleEvents() {

@@ -14,7 +14,6 @@ private:
 public:
 	Paddle() { pos = vel = Vector2D(); w = h = 0; texture = nullptr; };
 	Paddle(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture);
-	~Paddle();
 
 	void render();
 	void update(int dir, uint const& winW, uint const& wallW);

@@ -10,7 +10,7 @@ public:
 	// Constructora y destructora
 	Vector2D() { x = 0, y = 0; };
 	Vector2D(double cordX, double cordY) { x = cordX; y = cordY; };
-	~Vector2D() { x = 0; y = 0; };
+	// ~Vector2D() { x = 0; y = 0; };
 
 	// Devuelven las componentes del vector
 	double getX() { return x; };

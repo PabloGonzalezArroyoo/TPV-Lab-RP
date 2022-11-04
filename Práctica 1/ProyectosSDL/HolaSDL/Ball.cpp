@@ -11,14 +11,6 @@ Ball::Ball(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture, Ga
 	game = _game;
 }
 
-// Destructora - eliminamos punteros y resetamos valores
-Ball::~Ball() {
-	pos = vel = Vector2D();
-	w = h = 0;
-	texture = nullptr;
-	game = nullptr;
-}
-
 // Renderizado - pintamos toda la textura de la bola
 void Ball::render() {
 	texture->render(getDestRect());
@@ -31,6 +23,12 @@ void Ball::update() {
 		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente										
 	}
 	pos = pos + vel;												// Actualizamos la posición
+}
+
+// Cambia la posición de la bola y la velocidad a la incial del juego (usado para cambio de niveles)
+void Ball::setPosition(Vector2D _pos, Vector2D _vel) {
+	pos = _pos;
+	vel = _vel;
 }
 
 // Devuelve el rectangulo destino, es decir, el del objeto en la escena con las dimensiones correspondientes

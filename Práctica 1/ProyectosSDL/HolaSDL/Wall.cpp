@@ -10,13 +10,6 @@ Wall::Wall(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _colVect
 	colVector = _colVector;
 }
 
-// Destructora - elimina punteros y resetea valores
-Wall::~Wall() {
-	pos.~Vector2D();
-	w = h = 0;
-	texture = nullptr;
-}
-
 // Renderizado - pintamos toda la textura de la pared
 void Wall::render() {
 	texture->render(getDestRect());

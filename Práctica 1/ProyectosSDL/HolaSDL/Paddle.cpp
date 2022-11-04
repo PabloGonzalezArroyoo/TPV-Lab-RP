@@ -12,13 +12,6 @@ Paddle::Paddle(Vector2D _pos, Vector2D _vel, uint _w, uint _h, Texture* _texture
 	texture = _texture;
 }
 
-// Destructora - eliminamos punteros y reseteamos valores
-Paddle::~Paddle() {
-	pos = vel = Vector2D();
-	w = h = 0;
-	texture = nullptr;
-}
-
 // Renderizado de la textura de la pala entera
 void Paddle::render() {
 	texture->render(getDestRect());

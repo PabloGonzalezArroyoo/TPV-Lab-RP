@@ -11,7 +11,7 @@ private:
 	uint nBlocks;
 
 public:
-	BlocksMap(uint _w, uint _h, Texture* _texture, string filename) { loadMap(_w, _h, _texture, filename); };
+	BlocksMap(uint _w, uint _h, Texture* _texture, string filename);
 	~BlocksMap();
 	
 	void loadMap(uint _w, uint _h, Texture* _texture, string filename);

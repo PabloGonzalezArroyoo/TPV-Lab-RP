@@ -9,13 +9,6 @@ Block::Block(Vector2D _posAbs, uint _w, uint _h, uint _color, Texture* _texture)
 	texture = _texture;
 }
 
-// Destructora - eliminamos el puntero y resetamos valores
-Block::~Block() {
-	posAbs.~Vector2D();
-	w = h = 0;
-	texture = nullptr;
-}
-
 // Renderizado
 void Block::render() {
 	// Calculamos la fila y la col del frame con el color

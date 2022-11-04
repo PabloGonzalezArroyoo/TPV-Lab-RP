@@ -52,6 +52,8 @@ private:
 	
 	Texture* textures[nTextures];
 
+	int currentLevel;
+
 public:
 	Game();
 	~Game();
@@ -61,5 +63,6 @@ public:
 	void render();
 	void update();
 	bool collides(SDL_Rect rectBall, Vector2D& v);
+	void checkNextLevel();
 };
 

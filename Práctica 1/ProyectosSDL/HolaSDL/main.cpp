@@ -9,12 +9,13 @@
 using namespace std;
 
 int main(int argc, char* argv[]){
-	Game* game = nullptr;
-	Game g = Game();
-	game = &g;
-	game->run();
-	game->~Game();
-	delete(game);
-
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);	// Check Memory Leaks (Nos informa de la basura no gestionada)
+	try {
+		Game* game = new Game();
+		game->run();
+		delete(game);
+	}
+	catch (string e) { cout << e << endl; }
+	
 	return 0;
 }
