@@ -14,7 +14,7 @@ Game::Game() {
 	// Variables de flujo
 	gameOver = win = exit = false;
 
-	// To-DO cargar texturas
+	// Para cargar texturas
 	for (int i = 0; i < nTextures; i++) {
 		const TextureDescription& desc = textDescription[i];
 		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
@@ -65,43 +65,46 @@ void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
 	while (!exit && !gameOver && !win) {
-		handleEvents();
-		frameTime = SDL_GetTicks() - startTime;
-		if (frameTime >= frameRate) {
-			update();
-			startTime = SDL_GetTicks();
+		handleEvents();							//Manejamos los eventos que puedan ocurrir
+		frameTime = SDL_GetTicks() - startTime;	//Actualizamos cuanto tiempo ha pasado desde el ultimo frame
+		if (frameTime >= frameRate) {			//Comprobamos si el tiempo de frame es mayor al ratio
+			update();							//Actualizamos el estado del juego
+			startTime = SDL_GetTicks();			//Actualizamos el valor de nuestra variable al valor de este frame
 		}
-		render();
+		render();								// Renderizamos
 		checkNextLevel();						// Comprobar si se ha pasado de nivel
 	}
 
-	if (gameOver || win) SDL_Delay(2000);
+	if (gameOver || win) SDL_Delay(2000);		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
 }
 
 // Comprobar si se ha pasado de nivel
 void Game::checkNextLevel() {
+	//Si no hay bloques y es el ultimo nivel el jugador a ganado
 	if (blockmap->getBlocks() == 0 && currentLevel == levels->size()) win = true;
+	//Si no hay bloques pero no es el ultimo nivel
 	else if (blockmap->getBlocks() == 0 && currentLevel != levels->size()) {
-		++currentLevel;
-		blockmap->~BlocksMap();
+		++currentLevel;						//Actualizamos el nivel en el que estamos
+		blockmap->~BlocksMap();				//Eliminamos el mapa que acabamos de superar
+		// Creamos el nuevo mapa (el siguiente)
 		blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]);
+		// Movemos la pelota a la posicion inicial del juego
 		ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1));
-		SDL_Delay(1500);
+		SDL_Delay(1500);					//Al cambiar de nivel tardamos en actualizar la pantalla
 	}
 }
 
 void Game::handleEvents() {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;
-
-		paddle->handleEvents(event, winWidth, wallWidth);
+	SDL_Event event;											//Creamos un evento
+	while (SDL_PollEvent(&event)) {								//Mientras haya un evento en espera
+		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;	//Si el jugador ha pulsado ESCAPE, se cierra el juego
+		else paddle->handleEvents(event, winWidth, wallWidth);	//Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 	}
 }
 
 void Game::render() {
-	SDL_RenderClear(renderer);
-	if (!gameOver && !win) {
+	SDL_RenderClear(renderer);								//Limpiamos la pantalla
+	if (!gameOver && !win) {								//Si el juego no ha acabado
 		// Walls
 		for (int i = 0; i < 3; i++) walls[i]->render();
 		// Ball
@@ -112,14 +115,13 @@ void Game::render() {
 		blockmap->render();
 	}
 	else {
-		SDL_Rect dest;
-		dest.w = 800, dest.h = 600;
-		dest.x = dest.y = 0;
-		if (gameOver) textures[GameOver]->render(dest);
-		else textures[Winner]->render(dest);
+		SDL_Rect dest;										//Creamos la ventana donde pintamos
+		dest.w = winWidth, dest.h = winHeight;				//Le damos sus dimensiones
+		dest.x = dest.y = 0;								//Su posición es la esquina superior izquierda
+		if (gameOver) textures[GameOver]->render(dest);		//Si el jugador ha perdido renderizamos la textura GameOver
+		else textures[Winner]->render(dest);				//Si el jugador ha ganado renderizamos la textura Winner
 	}
-	
-	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(renderer);							//Pintamos
 }
 
 void Game::update() {
