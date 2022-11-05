@@ -1,3 +1,4 @@
+// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Paddle.h"
 #include <iostream>
 
@@ -29,7 +30,7 @@ void Paddle::handleEvents(SDL_Event e, uint const& winW, uint const& wallW) {
 	else if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_LEFT) update(-1, winW, wallW);	// Si pulsados "a" o "<-", x--															// Si no se pulsa nada, se queda quieto
 }
 
-// Comprobar colision [REVISAR Y HACER VECTOR UNITARIO (EL VERDADERO NORMALIZE)]
+// Comprobar colision
 bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
 	if (SDL_HasIntersection(&rectBall, &getDestRect())) {								// Si intersecta
 		if (rectBall.y <= pos.getY()) {													// Si la pelota choca por encima
@@ -38,13 +39,19 @@ bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
 			collisionVector = Vector2D((ballCenter - paddleCenter) / (w / 2), -2.5);
 			collisionVector.normalize();												// Normalizar el vector
 		}
-		else {
-			if (rectBall.x < pos.getX()) collisionVector = Vector2D(-1, -2.5);
-			else collisionVector = Vector2D(1, -2.5);
+		else {																			// Si da por los lados
+			if (rectBall.x < pos.getX()) collisionVector = Vector2D(-1, -2.5);			// Izquierda
+			else collisionVector = Vector2D(1, -2.5);									// Derecha
 		}
 		return true;
 	}
 	return false;
+}
+
+// Cambia la posición de la bola y la velocidad a la incial del juego (usado para cambio de niveles)
+void Paddle::setPosition(Vector2D _pos, Vector2D _vel) {
+	pos = _pos;
+	vel = _vel;
 }
 
 // Devuelve el rectangulo destino, es decir, el del objeto en la escena con las dimensiones correspondientes

@@ -1,5 +1,4 @@
 // Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
-
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Game.h"

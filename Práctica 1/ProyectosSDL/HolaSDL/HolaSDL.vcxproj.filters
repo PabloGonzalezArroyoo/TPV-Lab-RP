@@ -70,13 +70,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="level01.dat">
+    <None Include="cambioLvl.dat">
       <Filter>Archivos de recursos</Filter>
     </None>
     <None Include="level02.dat">
       <Filter>Archivos de recursos</Filter>
     </None>
     <None Include="level03.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="level01.dat">
       <Filter>Archivos de recursos</Filter>
     </None>
   </ItemGroup>

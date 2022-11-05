@@ -1,3 +1,4 @@
+// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 
 #include "Vector2D.h"
@@ -5,7 +6,7 @@
 
 typedef unsigned int uint;
 
-class Game; // Para solucionar dependecia circular
+class Game; // Para solucionar la dependecia circular
 class Ball {
 private:
 	Vector2D pos, vel;
@@ -19,7 +20,7 @@ public:
 
 	void render();
 	void update();
-	SDL_Rect getDestRect();
 	Vector2D getVelocity() { return vel; };
 	void setPosition(Vector2D _pos, Vector2D _vel);
+	SDL_Rect getDestRect();
 };

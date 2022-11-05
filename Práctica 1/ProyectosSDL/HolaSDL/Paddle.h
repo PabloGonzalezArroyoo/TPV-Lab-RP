@@ -1,3 +1,4 @@
+// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 
 #include "Vector2D.h"
@@ -19,5 +20,6 @@ public:
 	void update(int dir, uint const& winW, uint const& wallW);
 	void handleEvents(SDL_Event e, uint const& winW, uint const& wallW);
 	bool collidesP(SDL_Rect rectBall, Vector2D& collisionVector);
+	void setPosition(Vector2D _pos, Vector2D _vel);
 	SDL_Rect getDestRect();
 };

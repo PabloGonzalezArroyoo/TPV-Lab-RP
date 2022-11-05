@@ -89,6 +89,7 @@
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cambioLvl.dat" />
     <None Include="level01.dat" />
     <None Include="level02.dat" />
     <None Include="level03.dat" />

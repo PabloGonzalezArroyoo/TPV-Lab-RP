@@ -1,3 +1,4 @@
+// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 
 #include <cmath>
