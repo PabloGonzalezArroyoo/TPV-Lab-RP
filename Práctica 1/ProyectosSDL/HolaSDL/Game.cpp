@@ -65,7 +65,7 @@ Game::~Game() {
 void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
-	lifesLeft(life);								// Mostrar info en la consola
+	lifeLeft();										// Mostrar info en la consola
 	while (!exit && !gameOver && !win) {
 		handleEvents();								// Manejamos los eventos que puedan ocurrir
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
@@ -77,9 +77,8 @@ void Game::run() {
 		if (!gameOver && !win) checkNextLevel();	// Comprobar si se ha pasado de nivel
 	}
 
-	cout << "SALÍIII";
 	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
-	if (exit) cout << "Saliste del juego... bye!" << endl;
+	if (exit) cout << "\nSaliste del juego... bye!" << endl;
 }
 
 // Manejar eventos (pulsar teclas...)
@@ -126,16 +125,7 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
 
 	// Ball - DeadLine
-	if (rectBall.y >= winHeight - 10) {
-		--life;											// Decrementamos la vida
-		lifesLeft(life);								// Mostrar info en la consola
-		if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
-		else {											// Si quedan, resetear la posición inicial la pala y la pelota
-			ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-			paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del j
-		}
-		return true;
-	}
+	if (rectBall.y >= winHeight - 10) { checkLife(); return true; }
 
 	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
 	if (paddle->collidesP(rectBall, colV)) return true;
@@ -164,7 +154,18 @@ void Game::checkNextLevel() {
 	}
 }
 
-// Mostrar las vidas restantes por consola
-void Game::lifesLeft(uint life) {
-	cout << "VIDAS RESTANTES: " << life << endl;
+// Gestionar vida: quitar un punto de vida y resetear posiciones de entidades
+void Game::checkLife() {
+	--life;											// Decrementamos la vida							
+	if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
+	else {											// Si quedan, resetear la posición inicial la pala y la pelota
+		ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+		paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del j
+	}
+	lifeLeft();										// Mostrar info en la consola
+}
+
+// Muestra en consola la vida actual
+void Game::lifeLeft() {
+	cout << "VIDAS RESTANTES: " << life << endl;	// Escribir en consola
 }

@@ -37,12 +37,12 @@ bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
 			double ballCenter = (rectBall.x + rectBall.w / 2);							// Calcular el centro de la bola
 			double paddleCenter = pos.getX() + w / 2;
 			collisionVector = Vector2D((ballCenter - paddleCenter) / (w / 2), -2.5);
-			collisionVector.normalize();												// Normalizar el vector
 		}
 		else {																			// Si da por los lados
 			if (rectBall.x < pos.getX()) collisionVector = Vector2D(-1, -2.5);			// Izquierda
 			else collisionVector = Vector2D(1, -2.5);									// Derecha
 		}
+		collisionVector.normalize();													// Normalizar el vector
 		return true;
 	}
 	return false;

@@ -21,7 +21,7 @@ void Ball::render() {
 void Ball::update() {
 	Vector2D colVector;
 	if (game->collides(getDestRect(), colVector)) {					// Comprobar si colisiona
-		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente										
+		vel = vel - colVector * (2 * (vel * colVector));			// Obtener el vector de velocidad correspondiente
 	}
 	pos = pos + vel;												// Actualizamos la posición
 }

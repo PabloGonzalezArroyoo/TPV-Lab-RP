@@ -69,6 +69,7 @@ public:
 	void update();
 	bool collides(SDL_Rect rectBall, Vector2D& v);
 	void checkNextLevel();
-	void lifesLeft(uint life);
+	void checkLife();
+	void lifeLeft();
 };
 
