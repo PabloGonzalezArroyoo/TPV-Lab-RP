@@ -17,6 +17,8 @@ const uint winHeight = 600;
 const uint frameRate = 5;
 const uint wallWidth = 15;
 const uint nTextures = 8;
+const uint nLevels = 3;
+const uint numLifes = 1;
 
 // Enum con el nº de la textura correspondiente dentro del array
 enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner};
@@ -49,10 +51,11 @@ private:
 	Ball* ball = nullptr;
 	BlocksMap* blockmap = nullptr;
 	Wall* walls[3];
-	string levels[3];
+	string levels[nLevels];
 	
 	Texture* textures[nTextures];
 
+	int life = numLifes;
 	int currentLevel;
 
 public:
@@ -65,5 +68,6 @@ public:
 	void update();
 	bool collides(SDL_Rect rectBall, Vector2D& v);
 	void checkNextLevel();
+	void lifesLeft(uint life);
 };
 

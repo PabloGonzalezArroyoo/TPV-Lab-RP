@@ -23,22 +23,22 @@ Game::Game() {
 
 	// Llenar el array de niveles con los niveles correspondientes y setear el nivel actual a 0
 	levels[0] = "level01"; levels[1] = "level02"; levels[2] = "level03";
-	//levels[0] = "cambioLvl"
-	currentLevel = 0;
+	// levels[0] = "cambioLvl"; levels[1] = "cambioLvl"; levels[2] = "cambioLvl"; -> Para llegar a la pantalla de victoria
+	currentLevel = 1;
 
-	//Creamos paredes (punteros)
+	// Creamos paredes (punteros)
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
 	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
 	walls[2] = new Wall(Vector2D(0, 0), winWidth, wallWidth, textures[TopWall], Vector2D(0, 1));
 
-	//Creamos un puntero a la bola
+	// Creamos un puntero a la bola
 	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
 
-	//Creamos un puntero al paddle
+	// Creamos un puntero al paddle
 	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
 	
-	//Creamos el mapas de bloques
-	try { blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[0]); }
+	// Creamos el mapas de bloques
+	try { blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]); }
 	catch (string e) { throw e; }
 }
 
@@ -66,31 +66,20 @@ Game::~Game() {
 void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
+	lifesLeft(life);								// Mostrar info en la consola
 	while (!exit && !gameOver && !win) {
-		handleEvents();							//Manejamos los eventos que puedan ocurrir
-		frameTime = SDL_GetTicks() - startTime;	//Actualizamos cuanto tiempo ha pasado desde el ultimo frame
-		if (frameTime >= frameRate) {			//Comprobamos si el tiempo de frame es mayor al ratio
-			update();							//Actualizamos el estado del juego
-			startTime = SDL_GetTicks();			//Actualizamos el valor de nuestra variable al valor de este frame
+		handleEvents();								// Manejamos los eventos que puedan ocurrir
+		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
+		if (frameTime >= frameRate) {				// Comprobamos si el tiempo de frame es mayor al ratio
+			update();								// Actualizamos el estado del juego
+			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 		}
-		render();								// Renderizamos
-		checkNextLevel();						// Comprobar si se ha pasado de nivel
+		render();									// Renderizamos
+		if (!gameOver && !win) checkNextLevel();	// Comprobar si se ha pasado de nivel
 	}
 
-	if (gameOver || win) SDL_Delay(2000);		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
-}
-
-// Comprobar si se ha pasado de nivel
-void Game::checkNextLevel() {
-	if (blockmap->getBlocks() == 0 && currentLevel == levels->size()) win = true;		// Si no hay bloques y es el último nivel el jugador ha ganado
-	else if (blockmap->getBlocks() == 0 && currentLevel != levels->size()) {			// Si no hay bloques pero no es el último nivel
-		++currentLevel;																	// Actualizamos el nivel en el que estamos
-		blockmap->~BlocksMap();															// Eliminamos el mapa que acabamos de superar
-		blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]); // Creamos el nuevo mapa (el siguiente)
-		ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-		paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
-		SDL_Delay(1500);																// Al cambiar de nivel tardamos en actualizar la pantalla
-	}
+	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
+	if (exit) cout << "Saliste del juego... bye!" << endl;
 }
 
 // Manejar eventos (pulsar teclas...)
@@ -137,7 +126,15 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
 
 	// Ball - DeadLine
-	if (rectBall.y >= winHeight - 10) gameOver = true;
+	if (rectBall.y >= winHeight - 10) {
+		--life;											// Decrementamos la vida
+		lifesLeft(life);								// Mostrar info en la consola
+		if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
+		else {											// Si quedan, resetear la posición inicial la pala y la pelota
+			ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+			paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del j
+		}
+	}
 
 	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
 	if (paddle->collidesP(rectBall, colV)) return true;
@@ -146,4 +143,27 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	if (blockmap->collidesB(rectBall, colV)) return true;
 	
 	return false;
+}
+
+
+// Comprobar si se ha pasado de nivel
+void Game::checkNextLevel() {
+	if (blockmap->getBlocks() == 0) {														// Si no hay bloques
+		++currentLevel;																		// Actualizamos el nivel en el que estamos
+
+		if (currentLevel >= nLevels) win = true;											// Si es el último nivel el jugador ha ganado
+		else {																				// Si no es el último nivel
+			blockmap->~BlocksMap();															// Eliminamos el mapa que acabamos de superar
+			blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]); // Creamos el nuevo mapa (el siguiente)
+
+			ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+			paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+			SDL_Delay(1500);																// Al cambiar de nivel tardamos en actualizar la pantalla
+		}
+	}
+}
+
+// Mostrar las vidas restantes por consola
+void Game::lifesLeft(uint life) {
+	cout << "VIDAS RESTANTES: " << life << endl;
 }
