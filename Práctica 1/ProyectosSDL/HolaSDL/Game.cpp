@@ -1,7 +1,6 @@
 // Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Game.h"
 #include "Vector2D.h"
-#include "checkML.h"
 
 // Constructora
 Game::Game() {
@@ -24,7 +23,7 @@ Game::Game() {
 	// Llenar el array de niveles con los niveles correspondientes y setear el nivel actual a 0
 	levels[0] = "level01"; levels[1] = "level02"; levels[2] = "level03";
 	// levels[0] = "cambioLvl"; levels[1] = "cambioLvl"; levels[2] = "cambioLvl"; -> Para llegar a la pantalla de victoria
-	currentLevel = 1;
+	currentLevel = 0;
 
 	// Creamos paredes (punteros)
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
@@ -78,6 +77,7 @@ void Game::run() {
 		if (!gameOver && !win) checkNextLevel();	// Comprobar si se ha pasado de nivel
 	}
 
+	cout << "SALÍIII";
 	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
 	if (exit) cout << "Saliste del juego... bye!" << endl;
 }
@@ -134,6 +134,7 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 			ball->setPosition(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
 			paddle->setPosition(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del j
 		}
+		return true;
 	}
 
 	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle

@@ -19,7 +19,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, string filename) {
 	ifstream in;							// Archivo de lectura
 	in.open(filename + ".dat");
 	if (!in.is_open()) throw string("Error: couldn't load map (" + filename + ")"); // Si no se ha encontrado el archivo
-	in >> rows; in >> cols;						// Leer filas y columnas de la primera linea y guardar el tamaño
+	in >> rows >> cols;						// Leer filas y columnas de la primera linea y guardar el tamaño
 	if (rows <= 0 || cols <= 0) throw string("Error: columns or rows can't be equal or lower to 0 (" + filename + ")"); // Si no se han introducido valores correctos de r y c
 	r = rows; c = cols;
 
