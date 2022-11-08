@@ -76,7 +76,8 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 		for (int j = 0; j < c; j++) {
 			// Comprobar si hay un bloque y la bola ha colisionado con él
 			if (map[i][j] != nullptr && map[i][j]->collides(rectBall, collisionVector)) {
-				map[i][j] = nullptr;		// Eliminar el bloque
+				map[i][j] = nullptr;		// Eliminar puntero al bloque
+				delete(map[i][j]);			// Eliminar el bloque
 				--nBlocks;					// Disminuir el nº de bloques
 				return true;				// Confirmar colisión
 			}

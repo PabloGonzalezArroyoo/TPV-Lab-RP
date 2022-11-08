@@ -22,6 +22,7 @@ public:
 	void render();
 	void update();
 	Vector2D getVelocity() { return vel; };
+	Vector2D getPosition() { return pos; }
 	void setPosition(Vector2D _pos, Vector2D _vel);
 	SDL_Rect getDestRect();
 };

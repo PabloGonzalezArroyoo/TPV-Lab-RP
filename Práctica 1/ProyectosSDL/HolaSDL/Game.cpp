@@ -37,8 +37,7 @@ Game::Game() {
 	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
 	
 	// Creamos el mapas de bloques
-	try { blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]); }
-	catch (string e) { throw e; }
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]);
 }
 
 // Destructora
@@ -52,8 +51,11 @@ Game::~Game() {
 	// Borrar BlocksMap
 	delete(blockmap);
 
+	// Borrar Walss
+	for (int i = 0; i < 3; i++) delete(walls[i]);
+
 	// Borrar Texturas
-	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
+	for (int i = 0; i < nTextures; i++) delete(textures[i]);
 
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
@@ -128,10 +130,14 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	if (rectBall.y >= winHeight - 10) { checkLife(); return true; }
 
 	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
-	if (paddle->collidesP(rectBall, colV)) return true;
+	if (ball->getVelocity().getY() > 0) {
+		if (paddle->collidesP(rectBall, colV)) return true;
+	}
 
 	// Ball - Blocks
-	if (blockmap->collidesB(rectBall, colV)) return true;
+	if (ball->getPosition().getY() <= winHeight / 2) {
+		if (blockmap->collidesB(rectBall, colV)) return true;
+	}
 	
 	return false;
 }

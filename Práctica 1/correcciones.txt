@@ -1,0 +1,25 @@
+Ante los comentarios sobre varios errores recibidos hoy en la evaluación de la práctica:
+
+1- Basura:
+	+ El programa dejaba basura correspondiente a los punteros a Wall y a todos los Blocks que se hubieran
+	generado durante la partida. Ahora ya hacemos los correspondientes deletes
+		- (BlocksMap.cpp - línea 80, Game.cpp - línea 55)
+
+2- Manejo de excepciones erroneos:
+	+ Al hacer el manejo de excepciones, hacíamos un try dentro del Game.cpp que no era necesario para
+	relanzar la excepción. Miguel nos ha comentado que esta excepción se lanza ya de por sí hasta 
+	el nivel superior del código, por lo que la hemos quitado y todo funciona tal y como debería.
+		- (Game.cpp - línea 40)
+
+3- Aumento de la velocidad cuando se choca con la pala:
+	+ Al chocar la pelota con la se incrementaba la velocidad, principalmente si chocaba en uno de
+	los laterales. Ante la posibilidad de que esto fuera por multiples colisiones al mismo tiempo, 
+	hemos añadido una comprobación previa de si la pelota se mueve en dirección a la pala. Aun así, no se 
+	ha solucionado el problema.
+		- (Game.cpp - línea 133)
+
+4- Optimización de colisiones con el BlocksMap:
+	+ Nuestro programa, fuera cual fuera la posición de la pelota, comprobaba si chocaba con el blocksmap
+	incluso si estaba fuera del área que ocupa este. Así pues, hemos añadido una comprobación para que solo
+	se llame a la comprobación de colisiones si la pelota se encuentra en ese área.
+		- (Game.cpp - línea 138)
