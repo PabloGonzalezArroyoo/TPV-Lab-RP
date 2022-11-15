@@ -10,7 +10,7 @@ public:
 	MovingObject();
 	MovingObject(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel);
 
-	void SetPosition(Vector2D _pos, Vector2D _vel);
+	void setPosition(Vector2D _pos, Vector2D _vel);
 
 	virtual void update();
 	virtual void loadFromFile();

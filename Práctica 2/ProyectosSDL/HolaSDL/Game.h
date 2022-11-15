@@ -8,6 +8,7 @@
 #include "Wall.h"
 #include "checkML.h"
 #include <iostream>
+#include <list>
 
 using namespace std;
 typedef unsigned int uint;
@@ -44,6 +45,7 @@ const TextureDescription textDescription[nTextures] = {
 
 class Game {
 private:
+	// virtual list<ArkanoidObject> gameObjects;
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	bool exit, gameOver, win;
