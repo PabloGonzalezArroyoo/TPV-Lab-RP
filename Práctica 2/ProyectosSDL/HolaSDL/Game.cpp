@@ -29,20 +29,31 @@ Game::Game() {
 	walls[0] = new Wall(Vector2D(0, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(1, 0));
 	walls[1] = new Wall(Vector2D(winWidth - wallWidth, 0 + wallWidth), wallWidth, winHeight - wallWidth, textures[SideWall], Vector2D(-1, 0));
 	walls[2] = new Wall(Vector2D(0, 0), winWidth, wallWidth, textures[TopWall], Vector2D(0, 1));
+	objects.push_back(walls[0]);
+	objects.push_back(walls[1]);
+	objects.push_back(walls[2]);
 
 	// Creamos un puntero a la bola
-	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), Vector2D(1, -1), 15, 15, textures[BallTxt], this);
+	ball = new Ball(Vector2D(winWidth / 2 - wallWidth, winHeight - 50), 15, 15, textures[BallTxt], Vector2D(1, -1), this);
+	objects.push_back(ball);
 
 	// Creamos un puntero al paddle
-	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), Vector2D(0, 0), 100, 10, textures[PaddleTxt]);
+	paddle = new Paddle(Vector2D(winWidth / 2 - wallWidth * 2, winHeight - 30), 100, 10, textures[PaddleTxt], Vector2D(0, 0));
+	objects.push_back(paddle);
 	
 	// Creamos el mapas de bloques
-	try { blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]); }
-	catch (string e) { throw e; }
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], levels[currentLevel]);
+	objects.push_back(blockmap);
 }
 
 // Destructora
 Game::~Game() {
+
+	for (ArkanoidObject* myOb : objects) delete(myOb);
+	objects.~list();
+
+	for (int i = 0; i < 3; i++) delete(walls[i]);
+
 	// Borrar Paddle
 	delete(paddle);
 	
@@ -53,7 +64,7 @@ Game::~Game() {
 	delete(blockmap);
 
 	// Borrar Texturas
-	for (int i = 0; i < nTextures; i++) { textures[i]->wipe(); delete(textures[i]); }
+	for (int i = 0; i < nTextures; i++) delete(textures[i]);
 
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
@@ -68,6 +79,7 @@ void Game::run() {
 	lifeLeft();										// Mostrar info en la consola
 	while (!exit && !gameOver && !win) {
 		handleEvents();								// Manejamos los eventos que puedan ocurrir
+		
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= frameRate) {				// Comprobamos si el tiempo de frame es mayor al ratio
 			update();								// Actualizamos el estado del juego
@@ -93,15 +105,9 @@ void Game::handleEvents() {
 // Renderizado
 void Game::render() {
 	SDL_RenderClear(renderer);								// Limpiamos la pantalla
+
 	if (!gameOver && !win) {								// Si el juego no ha acabado
-		// Walls
-		for (int i = 0; i < 3; i++) walls[i]->render();
-		// Ball
-		ball->render();
-		// Paddle
-		paddle->render();
-		// BlockMap
-		blockmap->render();
+		for (list<ArkanoidObject*>::iterator it = objects.begin(); it != objects.end(); it++) (*it)->render();
 	}
 	else {													// Si se ha perdido o ganado
 		SDL_Rect dest;										// Creamos la ventana donde pintamos
@@ -119,8 +125,8 @@ void Game::update() {
 	ball->update();
 }
 
-// Comprobar las colisiones
-bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
+// Comprobar colisiones del Ball
+bool Game::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Walls
 	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
 
@@ -131,11 +137,30 @@ bool Game::collides(SDL_Rect rectBall, Vector2D& colV) {
 	if (paddle->collidesP(rectBall, colV)) return true;
 
 	// Ball - Blocks
-	if (blockmap->collidesB(rectBall, colV)) return true;
-	
+	if (blockmap->collidesB(rectBall, colV)) {
+		// No llamar a reward si nullptr
+		return true;
+	}
 	return false;
 }
 
+// Comprobar colisiones del Reward
+bool Game::collidesReward(SDL_Rect rectBall, char type) {
+	return true;
+}
+
+void Game::createReward() {
+	int random = 0 + (rand() % 30);
+	char type = ' ';
+
+	// Asignar char
+	switch (random) {
+	case 10: type = 'n';
+		break;
+	}
+
+	// Si el type no es vacío, crear
+}
 
 // Comprobar si se ha pasado de nivel
 void Game::checkNextLevel() {

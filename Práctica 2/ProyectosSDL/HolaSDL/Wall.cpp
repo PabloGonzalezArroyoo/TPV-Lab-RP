@@ -4,12 +4,7 @@
 
 // Constructora sobrecargada
 Wall::Wall(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _colVector) : 
-	ArkanoidObject(_pos, _w, _h, texture), colVector(_colVector) {}
-
-// Renderizado - pintamos toda la textura de la pared
-void Wall::render() {
-	texture->render(getRect());
-}
+	ArkanoidObject(_pos, _w, _h, _texture), colVector(_colVector) {}
 
 // Comprobar colisiones
 bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {

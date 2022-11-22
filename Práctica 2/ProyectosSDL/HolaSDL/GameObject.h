@@ -8,16 +8,13 @@ typedef unsigned int uint;
 class GameObject
 {
 public:
-	virtual void render() {
+	GameObject() {};
+	virtual ~GameObject() {};
 
-	}
+	virtual void render() = 0;
 
-	virtual void update() {
+	virtual void update() {};
 
-	}
-
-	virtual void handleEvents() {
-
-	}
+	virtual void handleEvent(SDL_Event e) {};
 };
 

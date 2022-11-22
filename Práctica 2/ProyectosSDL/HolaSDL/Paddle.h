@@ -12,6 +12,6 @@ public:
 	Paddle(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel);
 
 	virtual void update(int dir, uint const& winW, uint const& wallW);
-	void handleEvents(SDL_Event e, uint const& winW, uint const& wallW);
+	virtual void handleEvents(SDL_Event e, uint const& winW, uint const& wallW);
 	bool collidesP(SDL_Rect rectBall, Vector2D& collisionVector);
 };

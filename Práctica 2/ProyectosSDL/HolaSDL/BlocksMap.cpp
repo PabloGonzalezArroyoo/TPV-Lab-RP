@@ -6,8 +6,7 @@
 const uint WALL_WIDTH = 15;
 
 BlocksMap::BlocksMap(uint _w, uint _h, Texture* _texture, string filename) {
-	try { loadMap(_w, _h, _texture, filename); }
-	catch (string e) { throw e; }
+	loadMap(_w, _h, _texture, filename);
 }
 
 // Carga un mapa de un archivo

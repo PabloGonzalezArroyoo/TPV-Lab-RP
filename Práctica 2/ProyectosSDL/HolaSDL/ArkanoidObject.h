@@ -12,12 +12,15 @@ public:
 
 	ArkanoidObject();
 	ArkanoidObject(Vector2D _pos, uint _width, uint _height, Texture* _texture);
+	virtual ~ArkanoidObject() {};
 
 	virtual void render();
 
-	virtual void loadFromFile();
+	virtual void handleEvent(SDL_Event e) {};
 
-	virtual void saveToFile();
+	//virtual void loadFromFile() {};
+
+	//virtual void saveToFile() {};
 
 	SDL_Rect getRect();
 };

@@ -22,7 +22,6 @@ void Texture::load(string filename, uint nRows, uint nCols) {
 	h = tempSurface->h;
 	fw = w / numCols;														// Dimensiones del frame
 	fh = h / numRows;
-
 	SDL_FreeSurface(tempSurface);											// Borra el objeto auxiliar de la imagen
 }
 

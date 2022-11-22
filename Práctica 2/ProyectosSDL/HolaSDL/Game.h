@@ -53,8 +53,10 @@ private:
 	Paddle* paddle = nullptr;
 	Ball* ball = nullptr;
 	BlocksMap* blockmap = nullptr;
-	Wall* walls[3];
+	 Wall* walls[3];
 	string levels[nLevels];
+	// Reward* reward = nullptr;
+	list<ArkanoidObject*> objects;
 	
 	Texture* textures[nTextures];
 
@@ -69,9 +71,14 @@ public:
 	void handleEvents();
 	void render();
 	void update();
-	bool collides(SDL_Rect rectBall, Vector2D& v);
+	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
+	bool collidesReward(SDL_Rect rectBall, char type);
+	void createReward();
 	void checkNextLevel();
 	void checkLife();
 	void lifeLeft();
+
+	void loadFromFile();
+	void saveToFile();
 };
 

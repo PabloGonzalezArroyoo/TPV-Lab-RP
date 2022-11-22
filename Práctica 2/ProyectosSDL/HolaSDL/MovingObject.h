@@ -10,10 +10,10 @@ public:
 	MovingObject();
 	MovingObject(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel);
 
+	virtual ~MovingObject() {};
+
 	void setPosition(Vector2D _pos, Vector2D _vel);
 
-	virtual void update();
-	virtual void loadFromFile();
-	virtual void saveToFile();
+	virtual void update() {};
 };
 
