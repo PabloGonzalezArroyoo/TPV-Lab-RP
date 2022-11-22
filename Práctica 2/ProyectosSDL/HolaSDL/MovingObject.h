@@ -15,5 +15,8 @@ public:
 	void setPosition(Vector2D _pos, Vector2D _vel);
 
 	virtual void update() {};
+
+	virtual void loadFromFile(istream in);
+	virtual void saveToFile(ostream out);
 };
 

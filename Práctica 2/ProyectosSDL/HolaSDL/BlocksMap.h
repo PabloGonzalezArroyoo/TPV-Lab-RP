@@ -20,4 +20,7 @@ public:
 	virtual void render();
 	int getBlocks();
 	bool collidesB(SDL_Rect rectBall, Vector2D& collisionVector);
+
+	virtual void loadFromFile(istream in);
+	virtual void saveToFile(ostream out);
 };

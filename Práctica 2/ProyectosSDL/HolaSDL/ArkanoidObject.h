@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include <iostream>
 
 class ArkanoidObject : public GameObject
 {
@@ -18,9 +19,9 @@ public:
 
 	virtual void handleEvent(SDL_Event e) {};
 
-	//virtual void loadFromFile() {};
+	virtual void loadFromFile(istream in);
 
-	//virtual void saveToFile() {};
+	virtual void saveToFile(ostream out);
 
 	SDL_Rect getRect();
 };

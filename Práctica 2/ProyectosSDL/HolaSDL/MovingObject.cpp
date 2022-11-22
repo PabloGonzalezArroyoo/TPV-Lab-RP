@@ -1,5 +1,6 @@
 #include "MovingObject.h"
 
+MovingObject::MovingObject() : ArkanoidObject(), vel(Vector2D(0,0)) {}
 
 MovingObject::MovingObject(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel)
 {
@@ -12,4 +13,16 @@ MovingObject::MovingObject(Vector2D _pos, uint _w, uint _h, Texture* _texture, V
 void MovingObject::setPosition(Vector2D _pos, Vector2D _vel) {
 	pos = _pos;
 	vel = _vel;
+}
+
+void MovingObject::loadFromFile(istream in) {
+	ArkanoidObject(in);
+	int velX, velY;
+	in >> velX >> velY;
+	vel = Vector2D(velX, velY);
+}
+
+void MovingObject::saveToFile(ostream out) {
+	ArkanoidObject(out);
+	out << vel.getX() << " " << vel.getY() << " ";
 }

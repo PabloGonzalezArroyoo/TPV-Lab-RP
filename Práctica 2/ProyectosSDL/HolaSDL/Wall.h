@@ -16,6 +16,7 @@ public:
 
 	// Colisiones
 	bool collidesW(SDL_Rect rectBall, Vector2D& colV);
-	//virtual void loadFromFile();
+	virtual void loadFromFile(istream in);
+	virtual void saveToFile(ostream out);
 };
 

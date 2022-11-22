@@ -23,3 +23,18 @@ SDL_Rect ArkanoidObject::getRect() {
 	dest.w = w; dest.h = h;
 	return dest;
 }
+
+void ArkanoidObject::loadFromFile(istream in) {
+	in >> w >> h;
+	int newX, newY;
+	string direction;
+	in >> newX >> newY;
+	pos = Vector2D(newX, newY);
+
+	in >> direction;
+	//*texture = direction;
+}
+
+void ArkanoidObject::saveToFile(ostream out) {
+	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
+}

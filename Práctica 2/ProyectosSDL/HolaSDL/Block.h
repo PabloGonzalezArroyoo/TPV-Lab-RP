@@ -15,5 +15,8 @@ public:
 
 	virtual void render();
 	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
+
+	virtual void loadFromFile(istream in);
+	virtual void saveToFile(ostream out);
 };
 

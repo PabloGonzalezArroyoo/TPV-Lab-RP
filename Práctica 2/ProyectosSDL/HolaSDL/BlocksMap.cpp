@@ -83,3 +83,11 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 	}
 	return false;							// Negar colision
 }
+
+void BlocksMap::loadFromFile(istream in) {
+	ArkanoidObject(in);
+}
+
+void BlocksMap::saveToFile(ostream out) {
+	ArkanoidObject(out);
+}

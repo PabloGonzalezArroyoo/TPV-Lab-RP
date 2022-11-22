@@ -11,3 +11,15 @@ bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {
 	collisionVector = colVector;							// El vector colisión es el asignado a la pared correspondiente
 	return SDL_HasIntersection(&rectBall, &getRect());  // Confirmar o negar colisión
 }
+
+void Wall::loadFromFile(istream in) {
+	ArkanoidObject(in);
+	int colVX, colVY;
+	in >> colVX >> colVY;
+	colVector = Vector2D(colVX, colVY);
+}
+
+void Wall::saveToFile(ostream out) {
+	ArkanoidObject(out);
+	out << colVector.getX() << " " << colVector.getY() << " ";
+}
