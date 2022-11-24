@@ -12,8 +12,14 @@ bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return SDL_HasIntersection(&rectBall, &getRect());  // Confirmar o negar colisión
 }
 
-void Wall::loadFromFile(istream in) {
-	ArkanoidObject(in);
+void Wall::loadFromFile(istream in, Texture* _texture) {
+	in >> w >> h;
+	int newX, newY;
+	in >> newX >> newY;
+	pos = Vector2D(newX, newY);
+
+	texture = _texture;
+
 	int colVX, colVY;
 	in >> colVX >> colVY;
 	colVector = Vector2D(colVX, colVY);

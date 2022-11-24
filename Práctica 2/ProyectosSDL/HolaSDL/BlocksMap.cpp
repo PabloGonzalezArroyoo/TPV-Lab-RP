@@ -85,7 +85,7 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 }
 
 void BlocksMap::loadFromFile(istream in) {
-	ArkanoidObject(in);
+	ArkanoidObject(in); // VER SI LLAMAMOS AL LOADMAP
 }
 
 void BlocksMap::saveToFile(ostream out) {

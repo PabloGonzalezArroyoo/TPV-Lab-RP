@@ -15,8 +15,14 @@ void MovingObject::setPosition(Vector2D _pos, Vector2D _vel) {
 	vel = _vel;
 }
 
-void MovingObject::loadFromFile(istream in) {
-	ArkanoidObject(in);
+void MovingObject::loadFromFile(istream in, Texture* _texture) {
+	in >> w >> h;
+	int newX, newY;
+	in >> newX >> newY;
+	pos = Vector2D(newX, newY);
+
+	texture = _texture;
+
 	int velX, velY;
 	in >> velX >> velY;
 	vel = Vector2D(velX, velY);

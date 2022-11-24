@@ -13,13 +13,14 @@ public:
 
 	ArkanoidObject();
 	ArkanoidObject(Vector2D _pos, uint _width, uint _height, Texture* _texture);
+	// ArkanoidObject(istream in, Texture* _texture);
 	virtual ~ArkanoidObject() {};
 
 	virtual void render();
 
 	virtual void handleEvent(SDL_Event e) {};
 
-	virtual void loadFromFile(istream in);
+	virtual void loadFromFile(istream in, Texture* _texture);
 
 	virtual void saveToFile(ostream out);
 
