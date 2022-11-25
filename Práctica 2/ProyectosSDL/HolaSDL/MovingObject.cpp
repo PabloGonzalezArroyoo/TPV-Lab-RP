@@ -28,7 +28,7 @@ void MovingObject::loadFromFile(istream in, Texture* _texture) {
 	vel = Vector2D(velX, velY);
 }
 
-void MovingObject::saveToFile(ostream out) {
-	ArkanoidObject(out);
+void MovingObject::saveToFile(ostream& out) {
+	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
 	out << vel.getX() << " " << vel.getY() << " ";
 }

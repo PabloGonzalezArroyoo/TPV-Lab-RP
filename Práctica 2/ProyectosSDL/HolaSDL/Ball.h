@@ -15,4 +15,6 @@ public:
 	Ball(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, Game* _game);
 
 	virtual void update();
+
+	void setGameDepend(Game* _game) { game = _game; }
 };

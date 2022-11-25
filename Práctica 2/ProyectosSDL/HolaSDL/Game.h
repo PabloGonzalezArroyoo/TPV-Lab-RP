@@ -8,6 +8,7 @@
 #include "Wall.h"
 #include "checkML.h"
 #include <iostream>
+#include <fstream>
 #include <list>
 
 using namespace std;

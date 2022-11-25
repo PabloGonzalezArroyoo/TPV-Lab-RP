@@ -12,11 +12,13 @@ private:
 public: 
 	Block() { pos = Vector2D(); w = h = 0; color = 1; texture = nullptr; };
 	Block(Vector2D _pos, uint _w, uint _h, uint _color, Texture* _texture);
+	
+	uint getColor() { return color; }
 
 	virtual void render();
 	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
 
 	virtual void loadFromFile(istream in, Texture* _texture);
-	virtual void saveToFile(ostream out);
+	virtual void saveToFile(ostream& out);
 };
 

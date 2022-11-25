@@ -48,7 +48,7 @@ void Block::loadFromFile(istream in, Texture* _texture) {
 	in >> color;
 }
 
-void Block::saveToFile(ostream out) {
-	ArkanoidObject(out);
+void Block::saveToFile(ostream& out) {
+	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
 	out << color << " ";
 }

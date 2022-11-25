@@ -88,7 +88,7 @@ void Game::run() {
 		render();									// Renderizamos
 		if (!gameOver && !win) checkNextLevel();	// Comprobar si se ha pasado de nivel
 	}
-
+	saveToFile();
 	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
 	if (exit) cout << "\nSaliste del juego... bye!" << endl;
 }
@@ -193,4 +193,31 @@ void Game::checkLife() {
 // Muestra en consola la vida actual
 void Game::lifeLeft() {
 	cout << "VIDAS RESTANTES: " << life << endl;	// Escribir en consola
+}
+
+void Game::saveToFile() {
+	ofstream out1, out2;
+	out1.open("saves/saveObjs.txt");
+	out2.open("saves/saveMap.txt");
+
+	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != objects.end(); it++) {
+		if (dynamic_cast<BlocksMap*>(*it))(*it)->saveToFile(out2);
+		else (*it)->saveToFile(out1);
+		out1 << endl;
+	}
+	out1.close();
+	out2.close();
+}
+
+void Game::loadFromFile() {
+	ifstream in1, in2;
+	in1.open("saves/saveObjs.txt");
+	in2.open("saves/saveMap.txt");
+
+	for (int i = 0; i < objects.size(); i++) {
+		if (i == objects.size()-1) 
+	}
+
+	in1.close();
+	in2.close();
 }

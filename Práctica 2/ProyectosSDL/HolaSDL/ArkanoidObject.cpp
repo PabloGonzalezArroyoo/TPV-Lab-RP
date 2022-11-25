@@ -33,6 +33,6 @@ void ArkanoidObject::loadFromFile(istream in, Texture* _texture) {
 	texture = _texture;
 }
 
-void ArkanoidObject::saveToFile(ostream out) {
+void ArkanoidObject::saveToFile(ostream& out) {
 	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
 }

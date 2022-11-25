@@ -25,7 +25,7 @@ void Wall::loadFromFile(istream in, Texture* _texture) {
 	colVector = Vector2D(colVX, colVY);
 }
 
-void Wall::saveToFile(ostream out) {
-	ArkanoidObject(out);
+void Wall::saveToFile(ostream& out) {
+	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
 	out << colVector.getX() << " " << colVector.getY() << " ";
 }

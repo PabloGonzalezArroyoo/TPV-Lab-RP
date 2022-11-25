@@ -17,6 +17,6 @@ public:
 	virtual void update() {};
 
 	virtual void loadFromFile(istream in, Texture* _texture);
-	virtual void saveToFile(ostream out);
+	virtual void saveToFile(ostream& out);
 };
 

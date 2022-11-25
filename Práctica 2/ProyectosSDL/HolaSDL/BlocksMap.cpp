@@ -85,9 +85,16 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 }
 
 void BlocksMap::loadFromFile(istream in) {
-	ArkanoidObject(in); // VER SI LLAMAMOS AL LOADMAP
+	// VER SI LLAMAMOS AL LOADMAP
 }
 
-void BlocksMap::saveToFile(ostream out) {
-	ArkanoidObject(out);
+void BlocksMap::saveToFile(ostream& out) {
+	out << r << " " << c << endl;
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			if (map[i][j] == nullptr) out << 0 << " ";
+			else out << map[i][j]->getColor() << " ";
+		}
+		out << endl;
+	}
 }

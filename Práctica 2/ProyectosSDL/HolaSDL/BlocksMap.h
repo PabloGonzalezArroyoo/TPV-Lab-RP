@@ -14,6 +14,7 @@ private:
 
 public:
 	BlocksMap(uint _w, uint _h, Texture* _texture, string filename);
+	BlocksMap(istream& out, Texture* _texture);
 	~BlocksMap();
 	
 	void loadMap(uint _w, uint _h, Texture* _texture, string filename);
@@ -22,5 +23,5 @@ public:
 	bool collidesB(SDL_Rect rectBall, Vector2D& collisionVector);
 
 	virtual void loadFromFile(istream in);
-	virtual void saveToFile(ostream out);
+	virtual void saveToFile(ostream& out);
 };
