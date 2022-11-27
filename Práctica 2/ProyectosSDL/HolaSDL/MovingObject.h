@@ -13,10 +13,12 @@ public:
 	virtual ~MovingObject() {};
 
 	void setPosition(Vector2D _pos, Vector2D _vel);
+	Vector2D getVelocity() { return vel; }
+	Vector2D getPosition() { return pos; }
 
 	virtual void update() {};
 
-	virtual void loadFromFile(istream in, Texture* _texture);
+	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
 };
 

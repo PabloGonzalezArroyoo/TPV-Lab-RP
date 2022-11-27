@@ -20,7 +20,7 @@ public:
 
 	virtual void handleEvent(SDL_Event e) {};
 
-	virtual void loadFromFile(istream in, Texture* _texture);
+	virtual void loadFromFile(istream& in, Texture* _texture);
 
 	virtual void saveToFile(ostream& out);
 

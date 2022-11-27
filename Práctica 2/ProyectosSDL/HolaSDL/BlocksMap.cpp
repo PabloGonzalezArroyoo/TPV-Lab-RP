@@ -5,21 +5,18 @@
 
 const uint WALL_WIDTH = 15;
 
-BlocksMap::BlocksMap(uint _w, uint _h, Texture* _texture, string filename) {
-	loadMap(_w, _h, _texture, filename);
+BlocksMap::BlocksMap(uint _w, uint _h, Texture* _texture, istream& in) {
+	loadMap(_w, _h, _texture, in);
 }
 
 // Carga un mapa de un archivo
-void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, string filename) {
+void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	h = _h; w = _w;							// Ocupa la mitad superior de la pantalla
 	nBlocks = 0;							// Inicializar nº de bloques a 0
 
 	int aux, cols, rows; 
-	ifstream in;							// Archivo de lectura
-	in.open(filename + ".dat");
-	if (!in.is_open()) throw string("Error: couldn't load map (" + filename + ")"); // Si no se ha encontrado el archivo
 	in >> rows >> cols;						// Leer filas y columnas de la primera linea y guardar el tamaño
-	if (rows <= 0 || cols <= 0) throw string("Error: columns or rows can't be equal or lower to 0 (" + filename + ")"); // Si no se han introducido valores correctos de r y c
+	if (rows <= 0 || cols <= 0) throw string("Error: columns or rows can't be equal or lower to 0"); // Si no se han introducido valores correctos de r y c
 	r = rows; c = cols;
 
 	// Crear el array de arrays dinámico
@@ -42,8 +39,6 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, string filename) {
 			else map[j][k] = nullptr;										// Si no tiene color, no hay bloque
 		}
 	}
-
-	in.close();								// Cerrar archivo
 }
 
 // Destructora - eleminamos punteros y memoria dinámica
@@ -75,7 +70,9 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 		for (int j = 0; j < c; j++) {
 			// Comprobar si hay un bloque y la bola ha colisionado con él
 			if (map[i][j] != nullptr && map[i][j]->collides(rectBall, collisionVector)) {
+				bDestroyed = map[i][j]->getPosition();
 				map[i][j] = nullptr;		// Eliminar el bloque
+				delete(map[i][j]);			// Eliminar el bloque
 				--nBlocks;					// Disminuir el nº de bloques
 				return true;				// Confirmar colisión
 			}
@@ -84,8 +81,8 @@ bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return false;							// Negar colision
 }
 
-void BlocksMap::loadFromFile(istream in) {
-	// VER SI LLAMAMOS AL LOADMAP
+void BlocksMap::loadFromFile(istream& in) {
+	
 }
 
 void BlocksMap::saveToFile(ostream& out) {

@@ -14,6 +14,7 @@ public:
 	Block(Vector2D _pos, uint _w, uint _h, uint _color, Texture* _texture);
 	
 	uint getColor() { return color; }
+	Vector2D getPosition() { return pos; }
 
 	virtual void render();
 	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);

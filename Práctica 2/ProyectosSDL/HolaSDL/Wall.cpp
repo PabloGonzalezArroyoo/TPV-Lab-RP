@@ -12,7 +12,7 @@ bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return SDL_HasIntersection(&rectBall, &getRect());  // Confirmar o negar colisión
 }
 
-void Wall::loadFromFile(istream in, Texture* _texture) {
+void Wall::loadFromFile(istream& in, Texture* _texture) {
 	in >> w >> h;
 	int newX, newY;
 	in >> newX >> newY;

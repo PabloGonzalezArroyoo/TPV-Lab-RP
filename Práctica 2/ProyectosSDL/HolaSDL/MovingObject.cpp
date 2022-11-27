@@ -15,7 +15,7 @@ void MovingObject::setPosition(Vector2D _pos, Vector2D _vel) {
 	vel = _vel;
 }
 
-void MovingObject::loadFromFile(istream in, Texture* _texture) {
+void MovingObject::loadFromFile(istream& in, Texture* _texture) {
 	in >> w >> h;
 	int newX, newY;
 	in >> newX >> newY;

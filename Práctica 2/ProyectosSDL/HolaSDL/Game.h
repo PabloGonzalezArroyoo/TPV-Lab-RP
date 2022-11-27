@@ -6,6 +6,7 @@
 #include "Ball.h"
 #include "BlocksMap.h"
 #include "Wall.h"
+#include "Reward.h"
 #include "checkML.h"
 #include <iostream>
 #include <fstream>
@@ -19,12 +20,12 @@ const uint winWidth = 800;
 const uint winHeight = 600;
 const uint frameRate = 5;
 const uint wallWidth = 15;
-const uint nTextures = 8;
+const uint nTextures = 9;
 const uint nLevels = 3;
 const uint numLifes = 1;
 
 // Enum con el nº de la textura correspondiente dentro del array
-enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner};
+enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards};
 
 // Struct con el nombre y las dimensiones de frames del archivo
 typedef struct {
@@ -41,7 +42,8 @@ const TextureDescription textDescription[nTextures] = {
 	{"../images/paddle2.png", 1, 1},
 	{"../images/side.png", 1, 1},
 	{"../images/topside.png", 1, 1},
-	{"../images/youwin.png", 1, 1}
+	{"../images/youwin.png", 1, 1},
+	{"../images/rewards.png", 10, 8}
 };
 
 class Game {
@@ -54,9 +56,10 @@ private:
 	Paddle* paddle = nullptr;
 	Ball* ball = nullptr;
 	BlocksMap* blockmap = nullptr;
-	 Wall* walls[3];
-	string levels[nLevels];
-	// Reward* reward = nullptr;
+	Wall* walls[3];
+	string levels[nLevels] = { "level01", "level02", "level03" };
+	// { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
+	Reward* reward = nullptr;
 	list<ArkanoidObject*> objects;
 	
 	Texture* textures[nTextures];
@@ -64,22 +67,33 @@ private:
 	int life = numLifes;
 	int currentLevel;
 
+	list<ArkanoidObject*>::iterator itBlocksMap;
+
 public:
+	// Constructora (vacía y a partir de archivo) y destructora
 	Game();
+	Game(string player);
 	~Game();
 
+	// Métodos esenciales
 	void run();
 	void handleEvents();
 	void render();
 	void update();
+
+	// Collides
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
 	bool collidesReward(SDL_Rect rectBall, char type);
-	void createReward();
+	void createReward(Vector2D rPos);
+
+	// Comprobaciones y vidas
 	void checkNextLevel();
 	void checkLife();
 	void lifeLeft();
 
-	void loadFromFile();
-	void saveToFile();
+	// Lectura y escritura de archivos
+	void loadFromFile(string filename);
+	void saveToFile(string filename);
+	void userSaving();
 };
 

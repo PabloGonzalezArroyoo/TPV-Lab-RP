@@ -11,17 +11,18 @@ private:
 	Block*** map;
 	uint r, c;
 	uint nBlocks;
+	Vector2D bDestroyed;
 
 public:
-	BlocksMap(uint _w, uint _h, Texture* _texture, string filename);
-	BlocksMap(istream& out, Texture* _texture);
+	BlocksMap(uint _w, uint _h, Texture* _texture, istream& in);
 	~BlocksMap();
 	
-	void loadMap(uint _w, uint _h, Texture* _texture, string filename);
-	virtual void render();
+	void loadMap(uint _w, uint _h, Texture* _texture, istream& in);
 	int getBlocks();
 	bool collidesB(SDL_Rect rectBall, Vector2D& collisionVector);
+	Vector2D getDestroyedBlock() { return bDestroyed; }
 
-	virtual void loadFromFile(istream in);
+	virtual void render();
+	virtual void loadFromFile(istream& in);
 	virtual void saveToFile(ostream& out);
 };

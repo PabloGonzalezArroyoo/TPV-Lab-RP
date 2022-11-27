@@ -24,7 +24,7 @@ SDL_Rect ArkanoidObject::getRect() {
 	return dest;
 }
 
-void ArkanoidObject::loadFromFile(istream in, Texture* _texture) {
+void ArkanoidObject::loadFromFile(istream& in, Texture* _texture) {
 	in >> w >> h;
 	int newX, newY;
 	in >> newX >> newY;
