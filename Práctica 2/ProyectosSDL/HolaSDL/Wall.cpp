@@ -13,12 +13,7 @@ bool Wall::collidesW(SDL_Rect rectBall, Vector2D& collisionVector) {
 }
 
 void Wall::loadFromFile(istream& in, Texture* _texture) {
-	in >> w >> h;
-	int newX, newY;
-	in >> newX >> newY;
-	pos = Vector2D(newX, newY);
-
-	texture = _texture;
+	ArkanoidObject::loadFromFile(in, _texture);
 
 	int colVX, colVY;
 	in >> colVX >> colVY;
@@ -26,6 +21,6 @@ void Wall::loadFromFile(istream& in, Texture* _texture) {
 }
 
 void Wall::saveToFile(ostream& out) {
-	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
+	ArkanoidObject::saveToFile(out);
 	out << colVector.getX() << " " << colVector.getY() << " ";
 }

@@ -16,19 +16,14 @@ void MovingObject::setPosition(Vector2D _pos, Vector2D _vel) {
 }
 
 void MovingObject::loadFromFile(istream& in, Texture* _texture) {
-	in >> w >> h;
-	int newX, newY;
-	in >> newX >> newY;
-	pos = Vector2D(newX, newY);
+	ArkanoidObject::loadFromFile(in, _texture);
 
-	texture = _texture;
-
-	int velX, velY;
+	double velX, velY;
 	in >> velX >> velY;
 	vel = Vector2D(velX, velY);
 }
 
 void MovingObject::saveToFile(ostream& out) {
-	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
+	ArkanoidObject::saveToFile(out);
 	out << vel.getX() << " " << vel.getY() << " ";
 }

@@ -39,3 +39,14 @@ bool Paddle::collidesP(SDL_Rect rectBall, Vector2D& collisionVector) {
 	}
 	return false;
 }
+
+void Paddle::changeDimensions(bool elongate) {
+	if (elongate) {
+		if (w + 15 > MAX_WIDTH) w = MAX_WIDTH;
+		else w += 15;
+	}
+	else {
+		if (w - 15 < MIN_WIDTH) w = MIN_WIDTH;
+		else w -= 15;
+	}
+}

@@ -84,10 +84,13 @@ public:
 	// Collides
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
 	bool collidesReward(SDL_Rect rectBall, char type);
+
+	//Reward behaviour
 	void createReward(Vector2D rPos);
+	void rewardBehaviour(char type);
 
 	// Comprobaciones y vidas
-	void checkNextLevel();
+	void checkNextLevel(bool rewardAct);
 	void checkLife();
 	void lifeLeft();
 

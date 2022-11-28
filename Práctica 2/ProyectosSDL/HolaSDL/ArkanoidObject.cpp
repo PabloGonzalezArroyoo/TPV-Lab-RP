@@ -26,7 +26,7 @@ SDL_Rect ArkanoidObject::getRect() {
 
 void ArkanoidObject::loadFromFile(istream& in, Texture* _texture) {
 	in >> w >> h;
-	int newX, newY;
+	double newX, newY;
 	in >> newX >> newY;
 	pos = Vector2D(newX, newY);
 

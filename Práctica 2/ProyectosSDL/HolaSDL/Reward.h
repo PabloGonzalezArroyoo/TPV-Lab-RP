@@ -9,16 +9,17 @@ private:
 	uint r, c;
 
 public:
-	Reward() { pos = vel = Vector2D(); w = h = 0; texture = nullptr; game = nullptr; type = ' '; }
+	Reward();
 	Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, Game* _game);
 	~Reward();
 
-	bool collidesR(SDL_Rect rectPaddle);
 	char getType() { return type; };
 	virtual void render();
 	virtual void update();
 
-	// virtual void loadFromFile(istream& in, Texture* _texture);
+	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
+
+	void setGameDepend(Game* _game) { game = _game; }
 };
 

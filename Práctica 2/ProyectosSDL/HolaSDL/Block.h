@@ -19,7 +19,7 @@ public:
 	virtual void render();
 	bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
 
-	virtual void loadFromFile(istream in, Texture* _texture);
-	virtual void saveToFile(ostream& out);
+	//virtual void loadFromFile(istream& in, Texture* _texture);
+	//virtual void saveToFile(ostream& out);
 };
 

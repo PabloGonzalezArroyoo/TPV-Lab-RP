@@ -4,6 +4,7 @@
 #include "MovingObject.h"
 
 typedef unsigned int uint;
+const uint MAX_WIDTH = 200, MIN_WIDTH = 50;
 
 class Paddle : public MovingObject{
 
@@ -14,4 +15,6 @@ public:
 	virtual void update(int dir, uint const& winW, uint const& wallW);
 	virtual void handleEvents(SDL_Event e, uint const& winW, uint const& wallW);
 	bool collidesP(SDL_Rect rectBall, Vector2D& collisionVector);
+
+	void changeDimensions(bool elongate);
 };

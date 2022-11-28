@@ -1,8 +1,10 @@
 #include "Reward.h"
 #include "Game.h"
 
-const int WIN_HEIGHT = 800;
-const int PADDLE_AREA = WIN_HEIGHT - 30;
+const int WIN_HEIGHT = 600;
+const int PADDLE_AREA = WIN_HEIGHT - 40;
+
+Reward::Reward() : MovingObject(), r(0), c(0) , game(nullptr), type(' ') {}
 
 Reward::Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, Game* _game) :
 	MovingObject(_pos, _w, _h, _texture, _vel), type(_type), game(_game) {
@@ -26,14 +28,18 @@ void Reward::render() {
 }
 
 void Reward::update() {
-	if (pos.getY() >= WIN_HEIGHT) game->collidesReward( getRect(), type); // te mueres
-	// else if (PADDLE_AREA <= pos.getY() && game->collidesReward(getRect())); // dar premio
+	if (PADDLE_AREA <= pos.getY()) game->collidesReward(getRect(), type);
 	pos = pos + vel;
 }
 
 void Reward::saveToFile(ostream& out) {
-	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
-	out << vel.getX() << " " << vel.getY() << " ";
-	out << type << " " << r << " " << c;
+	out << '{' << " " << type << " ";
+	MovingObject::saveToFile(out);
+	out << " " << r << " " << c;
 }
 
+void Reward::loadFromFile(istream& in, Texture* _texture) {
+	in >> type;
+	MovingObject::loadFromFile(in, _texture);
+	in >> r >> c;
+}

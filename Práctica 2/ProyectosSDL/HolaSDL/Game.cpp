@@ -112,7 +112,7 @@ void Game::run() {
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 		}
 		render();									// Renderizamos
-		if (!gameOver && !win) checkNextLevel();	// Comprobar si se ha pasado de nivel
+		if (!gameOver && !win) checkNextLevel(false);	// Comprobar si se ha pasado de nivel
 	}
 
 	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
@@ -188,13 +188,19 @@ bool Game::collidesReward(SDL_Rect rectReward, char type) {
 		objects.pop_back();
 		return true;
 	}
+	else if (SDL_HasIntersection(&rectReward, &(paddle->getRect()))) {
+		rewardBehaviour(type);
+		reward->~Reward();
+		reward = nullptr;
+		objects.pop_back();
+		return true;
+	}
 	return false;
-	//else if() Colision con pala
 }
 
 // Crear reward en base a posibilidades
 void Game::createReward(Vector2D rPos) {
-	int random = 0 + (rand() % 80);					// Número aleatorio en un rango
+	int random = 0 + (rand() % 40);					// Número aleatorio en un rango
 	char type = 'x';
 
 	// Asignar tipo
@@ -204,7 +210,6 @@ void Game::createReward(Vector2D rPos) {
 		case 30: type = 'E'; break;
 		case 40: type = 'S'; break;
 	}
-	cout << "TIPO: " << type << " VALOR: " << random << endl;
 
 	if (type != 'x') {
 		reward = new Reward(rPos, 35, 20, textures[Rewards], Vector2D(0, 1), type, this);
@@ -212,9 +217,18 @@ void Game::createReward(Vector2D rPos) {
 	}
 }
 
+void Game::rewardBehaviour(char type){
+	switch (type) {
+		case 'L': checkNextLevel(true); break;
+		case 'R': ++life; lifeLeft(); break;
+		case 'E': paddle->changeDimensions(true); break;
+		case 'S': paddle->changeDimensions(false); break;
+	}
+}
+
 // Comprobar si se ha pasado de nivel
-void Game::checkNextLevel() {
-	if (blockmap->getBlocks() == 0) {														// Si no hay bloques
+void Game::checkNextLevel(bool rewardAct) {
+	if (blockmap->getBlocks() == 0 || rewardAct) {														// Si no hay bloques
 		++currentLevel;																		// Actualizamos el nivel en el que estamos
 
 		if (currentLevel >= nLevels) win = true;											// Si es el último nivel el jugador ha ganado
@@ -259,7 +273,7 @@ void Game::saveToFile(string filename) {
 		(*it)->saveToFile(out1); out1 << endl;
 	}
 
-	out1 << currentLevel;
+	out1 << "L " << currentLevel;
 
 	out1.close();
 }
@@ -275,7 +289,7 @@ void Game::userSaving() {
 
 	// Pedir info de usuario
 	string codUser = "";
-	cout << "Introduce tu código de usuario (0X): ";
+	cout << "Introduce tu codigo de usuario (0X): ";
 	cin >> codUser;
 	saveToFile(codUser);
 
@@ -285,23 +299,33 @@ void Game::userSaving() {
 
 // Cargar de archivo
 void Game::loadFromFile(string filename) {
-	ifstream in1;
-	in1.open("saves/" + filename + ".txt");
-	if (!in1.is_open()) throw string("Error: couldn't load file (" + filename + ")"); // Si no se ha encontrado el archivo
+	ifstream in;
+	in.open("saves/" + filename + ".txt");
+	if (!in.is_open()) throw string("Error: couldn't load file (" + filename + ")"); // Si no se ha encontrado el archivo
 	
-	walls[0] = new Wall(); walls[0]->loadFromFile(in1, textures[SideWall]); objects.push_back(walls[0]);
-	walls[1] = new Wall(); walls[1]->loadFromFile(in1, textures[SideWall]); objects.push_back(walls[1]);
-	walls[2] = new Wall(); walls[2]->loadFromFile(in1, textures[TopWall]); objects.push_back(walls[2]);
+	walls[0] = new Wall(); walls[0]->loadFromFile(in, textures[SideWall]); objects.push_back(walls[0]);
+	walls[1] = new Wall(); walls[1]->loadFromFile(in, textures[SideWall]); objects.push_back(walls[1]);
+	walls[2] = new Wall(); walls[2]->loadFromFile(in, textures[TopWall]); objects.push_back(walls[2]);
 
-	ball = new Ball(); ball->loadFromFile(in1, textures[BallTxt]);
+	ball = new Ball(); ball->loadFromFile(in, textures[BallTxt]);
 	ball->setGameDepend(this); objects.push_back(ball);
 
-	paddle = new Paddle(); paddle->loadFromFile(in1, textures[PaddleTxt]); objects.push_back(paddle);
+	paddle = new Paddle(); paddle->loadFromFile(in, textures[PaddleTxt]); objects.push_back(paddle);
 
-	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], in1);
+	blockmap = new BlocksMap(winWidth - 2 * wallWidth, winHeight / 2 - wallWidth, textures[Blocks], in);
 	objects.push_back(blockmap); itBlocksMap = --(objects.end());
 
-	in1 >> currentLevel;
+	char rExists = ' ';
+	in >> rExists;
+	if (rExists == '{') {
+		reward = new Reward(); 
+		reward->loadFromFile(in, textures[Rewards]);
+		reward->setGameDepend(this);
+		objects.push_back(reward);
 
-	in1.close();
+	}
+
+	in >> currentLevel;
+
+	in.close();
 }
