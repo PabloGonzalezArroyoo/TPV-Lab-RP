@@ -41,7 +41,7 @@ void Reward::update() {
 
 // Guardar en archivo
 void Reward::saveToFile(ostream& out) {
-	out << '{' << " " << type << " ";
+	out << type << " ";
 	MovingObject::saveToFile(out);
 	out << " " << r << " " << c;
 }

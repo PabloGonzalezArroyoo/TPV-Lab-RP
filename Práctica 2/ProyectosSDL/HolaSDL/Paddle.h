@@ -7,14 +7,15 @@ typedef unsigned int uint;
 const uint MAX_WIDTH = 200, MIN_WIDTH = 50;
 
 class Paddle : public MovingObject{
-
+private:
+	int dir;
 public:
-	Paddle() { pos = vel = Vector2D(); w = h = 0; texture = nullptr; };
+	Paddle() { pos = vel = Vector2D(); w = h = 0; texture = nullptr; dir = 0; };
 	Paddle(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel);
 
-	virtual void update(int dir, uint const& winW, uint const& wallW);
-	virtual void handleEvents(SDL_Event e, uint const& winW, uint const& wallW);
-	bool collidesP(SDL_Rect rectBall, Vector2D& collisionVector);
+	virtual void update();
+	virtual void handleEvent(SDL_Event e);
+	virtual bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
 
 	void changeDimensions(bool elongate);
 };

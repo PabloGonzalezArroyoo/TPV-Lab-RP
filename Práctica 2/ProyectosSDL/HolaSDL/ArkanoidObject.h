@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include <iostream>
 
+const uint WIN_WITDH = 800, WIN_HEIGHT = 600, WALL_WIDTH = 15;
+
 class ArkanoidObject : public GameObject
 {
 protected: 
@@ -18,6 +20,7 @@ public:
 	// Métodos esenciales
 	virtual void render();
 	virtual void handleEvent(SDL_Event e) {};
+	virtual bool collides(SDL_Rect rectBall, Vector2D& collisionVector) {};
 
 	// Guardado y lectura de archivo
 	virtual void loadFromFile(istream& in, Texture* _texture);

@@ -19,7 +19,7 @@ public:
 	
 	void loadMap(uint _w, uint _h, Texture* _texture, istream& in);
 	int getBlocks();
-	bool collidesB(SDL_Rect rectBall, Vector2D& collisionVector);
+	virtual bool collides(SDL_Rect rectBall, Vector2D& collisionVector);
 	Vector2D getDestroyedBlock() { return bDestroyed; }
 
 	virtual void render();

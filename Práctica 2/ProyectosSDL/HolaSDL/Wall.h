@@ -15,7 +15,7 @@ public:
 	Wall(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _colVector);
 
 	// Colisiones
-	bool collidesW(SDL_Rect rectBall, Vector2D& colV);
+	virtual bool collides(SDL_Rect rectBall, Vector2D& colV);
 	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
 };

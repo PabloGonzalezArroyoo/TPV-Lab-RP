@@ -21,76 +21,32 @@ Game::Game() {
 	}
 
 	// Poner el nivel actual a 0 y las vidas a su constante
-	currentLevel = 0;
-	life = NUM_LIFES;
+	currentLevel = 0; life = NUM_LIFES;
 	
-	// Creamos paredes (punteros)
-	walls[0] = new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, textures[SideWall], Vector2D(1, 0));
-	walls[1] = new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, textures[SideWall], Vector2D(-1, 0));
-	walls[2] = new Wall(Vector2D(0, 0), WIN_WIDTH, WALL_WIDTH, textures[TopWall], Vector2D(0, 1));
-	objects.push_back(walls[0]);
-	objects.push_back(walls[1]);
-	objects.push_back(walls[2]);
-
-	// Creamos un puntero a la bola
-	ball = new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, textures[BallTxt], Vector2D(1, -1), this);
-	objects.push_back(ball);
-
-	// Creamos un puntero al paddle
-	paddle = new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), 100, 10, textures[PaddleTxt], Vector2D(0, 0));
-	objects.push_back(paddle);
-	
-	// Creamos el mapas de bloques
+	//Añadimos el mapa de bloques
 	ifstream in;
 	in.open(levels[currentLevel] + ".dat");
 	if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
-	blockmap = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in);
+	objects.push_back(new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in));
 	in.close();
-	objects.push_back(blockmap);
+
+	//Añadimos las paredes
+	objects.push_back(new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, textures[SideWall], Vector2D(1, 0)));
+	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, textures[SideWall], Vector2D(-1, 0)));
+	objects.push_back(new Wall(Vector2D(0, 0), WIN_WIDTH, WALL_WIDTH, textures[TopWall], Vector2D(0, 1)));
+
+	//Añadimos la plataforma
+	objects.push_back(new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), 100, 10, textures[PaddleTxt], Vector2D(0, 0)));
+
+	//Añadimos la pelota
+	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, textures[BallTxt], Vector2D(1, -1), this));
 	
 	// Iteradores
-	itBlocksMap = --(objects.end());
-}
-
-// Constructora a partir de archivo
-Game::Game(string player) {
-	// Inicialización de la ventana
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("ARKANOID", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGTH, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr) throw string("Error cargando SDL");
-
-	// Variables de flujo
-	gameOver = win = exit = false;
-
-	// Para cargar texturas
-	for (int i = 0; i < NUM_TEXTURES; i++) {
-		const TextureDescription& desc = textDescription[i];
-		textures[i] = new Texture(renderer, desc.filename, desc.hframes, desc.vframes);
-	}
-
-	// Cargar archivo
-	loadFromFile(player);
+	itBall = --(objects.end());
 }
 
 // Destructora
 Game::~Game() {
-	/*
-	// Borrar Walss
-	for (int i = 0; i < 3; i++) delete(walls[i]);
-
-	// Borrar Paddle
-	delete(paddle);
-	
-	// Borrar Ball
-	delete(ball);
-
-	// Borrar BlocksMap
-	delete(blockmap);
-
-	// Borrar Reward
-	delete(reward);*/
 
 	// Borrar Texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
@@ -131,7 +87,7 @@ void Game::handleEvents() {
 	SDL_Event event;											// Creamos un evento
 	while (SDL_PollEvent(&event)) {								// Mientras haya un evento en espera
 		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;	// Si el jugador ha pulsado ESCAPE, se cierra el juego
-		else paddle->handleEvents(event, WIN_WIDTH, WALL_WIDTH);// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
+		else (*(itBall--))->handleEvent(event);// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 		
 		if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
 	}
@@ -158,31 +114,34 @@ void Game::render() {
 // Actualizar entidades
 void Game::update() {
 	// Ball
-	ball->update();
+	(*itBall)->update();
 
-	if (reward != nullptr) reward->update();
+	for (list<ArkanoidObject*>::iterator it = ++itBall; it != objects.end(); it++) {
+		(*it)->update();
+	}
 }
 
 // Comprobar colisiones del Ball
 bool Game::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
-	// Ball - Walls
-	for (int i = 0; i < 3; i++) if (walls[i]->collidesW(rectBall, colV)) return true;
-
+	
 	// Ball - DeadLine
 	if (rectBall.y >= WIN_HEIGTH - 10) { checkLife(); return true; }
 
-	// Ball - Paddle // (RATIO, -2.5) -> Colisión con la paddle
-	if (ball->getVelocity().getY() > 0) {										// Si la pelota estaba bajando
-		if (paddle->collidesP(rectBall, colV)) return true;
+	list<ArkanoidObject*>::iterator it = objects.begin();
+	
+	if (rectBall.y <= WIN_HEIGHT / 2) {
+		if ((*it)->collides(rectBall, colV)) { BlocksMap* myBm = dynamic_cast<BlocksMap*> (*it); createReward(myBm->getDestroyedBlock()); return true; }
 	}
 
-	// Ball - Blocks
-	if (ball->getPosition().getY() <= WIN_HEIGTH / 2) {							// Si está por la zona del mapa
-		if (blockmap->collidesB(rectBall, colV)) {
-			if (reward == nullptr) createReward(blockmap->getDestroyedBlock()); // Crear reward si no existía de antes
-			return true;
-		}
+	++it;
+	for (int i = 0; i < 3; ++i) {
+		if ((*it)->collides(rectBall, colV)) return true;
+		else ++it;
 	}
+
+	Ball* myBall = dynamic_cast<Ball*> (* itBall);
+	if (rectBall.y > WIN_HEIGHT - 50 && myBall->getVelocity().getY() > 0) if ((*it)->collides(rectBall, colV)) return true;
+
 	return false;
 }
 
@@ -198,7 +157,7 @@ bool Game::collidesReward(SDL_Rect rectReward, char type) {
 		// Confirmar colisión
 		return true;
 	}
-	else if (SDL_HasIntersection(&rectReward, &(paddle->getRect()))) {	// Si colisiona con la pala
+	else if (SDL_HasIntersection(&rectReward, &((--(*itBall))->getRect()))) {	// Si colisiona con la pala
 		// Comportamiento
 		rewardBehaviour(type);
 
@@ -230,38 +189,40 @@ void Game::createReward(Vector2D rPos) {
 
 	// Si no es de tipo vacío, instanciarlo y añadirlo a la lista
 	if (type != 'x') {
-		reward = new Reward(rPos, 35, 20, textures[Rewards], Vector2D(0, 1), type, this);
-		objects.push_back(reward);
+		objects.push_back(new Reward(rPos, 35, 20, textures[Rewards], Vector2D(0, 1), type, this));
 	}
 }
 
 // Llama al comportamiento correspondiente al reward recibido
 void Game::rewardBehaviour(char type){
+	Paddle* myPaddle = dynamic_cast<Paddle*> (--(*itBall));
 	switch (type) {
 		case 'L': checkNextLevel(true); break;
 		case 'R': ++life; lifeLeft(); break;
-		case 'E': paddle->changeDimensions(true); break;
-		case 'S': paddle->changeDimensions(false); break;
+		case 'E': myPaddle->changeDimensions(true); break;
+		case 'S': myPaddle->changeDimensions(false); break;
 	}
 }
 
 // Comprobar si se ha pasado de nivel
 void Game::checkNextLevel(bool rewardAct) {
-	if (blockmap->getBlocks() == 0 || rewardAct) {														// Si no hay bloques
+	BlocksMap* myBm = dynamic_cast<BlocksMap*> (* (objects.begin()));
+
+	if (myBm->getBlocks() == 0 || rewardAct) {														// Si no hay bloques
 		++currentLevel;																		// Actualizamos el nivel en el que estamos
 
 		if (currentLevel >= NUM_LEVELS) win = true;											// Si es el último nivel el jugador ha ganado
 		else {																				// Si no es el último nivel
-			blockmap->~BlocksMap();															// Eliminamos el mapa que acabamos de superar
+			myBm->~BlocksMap();															// Eliminamos el mapa que acabamos de superar
 			ifstream in;
 			in.open(levels[currentLevel] + ".dat");
 			if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
-			blockmap = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in); // Creamos el nuevo mapa (el siguiente)
+			myBm = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in); // Creamos el nuevo mapa (el siguiente)
 			in.close();
-			*itBlocksMap = blockmap;
+			objects.pop_front();
+			objects.push_front(myBm);
 
-			ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-			paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+			reloadItems();
 			SDL_Delay(1500);																// Al cambiar de nivel tardamos en actualizar la pantalla
 		}
 	}
@@ -272,8 +233,7 @@ void Game::checkLife() {
 	--life;											// Decrementamos la vida							
 	if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
 	else {											// Si quedan, resetear la posición inicial la pala y la pelota
-		ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-		paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del j
+		reloadItems();
 	}
 	lifeLeft();										// Mostrar info en la consola
 }
@@ -290,20 +250,41 @@ void Game::lifeLeft() {
 	cout << "VIDAS RESTANTES: " << life << endl;	// Escribir en consola
 }
 
+void Game::reloadItems() {
+
+	for (list<ArkanoidObject*>::iterator it = --objects.end(); it != itBall; --it) {
+		
+		delete(*it);
+		objects.pop_back();
+	}
+
+	Ball* myBall = dynamic_cast<Ball*> (*itBall);
+	Paddle* myPaddle = dynamic_cast<Paddle*> (--(*itBall));
+	myBall->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+	myPaddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+}
+
 // Guardar en arhivo
 void Game::saveToFile(string filename) {
 	ofstream out;
 	out.open("saves/" + filename + ".txt");
 
+	// Guardar nivel actual y vida
+	out << currentLevel << " " << life << endl;
+
 	// Guardar objetos de la lista de objetos
-	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != objects.end(); it++) {
+	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != ++itBall; it++) {
 		(*it)->saveToFile(out); out << endl;
 	}
 
-	// Guardar nivel actual y vida
-	out << "L " << currentLevel << endl;	// 'L' usado para determinar si existe o no un reward en la lectura
-	out << life;
-
+	if (objects.size() > 5)
+	{
+		out << (objects.size() - 5);
+		for (list<ArkanoidObject*>::iterator it = ++itBall; it != objects.end(); it++) {
+			(*it)->saveToFile(out); out << endl;
+		}
+	}
+	
 	out.close();
 }
 
@@ -331,34 +312,33 @@ void Game::loadFromFile(string filename) {
 	ifstream in;
 	in.open("saves/" + filename + ".txt");
 	if (!in.is_open()) throw string("Error: couldn't load file (" + filename + ")"); // Si no se ha encontrado el archivo
-	
-	// Paredes
-	walls[0] = new Wall(); walls[0]->loadFromFile(in, textures[SideWall]); objects.push_back(walls[0]);
-	walls[1] = new Wall(); walls[1]->loadFromFile(in, textures[SideWall]); objects.push_back(walls[1]);
-	walls[2] = new Wall(); walls[2]->loadFromFile(in, textures[TopWall]); objects.push_back(walls[2]);
 
-	// Pelota
-	ball = new Ball(); ball->loadFromFile(in, textures[BallTxt]);
-	ball->setGameDepend(this); objects.push_back(ball);
-
-	// Pala
-	paddle = new Paddle(); paddle->loadFromFile(in, textures[PaddleTxt]); objects.push_back(paddle);
-
-	// Mapa de bloques
-	blockmap = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in);
-	objects.push_back(blockmap); itBlocksMap = --(objects.end());
-
-	// Reward si existe
-	char rExists = ' ';
-	in >> rExists;
-	if (rExists == '{') {			// Si existe un carcáter '{' antes de leer los niveles y la vida, es que existe la reward
-		reward = new Reward(); reward->loadFromFile(in, textures[Rewards]);
-		reward->setGameDepend(this); objects.push_back(reward);
-	}
+	objects.clear();
 
 	// Leer nivel actual y vida
 	in >> currentLevel;
 	in >> life;
+
+	BlocksMap* bmAux; Wall* wallAux; Paddle* pAux; Ball* bAux; Reward* rAux;
+
+	bmAux = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in);
+	objects.push_back(bmAux);
+
+	wallAux = new Wall(); wallAux->loadFromFile(in, textures[SideWall]); objects.push_back(wallAux);
+	wallAux = new Wall(); wallAux->loadFromFile(in, textures[SideWall]); objects.push_back(wallAux);
+	wallAux = new Wall(); wallAux->loadFromFile(in, textures[TopWall]); objects.push_back(wallAux);
+
+	pAux = new Paddle(); pAux->loadFromFile(in, textures[PaddleTxt]); objects.push_back(pAux);
+
+	bAux = new Ball(); bAux->loadFromFile(in, textures[BallTxt]);
+	bAux->setGameDepend(this); objects.push_back(bAux);
+	
+	int numRewards = 0;
+	in >> numRewards;
+	for (int i = 0; i < numRewards; ++i) {
+		rAux = new Reward(); rAux->loadFromFile(in, textures[Rewards]);
+		rAux->setGameDepend(this); objects.push_back(rAux);
+	}
 
 	in.close();
 }

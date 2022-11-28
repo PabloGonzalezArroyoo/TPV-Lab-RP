@@ -57,20 +57,13 @@ private:
 
 	// Variables de flujo
 	bool exit, gameOver, win;
-
-	// Punteros a objectos
-	Paddle* paddle = nullptr;
-	Ball* ball = nullptr;
-	BlocksMap* blockmap = nullptr;
-	Wall* walls[3];
-	Reward* reward = nullptr;
 	
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
 
 	// Lista polimórfica
 	list<ArkanoidObject*> objects;
-	list<ArkanoidObject*>::iterator itBlocksMap;
+	list<ArkanoidObject*>::iterator itBall;
 
 	// Niveles
 	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
@@ -83,7 +76,6 @@ private:
 public:
 	// Constructora (vacía y a partir de archivo) y destructora
 	Game();
-	Game(string player);
 	~Game();
 
 	// Métodos esenciales
@@ -96,7 +88,7 @@ public:
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
 	bool collidesReward(SDL_Rect rectBall, char type);
 
-	//Reward behaviour
+	//Comportamiento de las Rewards
 	void createReward(Vector2D rPos);
 	void rewardBehaviour(char type);
 
@@ -104,6 +96,7 @@ public:
 	void checkNextLevel(bool rewardAct);
 	void checkLife();
 	void lifeLeft();
+	void reloadItems();
 
 	// Lectura y escritura de archivos
 	void loadFromFile(string filename);

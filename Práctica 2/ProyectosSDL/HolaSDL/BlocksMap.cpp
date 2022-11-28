@@ -65,7 +65,7 @@ int BlocksMap::getBlocks() {
 }
 
 // Comprobar colisiones
-bool BlocksMap::collidesB(SDL_Rect rectBall, Vector2D& collisionVector) {
+bool BlocksMap::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	for (int i = 0; i < r; i++) {
 		for (int j = 0; j < c; j++) {
 			// Comprobar si hay un bloque y la bola ha colisionado con él
