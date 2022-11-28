@@ -1,8 +1,9 @@
 #pragma once
 #include "ArkanoidObject.h"
 
-const uint winWidth = 800;
-const uint winHeight = 600;
+typedef unsigned int uint;
+const uint winW = 800;
+const uint winH = 600;
 
 class Menu : public ArkanoidObject
 {
@@ -16,10 +17,11 @@ private:
 	SDL_Rect load;
 
 public:
-	Menu(Texture* _texture);
+	Menu();
+	~Menu();
 
 	void run();
-	virtual void handleEvent(SDL_MouseButtonEvent e) {};
+	virtual void handleEvent();
 
 	char setClick(double x, double y);
 	char getType() { return type; };

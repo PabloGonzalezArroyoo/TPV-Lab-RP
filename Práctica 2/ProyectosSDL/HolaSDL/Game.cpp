@@ -54,7 +54,7 @@ Game::Game() {
 Game::Game(string player) {
 	// Inicialización de la ventana
 	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("First test with SDL", SDL_WINDOWPOS_CENTERED,
+	window = SDL_CreateWindow("ARKANOID", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, winWidth, winHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) throw string("Error cargando SDL");
@@ -202,13 +202,13 @@ bool Game::collidesReward(SDL_Rect rectReward, char type) {
 void Game::createReward(Vector2D rPos) {
 	int random = 0 + (rand() % 40);					// Número aleatorio en un rango
 	char type = 'x';
-
+	random %= 8;
 	// Asignar tipo
 	switch (random) {
-		case 10: type = 'L'; break;
-		case 20: type = 'R'; break;
-		case 30: type = 'E'; break;
-		case 40: type = 'S'; break;
+		case 0: type = 'L'; break;
+		case 1: type = 'R'; break;
+		case 2: type = 'E'; break;
+		case 3: type = 'S'; break;
 	}
 
 	if (type != 'x') {
