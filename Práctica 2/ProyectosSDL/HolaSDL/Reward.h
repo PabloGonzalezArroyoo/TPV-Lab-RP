@@ -9,17 +9,21 @@ private:
 	uint r, c;
 
 public:
+	// Constructoras y destructor
 	Reward();
 	Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, Game* _game);
 	~Reward();
 
-	char getType() { return type; };
+	// Métodos esenciales
 	virtual void render();
 	virtual void update();
 
+	// Lectura y guardado
 	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
-
 	void setGameDepend(Game* _game) { game = _game; }
+
+	// Obtener tipo
+	char getType() { return type; };
 };
 

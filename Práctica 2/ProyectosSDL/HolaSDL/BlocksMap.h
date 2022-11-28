@@ -15,7 +15,7 @@ private:
 
 public:
 	BlocksMap(uint _w, uint _h, Texture* _texture, istream& in);
-	~BlocksMap();
+	virtual ~BlocksMap();
 	
 	void loadMap(uint _w, uint _h, Texture* _texture, istream& in);
 	int getBlocks();

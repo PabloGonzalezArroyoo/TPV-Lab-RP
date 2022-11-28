@@ -36,15 +36,3 @@ bool Block::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	}
 	return false;																	// Negar colisión
 }
-/*
-
-void Block::loadFromFile(istream& in, Texture* _texture) {
-	ArkanoidObject::loadFromFile(in, _texture);
-
-	in >> color;
-}
-
-void Block::saveToFile(ostream& out) {
-	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
-	out << color << " ";
-}*/

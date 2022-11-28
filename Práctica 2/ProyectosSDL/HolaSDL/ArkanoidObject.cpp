@@ -1,11 +1,13 @@
 #include "ArkanoidObject.h"
 
+// Constructora vacía
 ArkanoidObject::ArkanoidObject() {
 	pos = Vector2D();
 	w = h = 1;
 	texture = nullptr;
 }
 
+// Constructora
 ArkanoidObject::ArkanoidObject(Vector2D _pos, uint _width, uint _height, Texture* _texture) {
 	pos = _pos;
 	w = _width;
@@ -13,10 +15,12 @@ ArkanoidObject::ArkanoidObject(Vector2D _pos, uint _width, uint _height, Texture
 	texture = _texture;
 }
 
+// Renderizado
 void ArkanoidObject::render() {
 	texture->render(getRect());
 }
 
+// Devuelve el rectángulo de representación del objeto
 SDL_Rect ArkanoidObject::getRect() {
 	SDL_Rect dest;
 	dest.x = (int)pos.getX(); dest.y = (int)pos.getY();
@@ -24,6 +28,7 @@ SDL_Rect ArkanoidObject::getRect() {
 	return dest;
 }
 
+// Cargar de archivo
 void ArkanoidObject::loadFromFile(istream& in, Texture* _texture) {
 	in >> w >> h;
 	double newX, newY;
@@ -33,6 +38,7 @@ void ArkanoidObject::loadFromFile(istream& in, Texture* _texture) {
 	texture = _texture;
 }
 
+// Guardar en archivo
 void ArkanoidObject::saveToFile(ostream& out) {
 	out << w << " " << h << " " << pos.getX() << " " << pos.getY() << " ";
 }

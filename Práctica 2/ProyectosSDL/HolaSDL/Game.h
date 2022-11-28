@@ -11,18 +11,21 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#ifdef _WIN32
+	#include<windows.h>
+#endif
 
 using namespace std;
 typedef unsigned int uint;
 
 // Constantes
-const uint winWidth = 800;
-const uint winHeight = 600;
-const uint frameRate = 5;
-const uint wallWidth = 15;
-const uint nTextures = 9;
-const uint nLevels = 3;
-const uint numLifes = 1;
+const uint WIN_WIDTH = 800;
+const uint WIN_HEIGTH = 600;
+const uint FRAMERATE = 5;
+const uint WALL_WIDTH = 15;
+const uint NUM_TEXTURES = 9;
+const uint NUM_LEVELS = 3;
+const uint NUM_LIFES = 1;
 
 // Enum con el nº de la textura correspondiente dentro del array
 enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards};
@@ -34,7 +37,7 @@ typedef struct {
 } TextureDescription;
 
 // Descripción de las texturas (según la estructura del struct anterior)
-const TextureDescription textDescription[nTextures] = {
+const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"../images/ball2.png", 1, 1},
 	{"../images/bricks2.png", 2, 3},
 	{"../images/digits2.png", 3, 4},
@@ -48,26 +51,34 @@ const TextureDescription textDescription[nTextures] = {
 
 class Game {
 private:
-	// virtual list<ArkanoidObject> gameObjects;
+	// Punteros SDL
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
+
+	// Variables de flujo
 	bool exit, gameOver, win;
 
+	// Punteros a objectos
 	Paddle* paddle = nullptr;
 	Ball* ball = nullptr;
 	BlocksMap* blockmap = nullptr;
 	Wall* walls[3];
-	string levels[nLevels] = { "level01", "level02", "level03" };
-	// { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
 	Reward* reward = nullptr;
-	list<ArkanoidObject*> objects;
 	
-	Texture* textures[nTextures];
+	// Texturas
+	Texture* textures[NUM_TEXTURES];
 
-	int life = numLifes;
-	int currentLevel;
-
+	// Lista polimórfica
+	list<ArkanoidObject*> objects;
 	list<ArkanoidObject*>::iterator itBlocksMap;
+
+	// Niveles
+	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
+	// string levels[LEVELS] = { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
+	int currentLevel;
+	
+	// Vidas
+	int life;
 
 public:
 	// Constructora (vacía y a partir de archivo) y destructora

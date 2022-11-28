@@ -10,20 +10,20 @@ protected:
 	Texture* texture;
 
 public:
-
+	// Constructoras
 	ArkanoidObject();
 	ArkanoidObject(Vector2D _pos, uint _width, uint _height, Texture* _texture);
-	// ArkanoidObject(istream in, Texture* _texture);
 	virtual ~ArkanoidObject() {};
 
+	// Métodos esenciales
 	virtual void render();
-
 	virtual void handleEvent(SDL_Event e) {};
 
+	// Guardado y lectura de archivo
 	virtual void loadFromFile(istream& in, Texture* _texture);
-
 	virtual void saveToFile(ostream& out);
 
+	// Obtener el rectángulo de representación
 	SDL_Rect getRect();
 };
 

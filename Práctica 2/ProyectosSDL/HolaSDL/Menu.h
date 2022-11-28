@@ -17,12 +17,15 @@ private:
 	SDL_Rect load;
 
 public:
+	// Constructora y destructora
 	Menu();
 	~Menu();
 
+	// Métodos esenciales
 	void run();
 	virtual void handleEvent();
 
+	// Porcesar input
 	char setClick(double x, double y);
 	char getType() { return type; };
 };

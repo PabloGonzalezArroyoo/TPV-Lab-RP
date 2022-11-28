@@ -6,7 +6,6 @@
 Ball::Ball(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, Game* _game) :
 	MovingObject(_pos, _w, _h, _texture, _vel), game(_game) {}
 
-
 // Actualiza la velocidad y la posición de la pelota en función de si colisiona o no
 void Ball::update() {
 	Vector2D colVector;
