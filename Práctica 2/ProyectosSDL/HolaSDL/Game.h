@@ -65,6 +65,7 @@ private:
 	// Lista polimórfica
 	list<ArkanoidObject*> objects;
 	list<ArkanoidObject*>::iterator itBall;
+	list<ArkanoidObject*>::iterator itDestroy;
 
 	// Niveles
 	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
@@ -87,11 +88,12 @@ public:
 
 	// Collides
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
-	bool collidesReward(SDL_Rect rectBall, char type, Reward* rew);
+	bool collidesReward(SDL_Rect rectBall);
 
 	//Comportamiento de las Rewards
 	void createReward(Vector2D rPos);
 	void rewardBehaviour(char type);
+	void deleteReward(Reward* reward);
 
 	// Comprobaciones y vidas
 	void checkNextLevel(bool rewardAct);

@@ -34,8 +34,11 @@ void Reward::render() {
 
 // Actualiza la posición del reward de no haber chocado antes con la pala
 void Reward::update() {
-	if (PADDLE_AREA <= pos.getY()) game->collidesReward(getRect(), type, this);
-	pos = pos + vel;
+	if (PADDLE_AREA <= pos.getY() && game->collidesReward(getRect())) {
+		if (pos.getY() < WIN_HEIGHT) game->rewardBehaviour(type);
+		game->deleteReward(this);
+	}
+	else pos = pos + vel;
 }
 
 // Guardar en archivo

@@ -43,6 +43,7 @@ Game::Game() {
 	
 	// Iteradores
 	itBall = prev(objects.end());
+	itDestroy = objects.end();
 
 	//Creamos el menu
 	objects.push_front(new Menu(Vector2D(), WIN_WIDTH, WIN_HEIGTH, textures[MainMenu]));
@@ -133,9 +134,14 @@ void Game::render() {
 // Actualizar entidades
 void Game::update() {
 	// Desde el anterior a ball (pala) hasta el final (contando rewards si existen)
-	for (list<ArkanoidObject*>::iterator it = prev(itBall); it != objects.end(); it++) {
+	for (list<ArkanoidObject*>::iterator it = itBall; it != objects.end(); it++) {
 		(*it)->update();
 	}
+	if (itDestroy != objects.end()) { 
+		objects.erase(itDestroy); 
+		itDestroy = objects.end(); 
+	}
+
 }
 
 // Comprobar colisiones del Ball
@@ -171,33 +177,12 @@ bool Game::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 }
 
 // Comprobar colisiones del Reward
-bool Game::collidesReward(SDL_Rect rectReward, char type, Reward* rew) {
-	if (rectReward.y >= WIN_HEIGTH)										// Si se sale de la pantalla
-	{
-		/*
-		// Borrar
-		reward->~Reward();
-		reward = nullptr;
-		objects.pop_back();
+bool Game::collidesReward(SDL_Rect rectReward) {
+	list<ArkanoidObject*>::iterator itPad = prev(itBall);
+	SDL_Rect my = (*itPad)->getRect();
+	//Si llegas abajo del todo o colisionas con la pala
+	if (rectReward.y >= WIN_HEIGTH || SDL_HasIntersection(&rectReward, &my)) return true;
 
-		
-
-		// Confirmar colisión
-		return true;*/
-	}
-	else if (SDL_HasIntersection(&rectReward, &((prev(*itBall))->getRect()))) {	// Si colisiona con la pala
-		// Comportamiento
-		/*
-		rewardBehaviour(type);
-
-		// Borrar
-		reward->~Reward();
-		reward = nullptr;
-		objects.pop_back();
-
-		// Confirmar colisión
-		return true;*/
-	}
 	return false;														// Negar colisión
 }
 
@@ -224,13 +209,28 @@ void Game::createReward(Vector2D rPos) {
 
 // Llama al comportamiento correspondiente al reward recibido
 void Game::rewardBehaviour(char type){
-	Paddle* myPaddle = dynamic_cast<Paddle*> (prev(*itBall));
+	Paddle* myPaddle = dynamic_cast<Paddle*> (*prev(itBall));
 	switch (type) {
 		case 'L': checkNextLevel(true); break;					// Cambio de nivel
 		case 'R': ++life; lifeLeft(); break;					// +1 de vida
 		case 'E': myPaddle->changeDimensions(true); break;		// Alargar pala
 		case 'S': myPaddle->changeDimensions(false); break;		// Acortar pala
 	}
+}
+
+void Game::deleteReward(Reward* reward) {
+	list<ArkanoidObject*>::iterator it = next(itBall);			// Creamos un iterador que empieza despues de la pelota
+	bool found = false;											// Variable de control de flujo
+	Reward* myRw = nullptr;										// Puntero auxiliar a una reward
+
+	while (it != objects.end() && !found) {						// Mientras que no haya acabado de recorrer la lista y no lo haya encontrado
+		myRw = dynamic_cast<Reward*> (*it);						// Casteamos el iterador a tipo Reward (despues de la pelota solo hay rewards)
+		found = (myRw == reward);								// Marcar si hemos encontrado la reward que queremos eliminar
+		if (!found) it++;													// Avanzamos en la lista
+	}
+
+	itDestroy = it;											// Borramos de la lista la reward encontrada
+	delete(myRw);												// Eliminamos el objeto en la memoria
 }
 
 // Comprobar si se ha pasado de nivel
