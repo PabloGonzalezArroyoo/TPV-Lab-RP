@@ -12,6 +12,7 @@ bool Wall::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return SDL_HasIntersection(&rectBall, &getRect());  // Confirmar o negar colisión
 }
 
+// Cargar de archivo
 void Wall::loadFromFile(istream& in, Texture* _texture) {
 	ArkanoidObject::loadFromFile(in, _texture);
 
@@ -20,6 +21,7 @@ void Wall::loadFromFile(istream& in, Texture* _texture) {
 	colVector = Vector2D(colVX, colVY);
 }
 
+// Guardar en archivo
 void Wall::saveToFile(ostream& out) {
 	ArkanoidObject::saveToFile(out);
 	out << colVector.getX() << " " << colVector.getY() << " ";

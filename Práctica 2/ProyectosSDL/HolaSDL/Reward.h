@@ -5,7 +5,7 @@ class Game; // Para solucionar la dependecia circular
 class Reward : public MovingObject {
 private:
 	Game* game;
-	char type; // n = nextLevel / e = extraLife / c = changePaddleSize
+	char type; // L = nextLevel / R = extraLife / E/S = changePaddleSize
 	uint r, c;
 
 public:

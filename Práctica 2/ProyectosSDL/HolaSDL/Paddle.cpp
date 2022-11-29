@@ -2,7 +2,7 @@
 #include "Paddle.h"
 #include <iostream>
 
-const int movVelocity = 15; // Velocidad de la paddle constante
+const int MOV_VEL= 15; // Velocidad de la paddle constante
 
 // Constructora sobrecargada
 Paddle::Paddle(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel) :
@@ -12,7 +12,7 @@ Paddle::Paddle(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel
 
 // Calcular velocidad según la dirección y aplicar comprobando que no sobrepasa los límites
 void Paddle::update() {
-	vel = Vector2D(dir, 0) * movVelocity;												// Crear vector dirección
+	vel = Vector2D(dir, 0) * MOV_VEL;													// Crear vector dirección
 	if (pos.getX() + vel.getX() > WALL_WIDTH && pos.getX() + vel.getX() < WIN_WITDH - WALL_WIDTH - w) pos = pos + vel; // Comprobar y aplicar
 }
 
@@ -24,7 +24,7 @@ void Paddle::handleEvent(SDL_Event e) {
 
 // Comprobar colision
 bool Paddle::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
-	if (SDL_HasIntersection(&rectBall, &getRect())) {								// Si intersecta
+	if (SDL_HasIntersection(&rectBall, &getRect())) {									// Si intersecta
 		if (rectBall.y <= pos.getY()) {													// Si la pelota choca por encima
 			double ballCenter = (rectBall.x + rectBall.w / 2);							// Calcular el centro de la bola
 			double paddleCenter = pos.getX() + w / 2;
@@ -40,13 +40,14 @@ bool Paddle::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return false;
 }
 
+// Cambio de dimensiones de la pala (usado al recibir las rewards E ó S)
 void Paddle::changeDimensions(bool elongate) {
-	if (elongate) {
-		if (w + 15 > MAX_WIDTH) w = MAX_WIDTH;
+	if (elongate) {									// Alargar
+		if (w + 15 > MAX_WIDTH) w = MAX_WIDTH;		// Comprobar si se supera el máximo, y ajustar a él si se da el caso
 		else w += 15;
 	}
-	else {
-		if (w - 15 < MIN_WIDTH) w = MIN_WIDTH;
+	else {											// Acortar
+		if (w - 15 < MIN_WIDTH) w = MIN_WIDTH;		// Comprobar si se supera el mínimo, y ajustar a él si se da el caso
 		else w -= 15;
 	}
 }

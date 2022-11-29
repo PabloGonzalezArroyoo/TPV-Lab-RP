@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+// Constructora
 BlocksMap::BlocksMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	loadMap(_w, _h, _texture, in);
 }
@@ -79,10 +80,7 @@ bool BlocksMap::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	return false;							// Negar colision
 }
 
-void BlocksMap::loadFromFile(istream& in) {
-	
-}
-
+// Guardar en archivo
 void BlocksMap::saveToFile(ostream& out) {
 	out << r << " " << c << endl;
 	for (int i = 0; i < r; i++) {

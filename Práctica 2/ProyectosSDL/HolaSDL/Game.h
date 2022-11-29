@@ -22,7 +22,7 @@ typedef unsigned int uint;
 // Constantes
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGTH = 600;
-const uint FRAMERATE = 10;
+const uint FRAMERATE = 5;
 const uint NUM_TEXTURES = 10;
 const uint NUM_LEVELS = 3;
 const uint NUM_LIFES = 1;
