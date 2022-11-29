@@ -20,7 +20,7 @@ public:
 	// Métodos esenciales
 	virtual void render();
 	virtual void handleEvent(SDL_Event e) {};
-	virtual bool collides(SDL_Rect rectBall, Vector2D& collisionVector) {};
+	virtual bool collides(SDL_Rect rectBall, Vector2D& collisionVector) { return false; };
 
 	// Guardado y lectura de archivo
 	virtual void loadFromFile(istream& in, Texture* _texture);

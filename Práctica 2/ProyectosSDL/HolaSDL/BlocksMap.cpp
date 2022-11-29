@@ -3,8 +3,6 @@
 #include <iostream>
 #include <fstream>
 
-const uint WALL_WIDTH = 15;
-
 BlocksMap::BlocksMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	loadMap(_w, _h, _texture, in);
 }

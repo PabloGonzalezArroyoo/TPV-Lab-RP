@@ -1,7 +1,6 @@
 #include "Reward.h"
 #include "Game.h"
 
-const int WIN_HEIGHT = 600;
 const int PADDLE_AREA = WIN_HEIGHT - 40;
 
 // Constructora vacía
@@ -35,7 +34,7 @@ void Reward::render() {
 
 // Actualiza la posición del reward de no haber chocado antes con la pala
 void Reward::update() {
-	if (PADDLE_AREA <= pos.getY()) game->collidesReward(getRect(), type);
+	if (PADDLE_AREA <= pos.getY()) game->collidesReward(getRect(), type, this);
 	pos = pos + vel;
 }
 

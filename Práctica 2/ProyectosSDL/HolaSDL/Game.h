@@ -7,6 +7,7 @@
 #include "BlocksMap.h"
 #include "Wall.h"
 #include "Reward.h"
+#include "Menu.h"
 #include "checkML.h"
 #include <iostream>
 #include <fstream>
@@ -21,14 +22,13 @@ typedef unsigned int uint;
 // Constantes
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGTH = 600;
-const uint FRAMERATE = 5;
-const uint WALL_WIDTH = 15;
-const uint NUM_TEXTURES = 9;
+const uint FRAMERATE = 10;
+const uint NUM_TEXTURES = 10;
 const uint NUM_LEVELS = 3;
 const uint NUM_LIFES = 1;
 
 // Enum con el nº de la textura correspondiente dentro del array
-enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards};
+enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards, MainMenu};
 
 // Struct con el nombre y las dimensiones de frames del archivo
 typedef struct {
@@ -46,7 +46,8 @@ const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"../images/side.png", 1, 1},
 	{"../images/topside.png", 1, 1},
 	{"../images/youwin.png", 1, 1},
-	{"../images/rewards.png", 10, 8}
+	{"../images/rewards.png", 10, 8},
+	{"../images/Menu.png", 1, 1}
 };
 
 class Game {
@@ -86,7 +87,7 @@ public:
 
 	// Collides
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
-	bool collidesReward(SDL_Rect rectBall, char type);
+	bool collidesReward(SDL_Rect rectBall, char type, Reward* rew);
 
 	//Comportamiento de las Rewards
 	void createReward(Vector2D rPos);

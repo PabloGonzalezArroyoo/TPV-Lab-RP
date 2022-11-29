@@ -18,8 +18,8 @@ void Paddle::update() {
 
 // Comprobar si se han pulsado teclas que activan un comportamiento en la pala
 void Paddle::handleEvent(SDL_Event e) {
-	if (e.key.keysym.sym == SDLK_d || e.key.keysym.sym == SDLK_RIGHT) { dir = 1;  update(); }		// Si pulsamos "d" o "->", x++
-	else if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_LEFT) { dir = -1; update(); }	// Si pulsados "a" o "<-", x--															// Si no se pulsa nada, se queda quieto
+	if (e.key.keysym.sym == SDLK_d || e.key.keysym.sym == SDLK_RIGHT) { dir = 1;  update(); dir = 0; }		// Si pulsamos "d" o "->", x++
+	else if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_LEFT) { dir = -1; update(); dir = 0; }	// Si pulsados "a" o "<-", x--															// Si no se pulsa nada, se queda quieto
 }
 
 // Comprobar colision

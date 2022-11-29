@@ -42,7 +42,10 @@ Game::Game() {
 	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, textures[BallTxt], Vector2D(1, -1), this));
 	
 	// Iteradores
-	itBall = --(objects.end());
+	itBall = prev(objects.end());
+
+	//Creamos el menu
+	objects.push_front(new Menu(Vector2D(), WIN_WIDTH, WIN_HEIGTH, textures[MainMenu]));
 }
 
 // Destructora
@@ -63,6 +66,24 @@ Game::~Game() {
 
 // Bucle principal del juego
 void Game::run() {
+
+	//Menu
+	Menu* myMenu = dynamic_cast<Menu*> (*objects.begin());
+	myMenu->render();
+	SDL_RenderPresent(renderer);
+	myMenu->run();
+	char answer = myMenu->getType();
+	objects.pop_front();
+	delete(myMenu);
+	SDL_RenderClear(renderer);
+
+	if (answer == 'L') {
+		string playerId = " ";
+		cout << "Introduzca el codigo de la partida: ";
+		cin >> playerId;
+		loadFromFile(playerId);
+	}
+
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
 	lifeLeft();										// Mostrar info en la consola
@@ -87,7 +108,7 @@ void Game::handleEvents() {
 	SDL_Event event;											// Creamos un evento
 	while (SDL_PollEvent(&event)) {								// Mientras haya un evento en espera
 		if (event.key.keysym.sym == SDLK_ESCAPE) exit = true;	// Si el jugador ha pulsado ESCAPE, se cierra el juego
-		else (*(itBall--))->handleEvent(event);// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
+		else (*(prev(itBall)))->handleEvent(event);// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 		
 		if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
 	}
@@ -116,7 +137,7 @@ void Game::update() {
 	// Ball
 	(*itBall)->update();
 
-	for (list<ArkanoidObject*>::iterator it = ++itBall; it != objects.end(); it++) {
+	for (list<ArkanoidObject*>::iterator it = prev(itBall); it != objects.end(); it++) {
 		(*it)->update();
 	}
 }
@@ -146,19 +167,23 @@ bool Game::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 }
 
 // Comprobar colisiones del Reward
-bool Game::collidesReward(SDL_Rect rectReward, char type) {
+bool Game::collidesReward(SDL_Rect rectReward, char type, Reward* rew) {
 	if (rectReward.y >= WIN_HEIGTH)										// Si se sale de la pantalla
 	{
+		/*
 		// Borrar
 		reward->~Reward();
 		reward = nullptr;
 		objects.pop_back();
 
+		
+
 		// Confirmar colisión
-		return true;
+		return true;*/
 	}
-	else if (SDL_HasIntersection(&rectReward, &((--(*itBall))->getRect()))) {	// Si colisiona con la pala
+	else if (SDL_HasIntersection(&rectReward, &((prev(*itBall))->getRect()))) {	// Si colisiona con la pala
 		// Comportamiento
+		/*
 		rewardBehaviour(type);
 
 		// Borrar
@@ -167,7 +192,7 @@ bool Game::collidesReward(SDL_Rect rectReward, char type) {
 		objects.pop_back();
 
 		// Confirmar colisión
-		return true;
+		return true;*/
 	}
 	return false;														// Negar colisión
 }
@@ -195,7 +220,7 @@ void Game::createReward(Vector2D rPos) {
 
 // Llama al comportamiento correspondiente al reward recibido
 void Game::rewardBehaviour(char type){
-	Paddle* myPaddle = dynamic_cast<Paddle*> (--(*itBall));
+	Paddle* myPaddle = dynamic_cast<Paddle*> (prev(*itBall));
 	switch (type) {
 		case 'L': checkNextLevel(true); break;
 		case 'R': ++life; lifeLeft(); break;
@@ -252,14 +277,14 @@ void Game::lifeLeft() {
 
 void Game::reloadItems() {
 
-	for (list<ArkanoidObject*>::iterator it = --objects.end(); it != itBall; --it) {
+	for (list<ArkanoidObject*>::iterator it = prev(objects.end()); it != itBall; --it) {
 		
 		delete(*it);
 		objects.pop_back();
 	}
 
 	Ball* myBall = dynamic_cast<Ball*> (*itBall);
-	Paddle* myPaddle = dynamic_cast<Paddle*> (--(*itBall));
+	Paddle* myPaddle = dynamic_cast<Paddle*> (prev(*itBall));
 	myBall->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
 	myPaddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
 }
@@ -273,14 +298,14 @@ void Game::saveToFile(string filename) {
 	out << currentLevel << " " << life << endl;
 
 	// Guardar objetos de la lista de objetos
-	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != ++itBall; it++) {
+	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != next(itBall); it++) {
 		(*it)->saveToFile(out); out << endl;
 	}
 
 	if (objects.size() > 5)
 	{
-		out << (objects.size() - 5);
-		for (list<ArkanoidObject*>::iterator it = ++itBall; it != objects.end(); it++) {
+		out << (objects.size() - 6) << endl;
+		for (list<ArkanoidObject*>::iterator it = next(itBall); it != objects.end(); it++) {
 			(*it)->saveToFile(out); out << endl;
 		}
 	}
@@ -332,6 +357,7 @@ void Game::loadFromFile(string filename) {
 
 	bAux = new Ball(); bAux->loadFromFile(in, textures[BallTxt]);
 	bAux->setGameDepend(this); objects.push_back(bAux);
+	itBall = prev(objects.end());
 	
 	int numRewards = 0;
 	in >> numRewards;

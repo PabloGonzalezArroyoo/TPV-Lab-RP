@@ -1,17 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu() {
-	// Inicialización de la ventana
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow("MENU", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr) throw string("Error cargando SDL");
+Menu::Menu(Vector2D _pos, uint _w, uint _h, Texture* _texture) : ArkanoidObject(_pos, _w, _h, _texture) {
 
-	// Inicializar tamaño, posición, textura y tipo
-	w = winW; h = winH;
-	pos = Vector2D();
-	texture = new Texture(renderer, "../images/Menu.png", 1, 1);
 	type = ' ';
 
 	// Botones play y load
@@ -23,9 +13,7 @@ Menu::Menu() {
 
 // Destructora
 Menu::~Menu() {
-	delete(texture);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
+	
 }
 
 // Devuelve el carcater correspondiente a si se selecciona una nueva partida ('N'), cargar partida ('L') o ninguno (' ')
@@ -43,15 +31,8 @@ char Menu::setClick(double x, double y) {
 
 // Bucle principal
 void Menu::run() {
-	// Renderizado único
-	render();						
-	SDL_RenderPresent(renderer);
-
 	// Bucle principal
 	while (!exit) handleEvent();
-
-	// Borrar render
-	SDL_RenderClear(renderer);
 }
 
 // Procesar input 

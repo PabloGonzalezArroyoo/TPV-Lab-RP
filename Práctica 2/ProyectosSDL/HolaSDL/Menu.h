@@ -1,15 +1,9 @@
 #pragma once
 #include "ArkanoidObject.h"
 
-typedef unsigned int uint;
-const uint winW = 800;
-const uint winH = 600;
-
 class Menu : public ArkanoidObject
 {
 private:
-	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
 	bool exit = false;
 	char type;
 	Vector2D click;
@@ -18,8 +12,8 @@ private:
 
 public:
 	// Constructora y destructora
-	Menu();
-	~Menu();
+	Menu(Vector2D _pos, uint _w, uint _h, Texture* _texture);
+	virtual ~Menu();
 
 	// Métodos esenciales
 	void run();
