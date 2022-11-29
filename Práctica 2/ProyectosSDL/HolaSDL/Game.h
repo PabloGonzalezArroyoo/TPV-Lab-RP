@@ -12,6 +12,8 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <vector>
+
 #ifdef _WIN32
 	#include<windows.h>
 #endif
@@ -65,7 +67,7 @@ private:
 	// Lista polimórfica
 	list<ArkanoidObject*> objects;
 	list<ArkanoidObject*>::iterator itBall;
-	list<ArkanoidObject*>::iterator itDestroy;
+	vector< list<ArkanoidObject*>::iterator> objToDestroy;
 
 	// Niveles
 	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };

@@ -43,7 +43,6 @@ Game::Game() {
 	
 	// Iteradores
 	itBall = prev(objects.end());
-	itDestroy = objects.end();
 
 	//Creamos el menu
 	objects.push_front(new Menu(Vector2D(), WIN_WIDTH, WIN_HEIGTH, textures[MainMenu]));
@@ -137,11 +136,11 @@ void Game::update() {
 	for (list<ArkanoidObject*>::iterator it = itBall; it != objects.end(); it++) {
 		(*it)->update();
 	}
-	if (itDestroy != objects.end()) { 
-		objects.erase(itDestroy); 
-		itDestroy = objects.end(); 
+	
+	for (int i = 0; i < objToDestroy.size(); i++) {
+		objects.erase(objToDestroy[i]);
 	}
-
+	objToDestroy.clear();
 }
 
 // Comprobar colisiones del Ball
@@ -229,7 +228,8 @@ void Game::deleteReward(Reward* reward) {
 		if (!found) it++;													// Avanzamos en la lista
 	}
 
-	itDestroy = it;											// Borramos de la lista la reward encontrada
+	//itDestroy = it;											// Borramos de la lista la reward encontrada
+	objToDestroy.push_back(it);
 	delete(myRw);												// Eliminamos el objeto en la memoria
 }
 
@@ -283,13 +283,12 @@ void Game::reloadItems() {
 
 	// Borra los items presentes en partida
 	for (list<ArkanoidObject*>::iterator it = prev(objects.end()); it != itBall; --it) {
-		delete(*it);
-		objects.pop_back();
+		objToDestroy.push_back(it);
 	}
 
 	// Poner la bola y la pala en las posiciones y velocidades inciales
 	Ball* myBall = dynamic_cast<Ball*> (*itBall);
-	Paddle* myPaddle = dynamic_cast<Paddle*> (prev(*itBall));
+	Paddle* myPaddle = dynamic_cast<Paddle*> (*prev(itBall));
 	myBall->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
 	myPaddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
 }
