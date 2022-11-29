@@ -9,7 +9,7 @@ Game::Game() {
 	window = SDL_CreateWindow("ARKANOID V2", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGTH, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (window == nullptr || renderer == nullptr) throw string("Error cargando SDL");
+	if (window == nullptr || renderer == nullptr) throw SDLError("Couldn't load screen.");
 
 	// Variables de flujo
 	gameOver = win = exit = false;
@@ -26,7 +26,7 @@ Game::Game() {
 	//Añadimos el mapa de bloques
 	ifstream in;
 	in.open(levels[currentLevel] + ".dat");
-	if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
+	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
 	objects.push_back(new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in));
 	in.close();
 
@@ -55,7 +55,7 @@ Game::~Game() {
 
 	// Borrar lista
 	for (ArkanoidObject* myOb : objects) delete(myOb);
-	objects.~list();
+	// objects.~list();
 
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
@@ -341,7 +341,7 @@ void Game::userSaving() {
 void Game::loadFromFile(string filename) {
 	ifstream in;
 	in.open("saves/" + filename + ".txt");
-	if (!in.is_open()) throw string("Error: couldn't load file (" + filename + ")"); // Si no se ha encontrado el archivo
+	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + filename + ".txt)"); // Si no se ha encontrado el archivo
 
 	// Vaciar la lista anterior
 	objects.clear();

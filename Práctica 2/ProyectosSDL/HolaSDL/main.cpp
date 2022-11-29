@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
 		game->run();
 		delete(game);
 	}
-	catch (ArkanoidError e) {  e.what(); }
+	catch (ArkanoidError e) { cout << "\n" << e.what() << endl; }
 	
 	return 0;
 }

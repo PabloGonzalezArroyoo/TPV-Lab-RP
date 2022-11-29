@@ -9,10 +9,10 @@ public:
 	ArkanoidError(const string& message) : logic_error(message) {};
 };
 
-// SDL_Error
-class SDL_Error : public ArkanoidError {
+// SDLError
+class SDLError : public ArkanoidError {
 public:
-	SDL_Error(const string& message) : ArkanoidError("SDL_ERROR: " + message) {};
+	SDLError(const string& message) : ArkanoidError("SDLError: " + message) {};
 	// SDL GetError, IMG GetError
 };
 

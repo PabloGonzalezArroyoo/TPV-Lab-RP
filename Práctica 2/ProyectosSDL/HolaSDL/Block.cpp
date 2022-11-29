@@ -20,7 +20,7 @@ void Block::render() {
 // Comprobamos colision
 bool Block::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 	SDL_Rect intersection;															// Área de intersección resultante de la pelota y el bloque que colisionan
-	SDL_Rect rectBlock = getRect();												// Rectángulo del bloque
+	SDL_Rect rectBlock = getRect();													// Rectángulo del bloque
 
 	if (SDL_IntersectRect(&rectBall, &rectBlock, &intersection)) {					// Si han colisionado, obtener área de interseccion
 		

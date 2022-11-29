@@ -15,7 +15,8 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 
 	int aux, cols, rows; 
 	in >> rows >> cols;						// Leer filas y columnas de la primera linea y guardar el tamaño
-	if (rows <= 0 || cols <= 0) throw FileFormatError("Columns or rows can't be equal or lower to 0 [(r, c) = (" + rows + cols); // Si no se han introducido valores correctos de r y c
+	if (rows <= 0) throw FileFormatError("Rows can't be equal or lower to 0. Rows were equal to " + rows); // Si no se han introducido valores correctos de r ó c
+	if (cols <= 0) throw FileFormatError("Colums can't be equal or lower to 0. Colums were equal to " + cols);
 	r = rows; c = cols;
 
 	// Crear el array de arrays dinámico
@@ -26,7 +27,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	for (int j = 0; j < r; j++) {
 		for (int k = 0; k < c; k++) {
 			in >> aux;						// Se lee el color
-			// if (aux < 0 || )
+			if (aux < 0 || aux > 5) throw FileFormatError("Colors in file shouldn't be greater than 5 or lower than 0.");
 			if (aux != 0) {					// Si tiene color (distinto de 0), hay un bloque
 				map[j][k] = new Block(
 					Vector2D(k * w / c + WALL_WIDTH, j * h / r + WALL_WIDTH), // Calculamos su posición en pantalla respecto a la posición en el array
@@ -70,15 +71,15 @@ bool BlocksMap::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 		for (int j = 0; j < c; j++) {
 			// Comprobar si hay un bloque y la bola ha colisionado con él
 			if (map[i][j] != nullptr && map[i][j]->collides(rectBall, collisionVector)) {
-				bDestroyed = map[i][j]->getPosition();
-				map[i][j] = nullptr;		// Eliminar el bloque
-				delete(map[i][j]);			// Eliminar el bloque
-				--nBlocks;					// Disminuir el nº de bloques
-				return true;				// Confirmar colisión
+				bDestroyed = map[i][j]->getPosition();		// Devolver posición del bloque destruido
+				map[i][j] = nullptr;						// Eliminar el bloque
+				delete(map[i][j]);							// Eliminar el bloque
+				--nBlocks;									// Disminuir el nº de bloques
+				return true;								// Confirmar colisión
 			}
 		}
 	}
-	return false;							// Negar colision
+	return false;											// Negar colision
 }
 
 // Guardar en archivo
