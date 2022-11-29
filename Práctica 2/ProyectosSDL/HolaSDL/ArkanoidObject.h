@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Exceptions.h"
 #include <iostream>
 
 const uint WIN_WITDH = 800, WIN_HEIGHT = 600, WALL_WIDTH = 15;

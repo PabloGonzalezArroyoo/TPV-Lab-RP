@@ -15,7 +15,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 
 	int aux, cols, rows; 
 	in >> rows >> cols;						// Leer filas y columnas de la primera linea y guardar el tamaño
-	if (rows <= 0 || cols <= 0) throw string("Error: columns or rows can't be equal or lower to 0"); // Si no se han introducido valores correctos de r y c
+	if (rows <= 0 || cols <= 0) throw FileFormatError("Columns or rows can't be equal or lower to 0 [(r, c) = (" + rows + cols); // Si no se han introducido valores correctos de r y c
 	r = rows; c = cols;
 
 	// Crear el array de arrays dinámico
@@ -26,6 +26,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	for (int j = 0; j < r; j++) {
 		for (int k = 0; k < c; k++) {
 			in >> aux;						// Se lee el color
+			// if (aux < 0 || )
 			if (aux != 0) {					// Si tiene color (distinto de 0), hay un bloque
 				map[j][k] = new Block(
 					Vector2D(k * w / c + WALL_WIDTH, j * h / r + WALL_WIDTH), // Calculamos su posición en pantalla respecto a la posición en el array

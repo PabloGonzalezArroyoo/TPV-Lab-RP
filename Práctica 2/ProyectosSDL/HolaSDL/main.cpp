@@ -4,7 +4,9 @@
 #include "Game.h"
 #include "Menu.h"
 #include "checkML.h"
+#include "ArkanoidError.h"
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -13,11 +15,12 @@ int main(int argc, char* argv[]){
 	
 	// Juego
 	try {
+		srand(time(NULL));
 		Game* game = new Game();
 		game->run();
 		delete(game);
 	}
-	catch (string e) { cout << e << endl; }
+	catch (ArkanoidError e) {  e.what(); }
 	
 	return 0;
 }
