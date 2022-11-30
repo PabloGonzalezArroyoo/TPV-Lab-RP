@@ -70,8 +70,8 @@ private:
 	vector< list<ArkanoidObject*>::iterator> objToDestroy;
 
 	// Niveles
-	//string levels[NUM_LEVELS] = { "level01", "level02", "level03" cambioLvl};
-	string levels[NUM_LEVELS] = { "cambioLvl", "cambioLvl", "level03" }; // -> Para llegar a la pantalla de victoria
+	string levels[NUM_LEVELS] = { "level01", "level02", "level03"};
+	//string levels[NUM_LEVELS] = { "cambioLvl", "level02", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
 	int currentLevel;
 	
 	// Vidas

@@ -21,7 +21,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 
 	// Crear el array de arrays dinámico
 	map = new Block**[r];					// Creamos las filas (array dentro de map***)	
-	for (int i = 0; i < c; i++) map[i] = new Block*[c]; // Creamos las columnas (array dentro de las Block**[rows])
+	for (int i = 0; i < r; i++) map[i] = new Block*[c]; // Creamos las columnas (array dentro de las Block**[rows])
 	
 	// Recorremos el array bidimensional creando bloques y asignándolos a cada celda
 	for (int j = 0; j < r; j++) {
@@ -35,7 +35,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 					h / r,													// Hacemos que el alto del bloque sea proporcional al alto del mapa
 					aux,													// Le pasamos su color
 					_texture);												// Le pasamos el puntero a su textura
-				nBlocks++;					// Aumentar contador de bloques
+				nBlocks++;													// Aumentar contador de bloques
 			}
 			else map[j][k] = nullptr;										// Si no tiene color, no hay bloque
 		}
@@ -44,13 +44,14 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 
 // Destructora - eleminamos punteros y memoria dinámica
 BlocksMap::~BlocksMap() {
+
 	for (int i = 0; i < r; i++) {
 		for (int j = 0; j < c; j++) {
 			delete(map[i][j]);				// Borramos cada puntero de la matriz
 		}
 		delete[] map[i];					// Borramos los arrays de cada columna
 	}
-	//delete[] map;							// Borramos el array de filas
+	delete[] map;							// Borramos el array de filas
 }
 
 // Llamamos al render de cada bloque dentro del mapa
@@ -72,8 +73,8 @@ bool BlocksMap::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 			// Comprobar si hay un bloque y la bola ha colisionado con él
 			if (map[i][j] != nullptr && map[i][j]->collides(rectBall, collisionVector)) {
 				bDestroyed = map[i][j]->getPosition();		// Devolver posición del bloque destruido
-				map[i][j] = nullptr;						// Eliminar el bloque
 				delete(map[i][j]);							// Eliminar el bloque
+				map[i][j] = nullptr;						// Eliminar el bloque
 				--nBlocks;									// Disminuir el nº de bloques
 				return true;								// Confirmar colisión
 			}

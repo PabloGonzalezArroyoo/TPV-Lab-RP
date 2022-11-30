@@ -81,6 +81,7 @@ void Game::run() {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
 	lifeLeft();										// Mostrar info en la consola
+	SDL_Delay(1500);
 	while (!exit && !gameOver && !win) {
 		handleEvents();								// Manejamos los eventos que puedan ocurrir
 		
@@ -241,16 +242,18 @@ void Game::checkNextLevel(bool rewardAct) {
 
 		if (currentLevel >= NUM_LEVELS) win = true;											// Si es el último nivel el jugador ha ganado
 		else {																				// Si no es el último nivel
-			myBm->~BlocksMap();																// Eliminamos el mapa que acabamos de superar
+
+			reloadItems();
 			ifstream in;
 			in.open(levels[currentLevel] + ".dat");
 			if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
 			myBm = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in); // Creamos el nuevo mapa (el siguiente)
 			in.close();
+			BlocksMap* oldBM = dynamic_cast<BlocksMap*> (*objects.begin());
 			objects.pop_front();
+			delete(oldBM);																	// Eliminamos el mapa que acabamos de superar
 			objects.push_front(myBm);
-
-			reloadItems();																	// Volver los items a su posición inicial
+																// Volver los items a su posición inicial
 			SDL_Delay(1500);																// Al cambiar de nivel tardamos en actualizar la pantalla
 		}
 	}
@@ -280,7 +283,7 @@ void Game::lifeLeft() {
 // Vuelve los items a su estado inicial (p.ej: cuando se pierde una vida)
 void Game::reloadItems() {
 
-	// Borra los items presentes en partida
+	// Borra los rewards presentes en partida
 	for (list<ArkanoidObject*>::iterator it = prev(objects.end()); it != itBall; --it) {
 		objToDestroy.push_back(it);
 	}
@@ -342,7 +345,8 @@ void Game::loadFromFile(string filename) {
 	in.open("saves/" + filename + ".txt");
 	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + filename + ".txt)"); // Si no se ha encontrado el archivo
 
-	// Vaciar la lista anterior
+	// Borrar lista anterior (objetos predeterminados)
+	for (ArkanoidObject* myOb : objects) delete(myOb);
 	objects.clear();
 
 	// Leer nivel actual y vida

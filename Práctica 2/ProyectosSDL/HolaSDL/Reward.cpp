@@ -37,6 +37,7 @@ void Reward::update() {
 	if (PADDLE_AREA <= pos.getY() && game->collidesReward(getRect())) {
 		if (pos.getY() < WIN_HEIGHT) game->rewardBehaviour(type);
 		if (type != 'L') game->deleteReward(this);
+		//game->deleteReward(this);
 	}
 	else pos = pos + vel;
 }
