@@ -27,7 +27,7 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 	for (int j = 0; j < r; j++) {
 		for (int k = 0; k < c; k++) {
 			in >> aux;						// Se lee el color
-			if (aux < 0 || aux > 5) throw FileFormatError("Colors in file shouldn't be greater than 5 or lower than 0.");
+			if (aux < 0 || aux > 6) throw FileFormatError("Colors in file shouldn't be greater than 6 or lower than 0.");
 			if (aux != 0) {					// Si tiene color (distinto de 0), hay un bloque
 				map[j][k] = new Block(
 					Vector2D(k * w / c + WALL_WIDTH, j * h / r + WALL_WIDTH), // Calculamos su posición en pantalla respecto a la posición en el array
@@ -50,7 +50,7 @@ BlocksMap::~BlocksMap() {
 		}
 		delete[] map[i];					// Borramos los arrays de cada columna
 	}
-	delete[] map;							// Borramos el array de filas
+	//delete[] map;							// Borramos el array de filas
 }
 
 // Llamamos al render de cada bloque dentro del mapa

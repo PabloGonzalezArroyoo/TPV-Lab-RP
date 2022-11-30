@@ -55,7 +55,6 @@ Game::~Game() {
 
 	// Borrar lista
 	for (ArkanoidObject* myOb : objects) delete(myOb);
-	// objects.~list();
 
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
