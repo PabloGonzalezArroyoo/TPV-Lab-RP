@@ -30,14 +30,14 @@ void BlocksMap::loadMap(uint _w, uint _h, Texture* _texture, istream& in) {
 			if (aux < 0 || aux > 6) throw FileFormatError("Colors in file shouldn't be greater than 6 or lower than 0.");
 			if (aux != 0) {					// Si tiene color (distinto de 0), hay un bloque
 				map[j][k] = new Block(
-					Vector2D(k * w / c + WALL_WIDTH, j * h / r + WALL_WIDTH), // Calculamos su posición en pantalla respecto a la posición en el array
-					w / c,													// Hacemos que el ancho del bloque sea proporcional al ancho del mapa
-					h / r,													// Hacemos que el alto del bloque sea proporcional al alto del mapa
-					aux,													// Le pasamos su color
-					_texture);												// Le pasamos el puntero a su textura
-				nBlocks++;													// Aumentar contador de bloques
+					Vector2D(k * w / c + WALL_WIDTH, j * h / r + WALL_WIDTH),	// Calculamos su posición en pantalla respecto a la posición en el array
+					w / c,														// Hacemos que el ancho del bloque sea proporcional al ancho del mapa
+					h / r,														// Hacemos que el alto del bloque sea proporcional al alto del mapa
+					aux,														// Le pasamos su color
+					_texture);													// Le pasamos el puntero a su textura
+				nBlocks++;														// Aumentar contador de bloques
 			}
-			else map[j][k] = nullptr;										// Si no tiene color, no hay bloque
+			else map[j][k] = nullptr;											// Si no tiene color, no hay bloque
 		}
 	}
 }
