@@ -1,14 +1,14 @@
 #pragma once
-#include "ArkanoidObject.h"
+#include "GameObject.h"
+#include "Button.h"
+#include <list>
 
-class Menu : public ArkanoidObject
+class Menu : public GameObject
 {
 private:
 	bool exit = false;
-	char type;
-	Vector2D click;
-	SDL_Rect play;
-	SDL_Rect load;
+	char type; // { P = Pause, F = Final, M = Main menu }
+	list<Button*> buttons;
 
 public:
 	// Constructora y destructora
