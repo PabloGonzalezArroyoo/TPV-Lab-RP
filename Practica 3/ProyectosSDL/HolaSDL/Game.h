@@ -1,4 +1,4 @@
-// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
+// Práctica 3: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
@@ -107,5 +107,7 @@ public:
 	void loadFromFile(string filename);
 	void saveToFile(string filename);
 	void userSaving();
+
+	Texture* getTexture(int texture);
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Button.h"
+#include "MenuButton.h"
 #include <list>
 
 class Menu : public GameObject
@@ -8,7 +8,7 @@ class Menu : public GameObject
 private:
 	bool exit = false;
 	char type; // { P = Pause, F = Final, M = Main menu }
-	list<Button*> buttons;
+	list<MenuButton*> buttons;
 
 public:
 	// Constructora y destructora

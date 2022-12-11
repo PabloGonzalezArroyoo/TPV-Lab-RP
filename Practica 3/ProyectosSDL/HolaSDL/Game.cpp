@@ -1,4 +1,4 @@
-// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
+// Práctica 3: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Game.h"
 #include "Vector2D.h"
 
@@ -382,4 +382,9 @@ void Game::loadFromFile(string filename) {
 	}
 
 	in.close();
+}
+
+// Devuelve la textura correspondiente
+Texture* Game::getTexture(int texture) {
+	return textures[texture];
 }
