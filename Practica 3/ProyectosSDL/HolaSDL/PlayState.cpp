@@ -3,6 +3,8 @@
 PlayState::PlayState(Game* g) {
 	GameState(g);
 
+	list<GameObject*>::iterator itAux;
+
 	// Poner el nivel actual a 0 y las vidas a su constante
 	currentLevel = 0; life = NUM_LIFES;
 
@@ -13,19 +15,30 @@ PlayState::PlayState(Game* g) {
 	objects.push_back(new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, game->getTexture(Blocks), in));
 	in.close();
 
+	itAux = objects.begin();
+	blocksmap = static_cast<BlocksMap*> (*itAux);
+	
 	//Añadimos las paredes
+
 	objects.push_back(new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, game->getTexture(SideWall), Vector2D(1, 0)));
 	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, game->getTexture(SideWall), Vector2D(-1, 0)));
 	objects.push_back(new Wall(Vector2D(0, 0), WIN_WIDTH, WALL_WIDTH, game->getTexture(TopWall), Vector2D(0, 1)));
+	for (int i = 0; i < 3; i++) {
+		itAux++;
+		walls[i] = static_cast<Wall*>(*itAux);
+	}
 
 	//Añadimos la plataforma
 	objects.push_back(new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), 100, 10, game->getTexture(PaddleTxt), Vector2D(0, 0)));
+	itAux++;
+	paddle = static_cast<Paddle*> (*itAux);
 
 	//Añadimos la pelota
-	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, game->getTexture(BallTxt), Vector2D(1, -1), game));
+	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, game->getTexture(BallTxt), Vector2D(1, -1), this));
+	itAux++;
+	ball = static_cast<Ball*> (*itAux);
 
-	// Iteradores
-	itBall = prev(objects.end());
+	itFirstReward = objects.end();
 }
 
 // Renderizado
@@ -38,8 +51,10 @@ void PlayState::render() {
 // Actualizar entidades
 void PlayState::update() {
 	if (!isPaused) {
-		// Desde el anterior a ball (pala) hasta el final (contando rewards si existen)
-		for (list<GameObject*>::iterator it = itBall; it != objects.end(); it++) {
+		ball->update();
+
+		// Actualización de las rewards si existen
+		for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 			(*it)->update();
 		}
 
@@ -57,7 +72,7 @@ void PlayState::handleEvent() {
 			isPaused = true;
 			// Lanzar estado de pausa
 		}
-		else (*(prev(itBall)))->handleEvent(event);				// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
+		else paddle->handleEvent(event);				// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 
 		// if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
 	}
@@ -68,28 +83,22 @@ bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - DeadLine
 	if (rectBall.y >= WIN_HEIGTH - 10) { checkLife(); return true; }
 
-	list<GameObject*>::iterator it = objects.begin();				// Inicializar iterador para recorrer la lista
-
 	// Ball - Blocksmap
 	if (rectBall.y <= WIN_HEIGHT / 2) {
-		if ((*it)->collides(rectBall, colV)) {
-			BlocksMap* myBm = dynamic_cast<BlocksMap*> (*it);
-			createReward(myBm->getDestroyedBlock());
+		if (blocksmap->collides(rectBall, colV)) {
+			createReward(blocksmap->getDestroyedBlock());
 			return true;
 		}
 	}
 
 	// Ball - Walls
-	++it;
 	for (int i = 0; i < 3; ++i) {
-		if ((*it)->collides(rectBall, colV)) return true;
-		else ++it;
+		if (walls[i]->collides(rectBall, colV)) return true;
 	}
 
 	// Ball - Paddle
-	Ball* myBall = dynamic_cast<Ball*> (*itBall);
-	if (rectBall.y > WIN_HEIGHT - 50 && myBall->getVelocity().getY() > 0) {
-		if ((*it)->collides(rectBall, colV)) return true;
+	if (rectBall.y > WIN_HEIGHT - 50 && ball->getVelocity().getY() > 0) {
+		if (paddle->collides(rectBall, colV)) return true;
 	}
 
 	return false;
@@ -97,10 +106,8 @@ bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 
 // Comprobar colisiones del Reward
 bool PlayState::collidesReward(SDL_Rect rectReward) {
-	list<GameObject*>::iterator itPad = prev(itBall);
-	SDL_Rect my = (*itPad)->getRect();
 	//Si llegas abajo del todo o colisionas con la pala
-	if (rectReward.y >= WIN_HEIGTH || SDL_HasIntersection(&rectReward, &my)) return true;
+	if (rectReward.y >= WIN_HEIGTH || SDL_HasIntersection(&rectReward, &paddle->getRect())) return true;
 
 	return false;														// Negar colisión
 }
@@ -123,34 +130,25 @@ void PlayState::createReward(Vector2D rPos) {
 	// Si no es de tipo vacío, instanciarlo y añadirlo a la lista
 	if (type != 'x') {
 		objects.push_back(new Reward(rPos, 35, 20, game->getTexture(Rewards), Vector2D(0, 1), type, this));
+		Reward* reward = static_cast<Reward*> (*prev(objects.end()));
+		reward->setIterator(prev(objects.end()));
+		if (itFirstReward == objects.end()) itFirstReward = prev(objects.end());
 	}
 }
 
 // Llama al comportamiento correspondiente al reward recibido
 void PlayState::rewardBehaviour(char type) {
-	Paddle* myPaddle = dynamic_cast<Paddle*> (*prev(itBall));
 	switch (type) {
 	case 'L': checkNextLevel(true); break;					// Cambio de nivel
 	case 'R': ++life; lifeLeft(); break;					// +1 de vida
-	case 'E': myPaddle->changeDimensions(true); break;		// Alargar pala
-	case 'S': myPaddle->changeDimensions(false); break;		// Acortar pala
+	case 'E': paddle->changeDimensions(true); break;		// Alargar pala
+	case 'S': paddle->changeDimensions(false); break;		// Acortar pala
 	}
 }
 
-void PlayState::deleteReward(Reward* reward) {
-	list<GameObject*>::iterator it = next(itBall);			// Creamos un iterador que empieza despues de la pelota
-	bool found = false;											// Variable de control de flujo
-	Reward* myRw = nullptr;										// Puntero auxiliar a una reward
-
-	while (it != objects.end() && !found) {						// Mientras que no haya acabado de recorrer la lista y no lo haya encontrado
-		myRw = dynamic_cast<Reward*> (*it);						// Casteamos el iterador a tipo Reward (despues de la pelota solo hay rewards)
-		found = (myRw == reward);								// Marcar si hemos encontrado la reward que queremos eliminar
-		if (!found) it++;													// Avanzamos en la lista
-	}
-
-	//itDestroy = it;											// Borramos de la lista la reward encontrada
-	objToDestroy.push_back(it);
-	delete(myRw);												// Eliminamos el objeto en la memoria
+void PlayState::deleteReward(list<GameObject*>::iterator reward) {	// Borramos de la lista la reward											
+	objToDestroy.push_back(reward);									// Borramos de la lista la reward
+	delete(*reward);												// Eliminamos el objeto en la memoria
 }
 
 // Comprobar si se ha pasado de nivel
@@ -204,15 +202,13 @@ void PlayState::lifeLeft() {
 void PlayState::reloadItems() {
 
 	// Borra los rewards presentes en partida
-	for (list<GameObject*>::iterator it = prev(objects.end()); it != itBall; --it) {
+	for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 		objToDestroy.push_back(it);
 	}
 
 	// Poner la bola y la pala en las posiciones y velocidades inciales
-	Ball* myBall = dynamic_cast<Ball*> (*itBall);
-	Paddle* myPaddle = dynamic_cast<Paddle*> (*prev(itBall));
-	myBall->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-	myPaddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+	ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+	paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
 }
 
 // PREGUNTAS:

@@ -7,7 +7,7 @@ const int PADDLE_AREA = WIN_HEIGHT - 40;
 Reward::Reward() : MovingObject(), r(0), c(0) , game(nullptr), type(' ') {}
 
 // Constructora
-Reward::Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, Game* _game) :
+Reward::Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, PlayState* _game) :
 	MovingObject(_pos, _w, _h, _texture, _vel), type(_type), game(_game) {
 	c = 0; r = 0;
 
@@ -36,7 +36,7 @@ void Reward::render() {
 void Reward::update() {
 	if (PADDLE_AREA <= pos.getY() && game->collidesReward(getRect())) {
 		if (pos.getY() < WIN_HEIGHT) game->rewardBehaviour(type);
-		if (type != 'L') game->deleteReward(this);
+		if (type != 'L') game->deleteReward(miPos);
 		//game->deleteReward(this);
 	}
 	else pos = pos + vel;

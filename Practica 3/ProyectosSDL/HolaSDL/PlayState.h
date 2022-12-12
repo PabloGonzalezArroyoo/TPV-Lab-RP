@@ -1,14 +1,10 @@
 #pragma once
 #include "GameState.h"
+#include <vector>
+#include <list>
 
 using namespace std;
 typedef unsigned int uint;
-
-// Constantes
-const uint WIN_WIDTH = 800;
-const uint WIN_HEIGTH = 600;
-const uint NUM_LEVELS = 3;
-const uint NUM_LIFES = 3;
 
 class PlayState : public GameState
 {
@@ -23,12 +19,18 @@ private:
 	// Vidas y nivel actual
 	int life, currentLevel;
 
+	// Punteros a objetos (acceso directo)
+	BlocksMap* blocksmap;
+	Paddle* paddle;
+	Wall* walls[3];
+	Ball* ball;
+
 	// Iteradores
-	list<GameObject*>::iterator itBall;
-	vector< list<GameObject*>::iterator> objToDestroy;
+	list<GameObject*>::iterator itFirstReward;
+	vector<list<GameObject*>::iterator> objToDestroy;
 
 public:
-	PlayState();
+	PlayState() { game = nullptr; }
 	PlayState(Game* g);
 	virtual ~PlayState();
 
@@ -44,7 +46,7 @@ public:
 	//Comportamiento de las Rewards
 	void createReward(Vector2D rPos);
 	void rewardBehaviour(char type);
-	void deleteReward(Reward* reward);
+	void deleteReward(list<GameObject*>::iterator reward);
 
 	// Comprobaciones y vidas
 	void checkNextLevel(bool rewardAct);

@@ -1,17 +1,20 @@
 #pragma once
 #include "MovingObject.h"
+#include "PlayState.h"
+#include <list>
 
-class Game; // Para solucionar la dependecia circular
+class PlayState; // Para solucionar la dependecia circular
 class Reward : public MovingObject {
 private:
-	Game* game;
+	PlayState* game;
 	char type; // L = nextLevel / R = extraLife / E/S = changePaddleSize
 	uint r, c;
+	list<GameObject*>::iterator miPos;
 
 public:
 	// Constructoras y destructor
 	Reward();
-	Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, Game* _game);
+	Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, PlayState* _game);
 	~Reward();
 
 	// Métodos esenciales
@@ -21,7 +24,8 @@ public:
 	// Lectura y guardado
 	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
-	void setGameDepend(Game* _game) { game = _game; }
+	void setGameDepend(PlayState* _game) { game = _game; }
+	void setIterator(list<GameObject*>::iterator _it) { miPos = _it; }
 
 	// Obtener tipo
 	char getType() { return type; };

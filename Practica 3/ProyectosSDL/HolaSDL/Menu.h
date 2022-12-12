@@ -8,7 +8,6 @@ class Menu : public GameObject
 private:
 	bool exit = false;
 	char type; // { P = Pause, F = Final, M = Main menu }
-	list<MenuButton*> buttons;
 
 public:
 	// Constructora y destructora

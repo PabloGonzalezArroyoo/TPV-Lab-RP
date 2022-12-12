@@ -27,10 +27,7 @@ const uint WIN_HEIGTH = 600;
 const uint FRAMERATE = 5;
 const uint NUM_TEXTURES = 10;
 const uint NUM_LEVELS = 3;
-const uint NUM_LIFES = 1;
-
-// Enum con el nº de la textura correspondiente dentro del array
-enum TextureName {BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards, MainMenu};
+const uint NUM_LIFES = 3;
 
 // Struct con el nombre y las dimensiones de frames del archivo
 typedef struct {
@@ -59,23 +56,10 @@ private:
 	SDL_Renderer* renderer = nullptr;
 
 	// Variables de flujo
-	bool exit, gameOver, win;
+	bool exit;
 	
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
-
-	// Lista polimórfica
-	list<ArkanoidObject*> objects;
-	list<ArkanoidObject*>::iterator itBall;
-	vector< list<ArkanoidObject*>::iterator> objToDestroy;
-
-	// Niveles
-	string levels[NUM_LEVELS] = { "level01", "level02", "level03"};
-	//string levels[NUM_LEVELS] = { "cambioLvl", "level02", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
-	int currentLevel;
-	
-	// Vidas
-	int life;
 
 public:
 	// Constructora (vacía y a partir de archivo) y destructora
@@ -84,30 +68,10 @@ public:
 
 	// Métodos esenciales
 	void run();
-	void handleEvents();
 	void render();
 	void update();
 
-	// Collides
-	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
-	bool collidesReward(SDL_Rect rectBall);
-
-	//Comportamiento de las Rewards
-	void createReward(Vector2D rPos);
-	void rewardBehaviour(char type);
-	void deleteReward(Reward* reward);
-
-	// Comprobaciones y vidas
-	void checkNextLevel(bool rewardAct);
-	void checkLife();
-	void lifeLeft();
-	void reloadItems();
-
-	// Lectura y escritura de archivos
-	void loadFromFile(string filename);
-	void saveToFile(string filename);
-	void userSaving();
-
+	// Coger texturas
 	Texture* getTexture(int texture);
 };
 

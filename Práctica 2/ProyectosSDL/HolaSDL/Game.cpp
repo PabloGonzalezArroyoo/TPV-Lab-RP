@@ -1,4 +1,4 @@
-// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
+// Práctica 2: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Game.h"
 #include "Vector2D.h"
 
