@@ -12,7 +12,7 @@ PlayState::PlayState(Game* g) {
 	ifstream in;
 	in.open(levels[currentLevel] + ".dat");
 	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
-	objects.push_back(new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, game->getTexture(Blocks), in));
+	objects.push_back(new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGHT / 2 - WALL_WIDTH, game->getTexture(Blocks), in));
 	in.close();
 
 	itAux = objects.begin();
@@ -20,8 +20,8 @@ PlayState::PlayState(Game* g) {
 	
 	//Añadimos las paredes
 
-	objects.push_back(new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, game->getTexture(SideWall), Vector2D(1, 0)));
-	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGTH - WALL_WIDTH, game->getTexture(SideWall), Vector2D(-1, 0)));
+	objects.push_back(new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(1, 0)));
+	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(-1, 0)));
 	objects.push_back(new Wall(Vector2D(0, 0), WIN_WIDTH, WALL_WIDTH, game->getTexture(TopWall), Vector2D(0, 1)));
 	for (int i = 0; i < 3; i++) {
 		itAux++;
@@ -29,12 +29,12 @@ PlayState::PlayState(Game* g) {
 	}
 
 	//Añadimos la plataforma
-	objects.push_back(new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), 100, 10, game->getTexture(PaddleTxt), Vector2D(0, 0)));
+	objects.push_back(new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGHT - 30), 100, 10, game->getTexture(PaddleTxt), Vector2D(0, 0)));
 	itAux++;
 	paddle = static_cast<Paddle*> (*itAux);
 
 	//Añadimos la pelota
-	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), 15, 15, game->getTexture(BallTxt), Vector2D(1, -1), this));
+	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGHT - 50), 15, 15, game->getTexture(BallTxt), Vector2D(1, -1), this));
 	itAux++;
 	ball = static_cast<Ball*> (*itAux);
 
@@ -72,10 +72,7 @@ void PlayState::update() {
 void PlayState::handleEvent() {
 	SDL_Event event;											// Creamos un evento
 	while (SDL_PollEvent(&event)) {								// Mientras haya un evento en espera
-		if (event.key.keysym.sym == SDLK_ESCAPE) {				// Si el jugador ha pulsado ESCAPE, se lanza el estado de pausa
-			isPaused = true;
-			// Lanzar estado de pausa
-		}
+		if (event.key.keysym.sym == SDLK_ESCAPE) { isPaused = true; game->pause(); } // Si el jugador ha pulsado ESCAPE, se lanza el estado de pausa
 		else paddle->handleEvent(event);				// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 
 		// if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
@@ -85,7 +82,7 @@ void PlayState::handleEvent() {
 // Comprobar colisiones del Ball
 bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - DeadLine
-	if (rectBall.y >= WIN_HEIGTH - 10) { checkLife(); return true; }
+	if (rectBall.y >= WIN_HEIGHT - 10) { checkLife(); return true; }
 
 	// Ball - Blocksmap
 	if (rectBall.y <= WIN_HEIGHT / 2) {
@@ -111,7 +108,7 @@ bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 // Comprobar colisiones del Reward
 bool PlayState::collidesReward(SDL_Rect rectReward) {
 	//Si llegas abajo del todo o colisionas con la pala
-	if (rectReward.y >= WIN_HEIGTH || SDL_HasIntersection(&rectReward, &paddle->getRect())) return true;
+	if (rectReward.y >= WIN_HEIGHT || SDL_HasIntersection(&rectReward, &paddle->getRect())) return true;
 
 	return false;														// Negar colisión
 }
@@ -169,7 +166,7 @@ void PlayState::checkNextLevel(bool rewardAct) {
 			ifstream in;
 			in.open(levels[currentLevel] + ".dat");
 			if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
-			myBm = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, game->getTexture(Blocks), in); // Creamos el nuevo mapa (el siguiente)
+			myBm = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGHT / 2 - WALL_WIDTH, game->getTexture(Blocks), in); // Creamos el nuevo mapa (el siguiente)
 			in.close();
 			BlocksMap* oldBM = dynamic_cast<BlocksMap*> (*objects.begin());
 			objects.pop_front();
@@ -211,8 +208,8 @@ void PlayState::reloadItems() {
 	}
 
 	// Poner la bola y la pala en las posiciones y velocidades inciales
-	ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGTH - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
-	paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGTH - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+	ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGHT - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
+	paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGHT - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
 }
 
 // PREGUNTAS:

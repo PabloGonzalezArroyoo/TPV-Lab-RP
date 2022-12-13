@@ -74,6 +74,7 @@
     <ClCompile Include="BlocksMap.cpp" />
     <ClCompile Include="EndState.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateMachine.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -94,8 +95,10 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlocksMap.h" />
+    <ClInclude Include="Constantes.h" />
     <ClInclude Include="EndState.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateMachine.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="Exceptions.h" />

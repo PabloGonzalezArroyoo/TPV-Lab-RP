@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2D.h"
 #include "Texture.h"
+#include "Constantes.h"
 #include "checkML.h"
 
 typedef unsigned int uint;

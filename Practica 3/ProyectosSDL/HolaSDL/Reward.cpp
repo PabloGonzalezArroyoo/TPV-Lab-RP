@@ -1,7 +1,7 @@
 #include "Reward.h"
 #include "Game.h"
 
-const int PADDLE_AREA = WIN_HEIGHT - 40;
+
 
 // Constructora vacía
 Reward::Reward() : MovingObject(), r(0), c(0) , game(nullptr), type(' ') {}

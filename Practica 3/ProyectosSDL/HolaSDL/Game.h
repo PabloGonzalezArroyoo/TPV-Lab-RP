@@ -8,6 +8,7 @@
 #include "Wall.h"
 #include "Reward.h"
 #include "Menu.h"
+#include "GameStateMachine.h"
 #include "checkML.h"
 #include <iostream>
 #include <fstream>
@@ -20,14 +21,6 @@
 
 using namespace std;
 typedef unsigned int uint;
-
-// Constantes
-const uint WIN_WIDTH = 800;
-const uint WIN_HEIGTH = 600;
-const uint FRAMERATE = 5;
-const uint NUM_TEXTURES = 16;
-const uint NUM_LEVELS = 3;
-const uint NUM_LIFES = 3;
 
 // Struct con el nombre y las dimensiones de frames del archivo
 typedef struct {
@@ -67,6 +60,9 @@ private:
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
 
+	// Máquina de estados
+	GameStateMachine* gameStateMachine;
+
 public:
 	// Constructora (vacía y a partir de archivo) y destructora
 	Game();
@@ -79,5 +75,13 @@ public:
 
 	// Coger texturas
 	Texture* getTexture(int texture);
+
+	// Maquina de estados
+	void newGame();
+	void loadGame();
+	void quit();
+	void resume();
+	void mainMenu();
+	void pause();
 };
 

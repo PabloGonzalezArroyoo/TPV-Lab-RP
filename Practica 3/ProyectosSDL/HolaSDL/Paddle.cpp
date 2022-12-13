@@ -13,7 +13,7 @@ Paddle::Paddle(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel
 // Calcular velocidad según la dirección y aplicar comprobando que no sobrepasa los límites
 void Paddle::update() {
 	vel = Vector2D(dir, 0) * MOV_VEL;													// Crear vector dirección
-	if (pos.getX() + vel.getX() > WALL_WIDTH && pos.getX() + vel.getX() < WIN_WITDH - WALL_WIDTH - w) pos = pos + vel; // Comprobar y aplicar
+	if (pos.getX() + vel.getX() > WALL_WIDTH && pos.getX() + vel.getX() < WIN_WIDTH - WALL_WIDTH - w) pos = pos + vel; // Comprobar y aplicar
 }
 
 // Comprobar si se han pulsado teclas que activan un comportamiento en la pala

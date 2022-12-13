@@ -1,11 +1,11 @@
 #pragma once
 #include "GameObject.h"
-#include "Game.h"
+
+class Game;
 typedef void Callback (Game* game);
 
-const int WIDTH = 200, HEIGHT = 50;
-
 enum ButtonState { OnOut, OnOver, OnClick };
+
 
 class MenuButton : public GameObject
 {

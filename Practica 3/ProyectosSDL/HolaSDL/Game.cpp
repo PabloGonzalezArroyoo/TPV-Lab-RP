@@ -7,7 +7,7 @@ Game::Game() {
 	// Inicialización de la ventana
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("ARKANOID V2", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGTH, SDL_WINDOW_SHOWN);
+		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) throw SDLError("Couldn't load screen.");
 
@@ -19,6 +19,9 @@ Game::Game() {
 		const TextureDescription& desc = textDescription[i];
 		textures[i] = new Texture(renderer,"../images/ " +  desc.filename + ".png", desc.hframes, desc.vframes);
 	}
+
+	// Máquina de estados
+	gameStateMachine = new GameStateMachine();
 }
 
 // Destructora
@@ -190,6 +193,38 @@ void Game::loadFromFile(string filename) {
 	in.close();
 }
 */
+
+// Debe cargar un juego completamente nuevo, es decir, cargar PlayState
+void Game::newGame() {
+	gameStateMachine->changeState(new PlayState(this));
+}
+
+// Debe cargar un juego completamente nuevo, es decir, cargar PlayState, pero a partir de datos previos
+void Game::loadGame() {
+	gameStateMachine->changeState(new PlayState(this));
+}
+
+// Debe cerrar el juego
+void Game::quit() {
+	exit = true;
+	delete(gameStateMachine);
+}
+
+// Al llamarse en el PauseState, debe borrarse y dejar que el estado de debajo se ejecute
+void Game::resume() {
+	gameStateMachine->popState();
+}
+
+// Borrar todos los estados previos y empezar una nueva pila con el menú como único estado
+void Game::mainMenu() {
+	gameStateMachine->discardStates();
+	gameStateMachine->pushState(new MainMenuState(this));
+}
+
+// Añade un nuevo estado de pausa a la pila
+void Game::pause() {
+	gameStateMachine->pushState(new PauseState(this));
+}
 
 // Devuelve la textura correspondiente
 Texture* Game::getTexture(int texture) {
