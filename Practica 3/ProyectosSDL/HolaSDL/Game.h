@@ -48,6 +48,10 @@ const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"restart", 1, 3}
 };
 
+class PlayState;
+class MainMenuState;
+class PauseState;
+class EndState;
 class Game {
 private:
 	// Punteros SDL
