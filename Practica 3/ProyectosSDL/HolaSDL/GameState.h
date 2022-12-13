@@ -4,7 +4,8 @@
 #include "Game.h"
 
 // Enum con el nº de la textura correspondiente dentro del array
-enum TextureName { BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards, MainMenu };
+enum TextureName { BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards, MainMenu, 
+					PlayButton, LoadButton, ExitButton, ResumeButton, MainMenuButton, RestartButton };
 
 class GameState
 {

@@ -25,7 +25,7 @@ typedef unsigned int uint;
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGTH = 600;
 const uint FRAMERATE = 5;
-const uint NUM_TEXTURES = 10;
+const uint NUM_TEXTURES = 16;
 const uint NUM_LEVELS = 3;
 const uint NUM_LIFES = 3;
 
@@ -37,16 +37,22 @@ typedef struct {
 
 // Descripción de las texturas (según la estructura del struct anterior)
 const TextureDescription textDescription[NUM_TEXTURES] = {
-	{"../images/ball2.png", 1, 1},
-	{"../images/bricks2.png", 2, 3},
-	{"../images/digits2.png", 3, 4},
-	{"../images/gameover1.png", 1, 1},
-	{"../images/paddle2.png", 1, 1},
-	{"../images/side.png", 1, 1},
-	{"../images/topside.png", 1, 1},
-	{"../images/youwin.png", 1, 1},
-	{"../images/rewards.png", 10, 8},
-	{"../images/Menu.png", 1, 1}
+	{"ball2", 1, 1},
+	{"bricks2", 2, 3},
+	{"digits2", 3, 4},
+	{"gameover1", 1, 1},
+	{"paddle2", 1, 1},
+	{"side", 1, 1},
+	{"topside", 1, 1},
+	{"youwin", 1, 1},
+	{"rewards", 10, 8},
+	{"Menu", 1, 1},
+	{"play", 1, 3},
+	{"load", 1, 1},
+	{"exit", 1, 3},
+	{"resume", 1, 3},
+	{"main", 1, 3},
+	{"restart", 1, 3}
 };
 
 class Game {

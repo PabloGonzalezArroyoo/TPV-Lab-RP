@@ -41,6 +41,10 @@ PlayState::PlayState(Game* g) {
 	itFirstReward = objects.end();
 }
 
+PlayState::~PlayState() {
+	for (GameObject* myOb : objects) delete(myOb);
+}
+
 // Renderizado
 void PlayState::render() {
 	// Renderizado de los objetos del juego
