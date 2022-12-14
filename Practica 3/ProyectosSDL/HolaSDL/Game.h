@@ -47,6 +47,7 @@ class PlayState;
 class MainMenuState;
 class PauseState;
 class EndState;
+class GameStateMachine;
 class Game {
 private:
 	// Punteros SDL
