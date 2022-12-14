@@ -6,10 +6,10 @@ MenuButton::MenuButton() {
 	state = OnOut;
 }
 
-MenuButton::MenuButton(Vector2D _pos, Texture* _txt, void (*callback)(Game* g)) {
+MenuButton::MenuButton(Vector2D _pos, Texture* _txt, Callback* _c) {
 	pos = _pos;
 	texture = _txt;
-	myC = callback;
+	myC = _c;
 	state = OnOut;
 }
 
@@ -23,7 +23,7 @@ void MenuButton::render() {
 void MenuButton::handleEvent(SDL_Event e) {
 	while (SDL_PollEvent(&e)) {
 		// Si se hace clic
-		if (e.type == SDL_MOUSEBUTTONDOWN && state == OnOver) { myC; state = OnClick; }
+		if (e.type == SDL_MOUSEBUTTONDOWN && state == OnOver) state = OnClick;
 		else if (e.type == SDL_MOUSEMOTION) update();
 	}
 }

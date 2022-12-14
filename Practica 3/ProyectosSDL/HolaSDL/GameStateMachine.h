@@ -9,7 +9,8 @@ private:
 	stack<GameState*> states;
 
 public:
-	GameStateMachine();
+	GameStateMachine() { };
+	GameStateMachine(GameState* firstState);
 	~GameStateMachine();
 	GameState* currentState() { return states.top(); };
 	

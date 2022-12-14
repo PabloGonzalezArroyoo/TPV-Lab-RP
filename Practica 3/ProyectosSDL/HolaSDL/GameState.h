@@ -18,7 +18,7 @@ class GameState
 // Protected -> Accesible desde esta clase y sus herederas
 protected:
 	list<GameObject*> objects;
-	Game* game = nullptr;
+	Game* game;
 
 public :
 

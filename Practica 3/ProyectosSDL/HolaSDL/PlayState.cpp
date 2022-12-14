@@ -4,9 +4,7 @@
 #include <fstream>
 
 
-PlayState::PlayState(Game* g) {
-	GameState(g);
-
+PlayState::PlayState(Game* g) : GameState(g) {
 	list<GameObject*>::iterator itAux;
 
 	// Poner el nivel actual a 0 y las vidas a su constante

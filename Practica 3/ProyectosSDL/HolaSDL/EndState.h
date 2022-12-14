@@ -7,7 +7,7 @@ private:
 
 public:
 	EndState();
-	EndState(Game* g);
-	~EndState();
+	EndState(Game* g, bool win);
+	virtual ~EndState() {};
 };
 

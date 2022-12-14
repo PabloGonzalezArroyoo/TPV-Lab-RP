@@ -12,5 +12,7 @@ public:
 	MainMenuState();
 	MainMenuState(Game* g);
 	virtual ~MainMenuState() {};
+
+	virtual void handleEvent(SDL_Event e);
 };
 

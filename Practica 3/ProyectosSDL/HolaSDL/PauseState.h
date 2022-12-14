@@ -6,6 +6,6 @@ class PauseState : public GameState
 public:
 	PauseState();
 	PauseState(Game* g);
-	~PauseState();
+	virtual ~PauseState() {};
 };
 

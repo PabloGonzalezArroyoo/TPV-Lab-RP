@@ -1,5 +1,10 @@
 #include "GameStateMachine.h"
 
+//Constructora con el primer estado del juego (el menu principal)
+GameStateMachine::GameStateMachine(GameState* firstState) {
+	pushState(firstState);
+}
+
 // Destructora - Borrar estados hasta que la pila esté vacía
 GameStateMachine::~GameStateMachine() {
 	while (!states.empty()) states.pop();
