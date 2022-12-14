@@ -20,7 +20,7 @@ Game::Game() {
 	// Para cargar texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) {
 		const TextureDescription& desc = textDescription[i];
-		textures[i] = new Texture(renderer,"../images/ " +  desc.filename + ".png", desc.hframes, desc.vframes);
+		textures[i] = new Texture(renderer,"../images/" +  desc.filename + ".png", desc.hframes, desc.vframes);
 	}
 
 	// Máquina de estados
