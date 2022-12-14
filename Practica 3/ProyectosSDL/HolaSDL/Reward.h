@@ -1,6 +1,5 @@
 #pragma once
 #include "MovingObject.h"
-#include "PlayState.h"
 #include <list>
 
 class PlayState; // Para solucionar la dependecia circular

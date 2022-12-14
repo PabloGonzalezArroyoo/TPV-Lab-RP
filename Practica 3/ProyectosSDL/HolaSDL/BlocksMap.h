@@ -1,7 +1,6 @@
-// Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
+// Práctica 3: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 
-#include "ArkanoidObject.h"
 #include "Block.h"
 
 typedef unsigned int uint;

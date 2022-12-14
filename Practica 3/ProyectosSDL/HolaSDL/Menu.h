@@ -1,7 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "MenuButton.h"
-#include "Constantes.h"
 #include <list>
 
 class Menu : public GameObject

@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "GameState.h"
 
 class PauseState : public GameState
 {

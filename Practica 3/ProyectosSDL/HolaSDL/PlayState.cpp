@@ -1,4 +1,8 @@
 #include "PlayState.h"
+#include "Game.h"
+#include <iostream>
+#include <fstream>
+
 
 PlayState::PlayState(Game* g) {
 	GameState(g);

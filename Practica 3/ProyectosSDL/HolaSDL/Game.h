@@ -2,13 +2,8 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Paddle.h"
-#include "Ball.h"
-#include "BlocksMap.h"
-#include "Wall.h"
-#include "Reward.h"
-#include "Menu.h"
 #include "GameStateMachine.h"
+#include "Vector2D.h"
 #include "checkML.h"
 #include <iostream>
 #include <fstream>

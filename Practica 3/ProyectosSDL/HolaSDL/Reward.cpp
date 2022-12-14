@@ -1,7 +1,6 @@
+//Practica 3: Pablo Gonzalez Arroyo y Rafael Argandoña Blacido
 #include "Reward.h"
-#include "Game.h"
-
-
+#include "PlayState.h"
 
 // Constructora vacía
 Reward::Reward() : MovingObject(), r(0), c(0) , game(nullptr), type(' ') {}

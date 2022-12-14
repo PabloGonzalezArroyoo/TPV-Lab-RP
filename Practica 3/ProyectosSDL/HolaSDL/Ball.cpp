@@ -1,6 +1,6 @@
 // Práctica 1: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Ball.h"
-#include "Game.h"
+#include "PlayState.h"
 
 // Constructora sobrecargada
 Ball::Ball(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, PlayState* _game) :

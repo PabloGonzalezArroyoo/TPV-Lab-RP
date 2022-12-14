@@ -3,12 +3,14 @@
 MenuButton::MenuButton() {
 	pos = Vector2D();
 	texture = nullptr;
+	state = OnOut;
 }
 
 MenuButton::MenuButton(Vector2D _pos, Texture* _txt, void (*callback)(Game* g)) {
 	pos = _pos;
 	texture = _txt;
 	myC = callback;
+	state = OnOut;
 }
 
 void MenuButton::render() {

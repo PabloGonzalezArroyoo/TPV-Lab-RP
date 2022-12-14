@@ -1,11 +1,12 @@
 #pragma once
-#include "Game.h"
+#include "GameState.h"
 #include <vector>
 #include <list>
 
 using namespace std;
 typedef unsigned int uint;
 
+class game;
 class PlayState : public GameState
 {
 private:
