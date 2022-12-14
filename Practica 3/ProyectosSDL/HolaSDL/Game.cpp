@@ -24,7 +24,7 @@ Game::Game() {
 	}
 
 	// Máquina de estados
-	gsm = new GameStateMachine();
+	gsm = new GameStateMachine(new MainMenuState(this));
 }
 
 // Destructora
@@ -40,45 +40,21 @@ Game::~Game() {
 
 // Bucle principal del juego
 void Game::run() {
-	gsm->pushState(new MainMenuState(this));
-	while (!exit) {
-		render();
-	}
-	/*
-	//Menu
-	Menu* myMenu = dynamic_cast<Menu*> (*objects.begin());
-	myMenu->render(); SDL_RenderPresent(renderer);			// Renderizado
-	myMenu->run(); char answer = myMenu->getType();			// Procesado de input
-	objects.pop_front(); delete(myMenu);					// Borrar memoria
-	SDL_RenderClear(renderer);								// Limpiar pantalla
-
-	if (answer == 'L') {									// Obtener usuario y cargar juego guardado
-		string playerId = " ";
-		cout << "Introduzca el codigo de la partida: ";
-		cin >> playerId;
-		loadFromFile(playerId);
-	}
-
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
-	lifeLeft();										// Mostrar info en la consola
 	SDL_Delay(1500);
-	while (!exit && !gameOver && !win) {
-		handleEvents();								// Manejamos los eventos que puedan ocurrir
-		
+	while (!exit) {
+		handleEvents();
+
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= FRAMERATE) {				// Comprobamos si el tiempo de frame es mayor al ratio
 			update();								// Actualizamos el estado del juego
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 		}
-		render();									// Renderizamos
-		if (!gameOver && !win) checkNextLevel(false);	// Comprobar si se ha pasado de nivel
+
+		render();
 	}
-
-	if (gameOver || win) { render(); SDL_Delay(2000); }		// Tardamos en cerrar la ventana de SDL para que el jugador vea la pantalla final
-	*/
-
-	// CORRER MÁQUINA DE ESTADOS
+	
 	if (exit) cout << "\nSaliste del juego... bye!" << endl;
 }
 
@@ -86,29 +62,22 @@ void Game::run() {
 void Game::render() {
 	SDL_RenderClear(renderer);								// Limpiamos la pantalla
 
-	gsm->currentState()->render();
+	gsm->currentState()->render();							// Renderizamos el estado actual
 
-	/*// Renderizado de los objetos del juego
-	if (!gameOver && !win) {								// Si el juego no ha acabado
-		for (list<ArkanoidObject*>::iterator it = objects.begin(); it != objects.end(); it++)
-			if ((*it) != nullptr) (*it)->render();
-	}
-	// Renderizado de las pantallas de win o game over
-	else {													// Si se ha perdido o ganado
-		SDL_Rect dest;										// Creamos la ventana donde pintamos
-		dest.w = WIN_WIDTH, dest.h = WIN_HEIGTH;			// Le damos sus dimensiones
-		dest.x = dest.y = 0;								// Su posición es la esquina superior izquierda
-		if (gameOver) textures[GameOver]->render(dest);		// Si el jugador ha perdido renderizamos la textura GameOver
-		else textures[Winner]->render(dest);				// Si el jugador ha ganado renderizamos la textura Winner
-	}*/
-
-	// RENDER MÁQUINA DE ESTADOS
 	SDL_RenderPresent(renderer);							// Pintamos
 }
 
 // Actualizar entidades
 void Game::update() {
 	// UPDATE MÁQUINA DE ESTADOS
+	gsm->currentState()->update();
+}
+
+void Game::handleEvents() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		gsm->currentState()->handleEvent(event);
+	}
 }
 
 // Guardar en arhivo
@@ -211,6 +180,12 @@ void Game::newGame() {
 // Debe cargar un juego completamente nuevo, es decir, cargar PlayState, pero a partir de datos previos
 void Game::loadGame() {
 	gsm->changeState(new PlayState(this));
+	//HACER CONSTRUCTORA Q RECIBA FLUJO
+}
+
+void Game::saveGame() {
+	gsm->popState();
+	//gsm->currentState()->saveToFile();
 }
 
 // Debe cerrar el juego

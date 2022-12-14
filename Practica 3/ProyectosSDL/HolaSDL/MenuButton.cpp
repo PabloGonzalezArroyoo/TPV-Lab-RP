@@ -21,17 +21,12 @@ void MenuButton::render() {
 }
 
 void MenuButton::handleEvent(SDL_Event e) {
-	while (SDL_PollEvent(&e)) {
-		// Si se hace clic
-		if (e.type == SDL_MOUSEBUTTONDOWN && state == OnOver) state = OnClick;
-		else if (e.type == SDL_MOUSEMOTION) update();
-	}
+	if (e.type == SDL_MOUSEBUTTONDOWN && state == OnOver) { state = OnClick; }
 }
 
 void MenuButton::update() {
 	int mPosX = 0, mPosY = 0;
-	SDL_GetGlobalMouseState(&mPosX, &mPosY);
-
+	SDL_GetMouseState(&mPosX, &mPosY);
 	if ((mPosX >= pos.getX() && mPosX < pos.getX() + BUTTON_WIDTH) && (mPosY >= pos.getY() && mPosY < pos.getY() + BUTTON_HEIGHT)) {		// Si pulsa dentro del rectángulo de play
 		state = OnOver;
 	}

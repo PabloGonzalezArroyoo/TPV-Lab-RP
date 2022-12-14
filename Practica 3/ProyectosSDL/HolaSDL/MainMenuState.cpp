@@ -13,9 +13,11 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 }
 
 void MainMenuState::handleEvent(SDL_Event e) {
-	for (list<GameObject*>::iterator it = next(objects.begin()); it != objects.end(); it++) {
+	bool control = false;
+	for (list<GameObject*>::iterator it = next(objects.begin()); it != objects.end() && !control; it++) {
 		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
-		if (myB->getState() == 2) myB->myC(game);
+		myB->handleEvent(e);
+		if (myB->getState() == 2) { control = true; myB->myC(game); }
 	}
 }
 

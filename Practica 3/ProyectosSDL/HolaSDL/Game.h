@@ -72,6 +72,7 @@ public:
 	void run();
 	void render();
 	void update();
+	void handleEvents();
 
 	// Coger texturas
 	Texture* getTexture(int texture);
@@ -79,6 +80,7 @@ public:
 	// Maquina de estados
 	void newGame();
 	void loadGame();
+	void saveGame();
 	void quit();
 	void resume();
 	void mainMenu();

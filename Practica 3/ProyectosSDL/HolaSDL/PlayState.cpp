@@ -8,6 +8,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 
 	// Poner el nivel actual a 0 y las vidas a su constante
 	currentLevel = 0; life = NUM_LIFES;
+	gameOver = false; win = false; isPaused = false;
 
 	//Añadimos el mapa de bloques
 	ifstream in;
@@ -57,7 +58,6 @@ void PlayState::render() {
 void PlayState::update() {
 	if (!isPaused) {
 		ball->update();
-
 		// Actualización de las rewards si existen
 		for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 			(*it)->update();
