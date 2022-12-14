@@ -9,11 +9,11 @@ private:
 	stack<GameState*> states;
 
 public:
-	GameStateMachine() { };
+	GameStateMachine() {};
 	GameStateMachine(GameState* firstState);
 	~GameStateMachine();
+
 	GameState* currentState() { return states.top(); };
-	
 	void pushState(GameState* _state);
 	void changeState(GameState* newState);
 	void popState();

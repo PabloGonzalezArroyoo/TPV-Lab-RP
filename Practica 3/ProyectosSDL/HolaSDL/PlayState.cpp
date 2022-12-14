@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 
-
 PlayState::PlayState(Game* g) : GameState(g) {
 	list<GameObject*>::iterator itAux;
 

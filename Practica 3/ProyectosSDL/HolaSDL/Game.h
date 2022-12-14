@@ -34,9 +34,9 @@ const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"topside", 1, 1},
 	{"youwin", 1, 1},
 	{"rewards", 10, 8},
-	{"Menu", 1, 1},
+	{"menu", 1, 1},
 	{"play", 1, 3},
-	{"load", 1, 1},
+	{"load", 1, 3},
 	{"exit", 1, 3},
 	{"resume", 1, 3},
 	{"main", 1, 3},
@@ -61,7 +61,7 @@ private:
 	Texture* textures[NUM_TEXTURES];
 
 	// Máquina de estados
-	GameStateMachine* gameStateMachine;
+	GameStateMachine* gsm;
 
 public:
 	// Constructora (vacía y a partir de archivo) y destructora

@@ -20,11 +20,11 @@ Game::Game() {
 	// Para cargar texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) {
 		const TextureDescription& desc = textDescription[i];
-		textures[i] = new Texture(renderer,"../images/" +  desc.filename + ".png", desc.hframes, desc.vframes);
+		textures[i] = new Texture(renderer, "../images/" +  desc.filename + ".png", desc.hframes, desc.vframes);
 	}
 
 	// Máquina de estados
-	gameStateMachine = new GameStateMachine();
+	gsm = new GameStateMachine();
 }
 
 // Destructora
@@ -40,6 +40,10 @@ Game::~Game() {
 
 // Bucle principal del juego
 void Game::run() {
+	gsm->pushState(new MainMenuState(this));
+	while (!exit) {
+		render();
+	}
 	/*
 	//Menu
 	Menu* myMenu = dynamic_cast<Menu*> (*objects.begin());
@@ -81,7 +85,9 @@ void Game::run() {
 // Renderizado
 void Game::render() {
 	SDL_RenderClear(renderer);								// Limpiamos la pantalla
-	
+
+	gsm->currentState()->render();
+
 	/*// Renderizado de los objetos del juego
 	if (!gameOver && !win) {								// Si el juego no ha acabado
 		for (list<ArkanoidObject*>::iterator it = objects.begin(); it != objects.end(); it++)
@@ -199,34 +205,34 @@ void Game::loadFromFile(string filename) {
 
 // Debe cargar un juego completamente nuevo, es decir, cargar PlayState
 void Game::newGame() {
-	gameStateMachine->changeState(new PlayState(this));
+	gsm->changeState(new PlayState(this));
 }
 
 // Debe cargar un juego completamente nuevo, es decir, cargar PlayState, pero a partir de datos previos
 void Game::loadGame() {
-	gameStateMachine->changeState(new PlayState(this));
+	gsm->changeState(new PlayState(this));
 }
 
 // Debe cerrar el juego
 void Game::quit() {
 	exit = true;
-	delete(gameStateMachine);
+	delete(gsm);
 }
 
 // Al llamarse en el PauseState, debe borrarse y dejar que el estado de debajo se ejecute
 void Game::resume() {
-	gameStateMachine->popState();
+	gsm->popState();
 }
 
 // Borrar todos los estados previos y empezar una nueva pila con el menú como único estado
 void Game::mainMenu() {
-	gameStateMachine->discardStates();
-	gameStateMachine->pushState(new MainMenuState(this));
+	gsm->discardStates();
+	gsm->pushState(new MainMenuState(this));
 }
 
 // Añade un nuevo estado de pausa a la pila
 void Game::pause() {
-	gameStateMachine->pushState(new PauseState(this));
+	gsm->pushState(new PauseState(this));
 }
 
 // Devuelve la textura correspondiente
