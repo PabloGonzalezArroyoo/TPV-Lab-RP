@@ -8,7 +8,7 @@ const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
 
 // Texturas
-const uint NUM_TEXTURES = 16;
+const uint NUM_TEXTURES = 18;
 
 // Framerate
 const uint FRAMERATE = 5;
@@ -21,8 +21,8 @@ const uint NUM_LIFES = 3;
 const uint WALL_WIDTH = 15;
 
 // Botones
-const uint BUTTON_WIDTH = 200;
-const uint BUTTON_HEIGHT = 50;
+const uint BUTTON_WIDTH = 300;
+const uint BUTTON_HEIGHT = 75;
 
 // Paddle
 const uint PADDLE_AREA = WIN_HEIGHT - 40;

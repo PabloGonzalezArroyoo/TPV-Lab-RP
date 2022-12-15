@@ -31,14 +31,15 @@ private:
 	vector<list<GameObject*>::iterator> objToDestroy;
 
 public:
-	PlayState() { game = nullptr; }
+	// Constructoras y destructora
+	PlayState();
 	PlayState(Game* g);
 	virtual ~PlayState();
 
 	// Métodos esenciales
 	virtual void update();
 	virtual void render();
-	virtual void handleEvent();
+	virtual void handleEvent(SDL_Event event);
 
 	// Collides
 	bool collidesBall(SDL_Rect rectBall, Vector2D& v);
@@ -54,5 +55,6 @@ public:
 	void checkLife();
 	void lifeLeft();
 	void reloadItems();
+	void userSaving();
 };
 

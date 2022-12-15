@@ -1,17 +1,19 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState() : GameState() {
-}
-
+// Constructora
 MainMenuState::MainMenuState(Game* g) : GameState(g) {
-
-	//Creamos la imagen de menu y los botones correspondientes
+	// Imagen de inicio
 	objects.push_back(new Menu(game->getTexture(MainMenu)));
-	objects.push_back(new MenuButton(Vector2D(300, 200), game->getTexture(PlayButton), newGame));
-	objects.push_back(new MenuButton(Vector2D(300, 300), game->getTexture(LoadButton), loadGame));
-	objects.push_back(new MenuButton(Vector2D(300, 400), game->getTexture(ExitButton), quit));
+
+	// Botones correspondientes
+	int centerWidth = WIN_WIDTH / 2 - BUTTON_WIDTH / 2;
+	int centerHeight = WIN_HEIGHT / 2 - BUTTON_HEIGHT / 2;
+	objects.push_back(new MenuButton(Vector2D(centerWidth, centerHeight - 70), game->getTexture(PlayButton), newGame));
+	objects.push_back(new MenuButton(Vector2D(centerWidth, centerHeight + 50), game->getTexture(LoadButton), loadGame));
+	objects.push_back(new MenuButton(Vector2D(centerWidth, centerHeight + 170), game->getTexture(ExitButton), quit));
 }
 
+// Manejar los eventos de los botones del menú
 void MainMenuState::handleEvent(SDL_Event e) {
 	bool control = false;
 	for (list<GameObject*>::iterator it = next(objects.begin()); it != objects.end() && !control; it++) {
@@ -21,14 +23,17 @@ void MainMenuState::handleEvent(SDL_Event e) {
 	}
 }
 
+// Llama al método de newGame de Game
 void MainMenuState::newGame(Game* g) {
 	g->newGame();
 }
 
+// Llama al método de loadGame de Game
 void MainMenuState::loadGame(Game* g) {
 	g->loadGame();
 }
 
+// Llama al método de quit de Game
 void MainMenuState::quit(Game* g) {
 	g->quit();
 }

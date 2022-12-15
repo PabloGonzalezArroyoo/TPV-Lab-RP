@@ -25,6 +25,7 @@ typedef struct {
 
 // Descripción de las texturas (según la estructura del struct anterior)
 const TextureDescription textDescription[NUM_TEXTURES] = {
+	// Objetos
 	{"ball2", 1, 1},
 	{"bricks2", 2, 3},
 	{"digits2", 3, 4},
@@ -32,15 +33,21 @@ const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"paddle2", 1, 1},
 	{"side", 1, 1},
 	{"topside", 1, 1},
-	{"youwin", 1, 1},
 	{"rewards", 10, 8},
+
+	// Menús
+	{"youwin", 1, 1},
 	{"menu", 1, 1},
+	{"pause", 1, 1},
+
+	// Botones
 	{"play", 1, 3},
 	{"load", 1, 3},
 	{"exit", 1, 3},
 	{"resume", 1, 3},
 	{"main", 1, 3},
-	{"restart", 1, 3}
+	{"restart", 1, 3},
+	{"save", 1, 3}
 };
 
 class PlayState;

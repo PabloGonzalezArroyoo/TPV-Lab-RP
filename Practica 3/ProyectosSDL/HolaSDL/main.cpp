@@ -2,11 +2,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Game.h"
-#include "Menu.h"
 #include "checkML.h"
-#include "ArkanoidError.h"
 #include <iostream>
-#include <random>
 
 using namespace std;
 

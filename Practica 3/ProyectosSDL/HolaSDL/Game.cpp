@@ -107,25 +107,6 @@ void Game::saveToFile(string filename) {
 	out.close();
 }
 
-// Pregunta por el código de usuario y llama al método de guardar en archivo
-void Game::userSaving() {
-	// Quitar la ventana de SDL
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	
-	// Marcar que se ha salido
-	exit = true;
-
-	// Pedir info de usuario
-	string codUser = "";
-	cout << "Introduce tu codigo de usuario (0X): ";
-	cin >> codUser;
-	saveToFile(codUser);
-
-	// Cerrar
-	SDL_Quit();
-}
-
 // Cargar de archivo
 void Game::loadFromFile(string filename) {
 	ifstream in;
@@ -185,7 +166,7 @@ void Game::loadGame() {
 
 void Game::saveGame() {
 	gsm->popState();
-	//gsm->currentState()->saveToFile();
+	// gsm->currentState()->userSaving();
 }
 
 // Debe cerrar el juego

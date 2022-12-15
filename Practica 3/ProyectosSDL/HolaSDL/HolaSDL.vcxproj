@@ -80,7 +80,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PauseState.cpp" />

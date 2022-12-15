@@ -13,7 +13,7 @@ private:
 	Vector2D pos;
 	Texture* texture;
 	int state;
-	//CallBack* funct;
+
 public:
 	Callback* myC;
 	MenuButton();

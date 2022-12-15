@@ -54,9 +54,6 @@
     <ClCompile Include="Reward.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="MenuButton.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>

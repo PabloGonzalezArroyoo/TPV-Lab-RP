@@ -4,13 +4,18 @@
 class PauseState : public GameState
 {
 private:
+	// Funciones para los botones
 	static void resume(Game* g);
-	static void save(Game* g);
+	static void saveGame(Game* g);
 	static void mainMenu(Game* g);
 
 public:
-	PauseState();
+	// Constructoras y destructora
+	PauseState() : GameState() {};
 	PauseState(Game* g);
 	virtual ~PauseState() {};
+
+	// Métodos esenciales
+	virtual void handleEvent(SDL_Event e);
 };
 

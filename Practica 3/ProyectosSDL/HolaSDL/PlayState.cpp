@@ -3,6 +3,14 @@
 #include <iostream>
 #include <fstream>
 
+// Constructora vacía
+PlayState::PlayState() {
+	game = nullptr; blocksmap = nullptr; paddle = nullptr; ball = nullptr;
+	life = 0; currentLevel = 0;
+	gameOver = false; win = false; isPaused = false;
+}
+
+// Constructora
 PlayState::PlayState(Game* g) : GameState(g) {
 	list<GameObject*>::iterator itAux;
 
@@ -43,6 +51,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	itFirstReward = objects.end();
 }
 
+// Destructora
 PlayState::~PlayState() {
 	for (GameObject* myOb : objects) delete(myOb);
 }
@@ -68,16 +77,18 @@ void PlayState::update() {
 		}
 		objToDestroy.clear();
 	}
+	else isPaused = false;
 }
 
-void PlayState::handleEvent() {
-	SDL_Event event;											// Creamos un evento
-	while (SDL_PollEvent(&event)) {								// Mientras haya un evento en espera
-		if (event.key.keysym.sym == SDLK_ESCAPE) { isPaused = true; game->pause(); } // Si el jugador ha pulsado ESCAPE, se lanza el estado de pausa
-		else paddle->handleEvent(event);				// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
-
-		// if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
+// Maneja los eventos de pausa y movimiento de la pala
+void PlayState::handleEvent(SDL_Event event) {
+	if (event.key.keysym.sym == SDLK_ESCAPE && !isPaused) {	// Si el jugador ha pulsado ESCAPE, se lanza el estado de pausa
+		isPaused = true;
+		game->pause();
 	}
+	else paddle->handleEvent(event);						// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
+
+	// if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
 }
 
 // Comprobar colisiones del Ball
@@ -211,6 +222,18 @@ void PlayState::reloadItems() {
 	// Poner la bola y la pala en las posiciones y velocidades inciales
 	ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGHT - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego
 	paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGHT - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
+}
+
+// Pregunta por el código de usuario y llama al método de guardar en archivo
+void PlayState::userSaving() {
+	// Pedir info de usuario
+	string codUser = "";
+	cout << "Introduce tu codigo de usuario (0X): ";
+	cin >> codUser;
+	// saveToFile(codUser);
+
+	// Cerrar
+	game->quit();
 }
 
 // PREGUNTAS:

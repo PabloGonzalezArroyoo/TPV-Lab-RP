@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-//ArkanoidError
+// ArkanoidError
 class ArkanoidError : public logic_error {
 public:
 	ArkanoidError(const string& message) : logic_error(message) {};

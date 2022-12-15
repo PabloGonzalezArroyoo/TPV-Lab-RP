@@ -9,9 +9,15 @@ private:
 
 public:
 	// Constructora y destructora
-	Menu(Texture* _texture);
+	Menu(Texture* _texture) { texture = _texture; };
 	virtual ~Menu() {};
 
-	virtual void render();
+	// Métodos esenciales
+	virtual void render() {
+		SDL_Rect rect;
+		rect.x = 0, rect.y = 0;
+		rect.w = WIN_WIDTH, rect.h = WIN_HEIGHT;
+		texture->render(rect);
+	};
 };
 

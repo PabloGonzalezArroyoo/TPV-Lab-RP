@@ -10,8 +10,11 @@
 #include "Game.h"
 
 // Enum con el nº de la textura correspondiente dentro del array
-enum TextureName { BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Winner, Rewards, MainMenu, 
-					PlayButton, LoadButton, ExitButton, ResumeButton, MainMenuButton, RestartButton };
+enum TextureName { 
+	BallTxt, Blocks, Digits, GameOver, PaddleTxt, SideWall, TopWall, Rewards,						// Objetos
+	Winner, MainMenu, Pause,																		// Menús
+	PlayButton, LoadButton, ExitButton, ResumeButton, MainMenuButton, RestartButton, SaveButton		// Botones
+};
 
 class GameState
 {
@@ -19,15 +22,20 @@ class GameState
 protected:
 	list<GameObject*> objects;
 	Game* game;
+	string id;
 
 public :
-
+	// Constructoras y destructora
 	GameState() { game = nullptr; };
 	GameState(Game* g) { game = g; };
 	virtual ~GameState();
 
+	// Métodos esenciales
 	virtual void update();
 	virtual void render();
 	virtual void handleEvent(SDL_Event e);
+
+	// Getters
+	string getId() { return id; };
 };
 
