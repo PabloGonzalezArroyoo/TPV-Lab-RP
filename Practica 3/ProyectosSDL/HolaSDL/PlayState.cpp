@@ -127,7 +127,7 @@ void PlayState::update() {
 	else isPaused = false;
 
 	if (win) game->end(true);
-	if (gameOver) game->end(false);
+	else if (gameOver) game->end(false);
 }
 
 // Maneja los eventos de pausa y movimiento de la pala

@@ -47,12 +47,11 @@ void Game::run() {
 		handleEvents();
 
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
-		if (frameTime >= FRAMERATE) {				// Comprobamos si el tiempo de frame es mayor al ratio
+		if (frameTime >= FRAMERATE && !exit) {				// Comprobamos si el tiempo de frame es mayor al ratio
 			update();								// Actualizamos el estado del juego
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
+			render();
 		}
-
-		render();
 	}
 	
 	if (exit) cout << "\nSaliste del juego... bye!" << endl;

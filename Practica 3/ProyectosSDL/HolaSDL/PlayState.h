@@ -14,8 +14,8 @@ private:
 	bool gameOver, win, isPaused;
 
 	// Niveles
-	//string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
-	string levels[NUM_LEVELS] = { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
+	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
+	//string levels[NUM_LEVELS] = { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
 
 	// Vidas y nivel actual
 	int life, currentLevel;
