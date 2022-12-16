@@ -93,7 +93,7 @@ PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
 
 // Destructora
 PlayState::~PlayState() {
-	for (GameObject* myOb : objects) delete(myOb);
+	//for (GameObject* myOb : objects) delete(myOb);
 }
 
 // Renderizado
@@ -126,8 +126,8 @@ void PlayState::update() {
 	}
 	else isPaused = false;
 
-	if (win) game->end(win);
-	if (gameOver) game->end(gameOver);
+	if (win) game->end(true);
+	if (gameOver) game->end(false);
 }
 
 // Maneja los eventos de pausa y movimiento de la pala

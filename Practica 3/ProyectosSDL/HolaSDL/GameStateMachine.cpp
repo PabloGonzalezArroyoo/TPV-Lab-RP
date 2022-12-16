@@ -7,7 +7,7 @@ GameStateMachine::GameStateMachine(GameState* firstState) {
 
 // Destructora - Borrar estados hasta que la pila esté vacía
 GameStateMachine::~GameStateMachine() {
-	while (!states.empty()) states.pop();
+	while (!states.empty()) popState();
 }
 
 // Añadir un nuevo estado a la pila
@@ -17,7 +17,9 @@ void GameStateMachine::pushState(GameState* state) {
 
 // Elimina el estado de la pila
 void GameStateMachine::popState() {
+	GameState* actState = states.top();
 	states.pop();
+	delete(actState);
 }
 
 // Borra todos los estados acumulados en la pila

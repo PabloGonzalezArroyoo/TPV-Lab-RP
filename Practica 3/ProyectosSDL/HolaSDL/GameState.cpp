@@ -19,10 +19,10 @@ void GameState::handleEvent(SDL_Event e) {
 	bool control = false;
 	list<GameObject*>::iterator it = next(objects.begin());
 
-	while (it != objects.end() && !control) {
+	while (!control && it != objects.end()) {
 		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
 		myB->handleEvent(e);
 		if (myB->getState() == 2) { control = true; myB->myC(game); }
-		it++;
+		else it++;
 	}
 }
