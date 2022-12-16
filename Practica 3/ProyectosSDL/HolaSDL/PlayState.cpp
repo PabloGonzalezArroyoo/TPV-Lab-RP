@@ -51,6 +51,46 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	itFirstReward = objects.end();
 }
 
+PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
+	// Booleanos de control
+	gameOver = false; win = false; isPaused = false;
+
+	// Leer nivel actual y vida
+	in >> currentLevel;
+	in >> life;
+	
+	// Punteros auxiliares
+	BlocksMap* bmAux; Wall* wallAux; Paddle* pAux; Ball* bAux; Reward* rAux;
+
+	// Leer blocksmap
+	bmAux = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGHT / 2 - WALL_WIDTH, game->getTexture(Blocks), in);
+	objects.push_back(bmAux);
+	blocksmap = bmAux;
+
+	// Leer las paredes
+	wallAux = new Wall(); wallAux->loadFromFile(in, game->getTexture(SideWall)); objects.push_back(wallAux); walls[0] = wallAux;
+	wallAux = new Wall(); wallAux->loadFromFile(in, game->getTexture(SideWall)); objects.push_back(wallAux); walls[1] = wallAux;
+	wallAux = new Wall(); wallAux->loadFromFile(in, game->getTexture(TopWall)); objects.push_back(wallAux); walls[2] = wallAux;
+
+	// Leer la pala
+	pAux = new Paddle(); pAux->loadFromFile(in, game->getTexture(PaddleTxt)); objects.push_back(pAux);
+	paddle = pAux;
+
+	// Leer la bola y setear su iterador
+	bAux = new Ball(); bAux->loadFromFile(in, game->getTexture(BallTxt));
+	bAux->setGameDepend(this); objects.push_back(bAux);
+	ball = bAux;
+
+	// Comprobar si hay rewards y leerlas en caso afirmativo
+	int numRewards = 0;
+	in >> numRewards;
+	for (int i = 0; i < numRewards; ++i) {
+		rAux = new Reward(); rAux->loadFromFile(in, game->getTexture(Rewards));
+		rAux->setGameDepend(this); objects.push_back(rAux);
+	}
+	itFirstReward = objects.end();
+}
+
 // Destructora
 PlayState::~PlayState() {
 	for (GameObject* myOb : objects) delete(myOb);
@@ -72,12 +112,22 @@ void PlayState::update() {
 			(*it)->update();
 		}
 
+		/*for (list<GameObject*>::iterator it = next(reward); it != objects.end(); (it++)++) {
+			Reward* myR = static_cast<Reward*> (*it);
+			myR->changeIterator();
+		}*/
+
 		for (int i = 0; i < objToDestroy.size(); i++) {
 			objects.erase(objToDestroy[i]);
 		}
 		objToDestroy.clear();
+
+		checkNextLevel(false);
 	}
 	else isPaused = false;
+
+	if (win) game->end(win);
+	if (gameOver) game->end(gameOver);
 }
 
 // Maneja los eventos de pausa y movimiento de la pala
@@ -88,7 +138,6 @@ void PlayState::handleEvent(SDL_Event event) {
 	}
 	else paddle->handleEvent(event);						// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 
-	// if (event.key.keysym.sym == SDLK_s) userSaving();		// Guardar
 }
 
 // Comprobar colisiones del Ball
@@ -99,7 +148,7 @@ bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Blocksmap
 	if (rectBall.y <= WIN_HEIGHT / 2) {
 		if (blocksmap->collides(rectBall, colV)) {
-			createReward(blocksmap->getDestroyedBlock());
+			//createReward(blocksmap->getDestroyedBlock());
 			return true;
 		}
 	}
@@ -142,9 +191,9 @@ void PlayState::createReward(Vector2D rPos) {
 
 	// Si no es de tipo vacío, instanciarlo y añadirlo a la lista
 	if (type != 'x') {
-		objects.push_back(new Reward(rPos, 35, 20, game->getTexture(Rewards), Vector2D(0, 1), type, this));
-		Reward* reward = static_cast<Reward*> (*prev(objects.end()));
-		reward->setIterator(prev(objects.end()));
+		objects.push_back(new Reward(rPos, game->getTexture(Rewards), Vector2D(0, 1), type, this));
+		Reward* myRw = static_cast<Reward*> (*prev(objects.end()));
+		myRw->setIterator(prev(objects.end()));
 		if (itFirstReward == objects.end()) itFirstReward = prev(objects.end());
 	}
 }
@@ -159,9 +208,9 @@ void PlayState::rewardBehaviour(char type) {
 	}
 }
 
-void PlayState::deleteReward(list<GameObject*>::iterator reward) {	// Borramos de la lista la reward											
+void PlayState::deleteReward(list<GameObject*>::iterator reward) {									
 	objToDestroy.push_back(reward);									// Borramos de la lista la reward
-	delete(*reward);												// Eliminamos el objeto en la memoria
+	//delete(*reward);												// Eliminamos el objeto en la memoria
 }
 
 // Comprobar si se ha pasado de nivel
@@ -174,7 +223,7 @@ void PlayState::checkNextLevel(bool rewardAct) {
 		if (currentLevel >= NUM_LEVELS) win = true;											// Si es el último nivel el jugador ha ganado
 		else {																				// Si no es el último nivel
 
-			reloadItems();
+			reloadItems();																	// Volver los items a su posición inicial
 			ifstream in;
 			in.open(levels[currentLevel] + ".dat");
 			if (!in.is_open()) throw string("Error: couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
@@ -184,7 +233,7 @@ void PlayState::checkNextLevel(bool rewardAct) {
 			objects.pop_front();
 			delete(oldBM);																	// Eliminamos el mapa que acabamos de superar
 			objects.push_front(myBm);
-			// Volver los items a su posición inicial
+			blocksmap = myBm;
 			SDL_Delay(1500);																// Al cambiar de nivel tardamos en actualizar la pantalla
 		}
 	}
@@ -224,18 +273,25 @@ void PlayState::reloadItems() {
 	paddle->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGHT - 30), Vector2D(0, 0)); // Movemos la pala a la posición inicial del juego
 }
 
-// Pregunta por el código de usuario y llama al método de guardar en archivo
-void PlayState::userSaving() {
-	// Pedir info de usuario
-	string codUser = "";
-	cout << "Introduce tu codigo de usuario (0X): ";
-	cin >> codUser;
-	// saveToFile(codUser);
+void PlayState::saveToFile(ofstream& out) {
+	// Guardar nivel actual y vida
+	out << currentLevel << " " << life << endl;
 
-	// Cerrar
-	game->quit();
+	// Guardar objetos de la lista de objetos
+	for (list<GameObject*>::iterator it = objects.begin(); it != itFirstReward; it++) {
+		ArkanoidObject* myOb = dynamic_cast<ArkanoidObject*> (*it);
+		myOb->saveToFile(out); 
+		out << endl;
+	}
+
+	// Guardar los rewards en caso de haber
+	if (itFirstReward != objects.end())
+	{
+		out << (objects.size() - 6) << endl;
+		for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
+			ArkanoidObject* myOb = dynamic_cast<ArkanoidObject*> (*it);
+			myOb->saveToFile(out); 
+			out << endl;
+		}
+	}
 }
-
-// PREGUNTAS:
-// - NUESTRA LISTA ES DE GAMEOBJ Y NO ARKOBJ -> NO HAY COLLIDES(), GETRECT(), ETC
-// - DONDE CARGARMOS/GUARDAMOS (JUEGO O ESTADO)

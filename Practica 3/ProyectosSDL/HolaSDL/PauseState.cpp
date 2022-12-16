@@ -13,16 +13,6 @@ PauseState::PauseState(Game* g) : GameState(g) {
 	objects.push_back(new MenuButton(Vector2D(centerWidth, centerHeight + 170), game->getTexture(MainMenuButton), mainMenu));
 }
 
-// Manejar los eventos de los botones del menú
-void PauseState::handleEvent(SDL_Event e) {
-	bool control = false;
-	for (list<GameObject*>::iterator it = next(objects.begin()); it != objects.end() && !control; it++) {
-		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
-		myB->handleEvent(e);
-		if (myB->getState() == 2) { control = true; myB->myC(game); }
-	}
-}
-
 // Llama al método de resume de Game
 void PauseState::resume(Game* g) {
 	g->resume();

@@ -14,7 +14,4 @@ public:
 	MainMenuState() : GameState() {};
 	MainMenuState(Game* g);
 	virtual ~MainMenuState() {};
-	
-	// Métodos esenciales
-	virtual void handleEvent(SDL_Event e);
 };

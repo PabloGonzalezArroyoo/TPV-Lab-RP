@@ -13,7 +13,7 @@ private:
 public:
 	// Constructoras y destructor
 	Reward();
-	Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, PlayState* _game);
+	Reward(Vector2D _pos, Texture* _texture, Vector2D _vel, char _type, PlayState* _game);
 	~Reward();
 
 	// Métodos esenciales
@@ -24,7 +24,8 @@ public:
 	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
 	void setGameDepend(PlayState* _game) { game = _game; }
-	void setIterator(list<GameObject*>::iterator _it) { miPos = _it; }
+	void changeIterator() { miPos--; }
+	void setIterator(list<GameObject*>::iterator it) { miPos = it; }
 
 	// Obtener tipo
 	char getType() { return type; };

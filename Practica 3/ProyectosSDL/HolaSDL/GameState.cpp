@@ -16,5 +16,13 @@ void GameState::update() {
 
 // HandleEvent - llama a todos los handleEvent de su lista de objetos
 void GameState::handleEvent(SDL_Event e) {
-	for (GameObject* myObj : objects) myObj->handleEvent(e);
+	bool control = false;
+	list<GameObject*>::iterator it = next(objects.begin());
+
+	while (it != objects.end() && !control) {
+		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
+		myB->handleEvent(e);
+		if (myB->getState() == 2) { control = true; myB->myC(game); }
+		it++;
+	}
 }

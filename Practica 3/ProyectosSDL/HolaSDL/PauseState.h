@@ -14,8 +14,5 @@ public:
 	PauseState() : GameState() {};
 	PauseState(Game* g);
 	virtual ~PauseState() {};
-
-	// Métodos esenciales
-	virtual void handleEvent(SDL_Event e);
 };
 

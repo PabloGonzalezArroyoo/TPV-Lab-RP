@@ -26,3 +26,6 @@ const uint BUTTON_HEIGHT = 75;
 
 // Paddle
 const uint PADDLE_AREA = WIN_HEIGHT - 40;
+
+//Reward
+const uint REWARD_WIDTH = 35, REWARD_HEIGHT = 20;

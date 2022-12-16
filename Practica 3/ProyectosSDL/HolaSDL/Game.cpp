@@ -106,51 +106,6 @@ void Game::saveToFile(string filename) {
 	
 	out.close();
 }
-
-// Cargar de archivo
-void Game::loadFromFile(string filename) {
-	ifstream in;
-	in.open("saves/" + filename + ".txt");
-	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + filename + ".txt)"); // Si no se ha encontrado el archivo
-
-	// Borrar lista anterior (objetos predeterminados)
-	for (ArkanoidObject* myOb : objects) delete(myOb);
-	objects.clear();
-
-	// Leer nivel actual y vida
-	in >> currentLevel;
-	in >> life;
-
-	// Punteros auxiliares
-	BlocksMap* bmAux; Wall* wallAux; Paddle* pAux; Ball* bAux; Reward* rAux;
-
-	// Leer blocksmap
-	bmAux = new BlocksMap(WIN_WIDTH - 2 * WALL_WIDTH, WIN_HEIGTH / 2 - WALL_WIDTH, textures[Blocks], in);
-	objects.push_back(bmAux);
-
-	// Leer las paredes
-	wallAux = new Wall(); wallAux->loadFromFile(in, textures[SideWall]); objects.push_back(wallAux);
-	wallAux = new Wall(); wallAux->loadFromFile(in, textures[SideWall]); objects.push_back(wallAux);
-	wallAux = new Wall(); wallAux->loadFromFile(in, textures[TopWall]); objects.push_back(wallAux);
-
-	// Leer la pala
-	pAux = new Paddle(); pAux->loadFromFile(in, textures[PaddleTxt]); objects.push_back(pAux);
-
-	// Leer la bola y setear su iterador
-	bAux = new Ball(); bAux->loadFromFile(in, textures[BallTxt]);
-	bAux->setGameDepend(this); objects.push_back(bAux);
-	itBall = prev(objects.end());
-	
-	// Comprobar si hay rewards y leerlas en caso afirmativo
-	int numRewards = 0;
-	in >> numRewards;
-	for (int i = 0; i < numRewards; ++i) {
-		rAux = new Reward(); rAux->loadFromFile(in, textures[Rewards]);
-		rAux->setGameDepend(this); objects.push_back(rAux);
-	}
-
-	in.close();
-}
 */
 
 // Debe cargar un juego completamente nuevo, es decir, cargar PlayState
@@ -160,13 +115,41 @@ void Game::newGame() {
 
 // Debe cargar un juego completamente nuevo, es decir, cargar PlayState, pero a partir de datos previos
 void Game::loadGame() {
-	gsm->changeState(new PlayState(this));
-	//HACER CONSTRUCTORA Q RECIBA FLUJO
+	bool cargado = false;
+	ifstream in;
+	do {
+		try{
+			string playerId = " ";
+			cout << "Introduzca el codigo numerico (0X) de la partida: ";
+			cin >> playerId;
+			in.open("saves/" + playerId + ".txt");
+			cargado = true;
+		}
+		catch (ArkanoidError e) {
+			cout << e.what() << endl;
+			cout << "- Por favor, introduzca un nombre de archivo válido -";
+			cargado = false;
+		}
+	} while (!cargado);
+
+	gsm->changeState(new PlayState(this, in));
+	in.close();
 }
 
+
 void Game::saveGame() {
-	gsm->popState();
-	// gsm->currentState()->userSaving();
+	// Pedir info de usuario
+	string codUser = "";
+	cout << "Introduce tu codigo de usuario (0X): ";
+	cin >> codUser;
+	resume();
+
+	PlayState* play = static_cast<PlayState*> (gsm->currentState());
+	ofstream out;
+	out.open("saves/" + codUser + ".txt");
+	play->saveToFile(out);
+	out.close();
+	pause();
 }
 
 // Debe cerrar el juego
@@ -189,6 +172,10 @@ void Game::mainMenu() {
 // Añade un nuevo estado de pausa a la pila
 void Game::pause() {
 	gsm->pushState(new PauseState(this));
+}
+
+void Game::end(bool win) {
+	gsm->changeState(new EndState(this, win));
 }
 
 // Devuelve la textura correspondiente

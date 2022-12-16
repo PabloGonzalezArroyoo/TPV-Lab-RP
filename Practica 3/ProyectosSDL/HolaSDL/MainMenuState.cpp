@@ -13,16 +13,6 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 	objects.push_back(new MenuButton(Vector2D(centerWidth, centerHeight + 170), game->getTexture(ExitButton), quit));
 }
 
-// Manejar los eventos de los botones del menú
-void MainMenuState::handleEvent(SDL_Event e) {
-	bool control = false;
-	for (list<GameObject*>::iterator it = next(objects.begin()); it != objects.end() && !control; it++) {
-		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
-		myB->handleEvent(e);
-		if (myB->getState() == 2) { control = true; myB->myC(game); }
-	}
-}
-
 // Llama al método de newGame de Game
 void MainMenuState::newGame(Game* g) {
 	g->newGame();

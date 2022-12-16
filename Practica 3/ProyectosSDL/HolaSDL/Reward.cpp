@@ -6,8 +6,8 @@
 Reward::Reward() : MovingObject(), r(0), c(0) , game(nullptr), type(' ') {}
 
 // Constructora
-Reward::Reward(Vector2D _pos, uint _w, uint _h, Texture* _texture, Vector2D _vel, char _type, PlayState* _game) :
-	MovingObject(_pos, _w, _h, _texture, _vel), type(_type), game(_game) {
+Reward::Reward(Vector2D _pos, Texture* _texture, Vector2D _vel, char _type, PlayState* _game) :
+	MovingObject(_pos, REWARD_WIDTH, REWARD_HEIGHT, _texture, _vel), type(_type), game(_game) {
 	c = 0; r = 0;
 
 	// Asignar la fila del tipo

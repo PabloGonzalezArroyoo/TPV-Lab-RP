@@ -29,14 +29,14 @@ const TextureDescription textDescription[NUM_TEXTURES] = {
 	{"ball2", 1, 1},
 	{"bricks2", 2, 3},
 	{"digits2", 3, 4},
-	{"gameover1", 1, 1},
+	{"gameover", 1, 1},
 	{"paddle2", 1, 1},
 	{"side", 1, 1},
 	{"topside", 1, 1},
 	{"rewards", 10, 8},
 
 	// Menús
-	{"youwin", 1, 1},
+	{"win", 1, 1},
 	{"menu", 1, 1},
 	{"pause", 1, 1},
 
@@ -92,5 +92,6 @@ public:
 	void resume();
 	void mainMenu();
 	void pause();
+	void end(bool win);
 };
 

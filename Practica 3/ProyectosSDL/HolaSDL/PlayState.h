@@ -14,8 +14,8 @@ private:
 	bool gameOver, win, isPaused;
 
 	// Niveles
-	string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
-	//string levels[NUM_LEVELS] = { "cambioLvl", "level02", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
+	//string levels[NUM_LEVELS] = { "level01", "level02", "level03" };
+	string levels[NUM_LEVELS] = { "cambioLvl", "cambioLvl", "cambioLvl" }; // -> Para llegar a la pantalla de victoria
 
 	// Vidas y nivel actual
 	int life, currentLevel;
@@ -34,6 +34,7 @@ public:
 	// Constructoras y destructora
 	PlayState();
 	PlayState(Game* g);
+	PlayState(Game* g, ifstream& in);
 	virtual ~PlayState();
 
 	// Métodos esenciales
@@ -55,6 +56,6 @@ public:
 	void checkLife();
 	void lifeLeft();
 	void reloadItems();
-	void userSaving();
+	void saveToFile(ofstream& out);
 };
 

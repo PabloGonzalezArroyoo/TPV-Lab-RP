@@ -22,7 +22,6 @@ class GameState
 protected:
 	list<GameObject*> objects;
 	Game* game;
-	string id;
 
 public :
 	// Constructoras y destructora
@@ -35,7 +34,5 @@ public :
 	virtual void render();
 	virtual void handleEvent(SDL_Event e);
 
-	// Getters
-	string getId() { return id; };
 };
 
