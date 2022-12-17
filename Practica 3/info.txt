@@ -5,6 +5,4 @@ Pablo González Arroyo y Rafael Argandoña Blácido
 Ninguna
 
 -- COSAS QUE NO FUNCIONAN CORRECTAMENTE --
-Que sepamos, hay dos problemas que hemos encontrado y no hemos podido solucionar:
-1. Uno ocurre al producirse una colisión entre la bola y la pala, de forma que la primera choca por completo en un lateral (ya sea izquierdo o derecho) de la última. Esto, por lo general, provoca 2 resultados: o la bola se queda encajada dentro de la pala o sale disparada a una velocidad exagerada.
-2. Al pasar de nivel usando el reward L, haya o no más rewards en la escena, se produce un leak de memoria solo con esa reward (creemos que esa memoria que falta por borrar es L).
+Que sepamos, ninguna
