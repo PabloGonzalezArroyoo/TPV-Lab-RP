@@ -1,10 +1,6 @@
 #pragma once
 #include <stack>
 #include "GameState.h"
-#include "PlayState.h"
-#include "PauseState.h"
-#include "EndState.h"
-#include "MainMenuState.h"
 
 class GameState;
 class GameStateMachine

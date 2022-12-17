@@ -1,7 +1,6 @@
 #pragma once
 #include "GameState.h"
 
-class GameStateMachine;
 class PauseState : public GameState
 {
 private:

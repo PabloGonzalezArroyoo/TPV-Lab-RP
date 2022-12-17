@@ -83,8 +83,7 @@ public:
 
 	// Coger texturas
 	Texture* getTexture(int texture);
-	GameStateMachine* getGameStateMachine() { return gsm; }
-	void changeControl() { exit = true; }
+
 	// Maquina de estados
 	void newGame();
 	void loadGame();

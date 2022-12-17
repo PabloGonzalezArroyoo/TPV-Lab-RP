@@ -1,5 +1,4 @@
 #include "EndState.h"
-#include "GameStateMachine.h"
 
 EndState::EndState() : GameState() {
 	
@@ -19,15 +18,13 @@ EndState::EndState(Game* g, bool win) : GameState(g){
 }
 
 void EndState::newGame(Game* g) {
-	g->getGameStateMachine()->changeState(new PlayState(g));
+	g->newGame();
 }
 
 void EndState::quit(Game* g) {
-	g->changeControl();
-	delete(g->getGameStateMachine());
+	g->quit();
 }
 
 void EndState::mainMenu(Game* g) {
-	g->getGameStateMachine()->discardStates();
-	g->getGameStateMachine()->pushState(new MainMenuState(g));
+	g->mainMenu();
 }

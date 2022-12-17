@@ -1,5 +1,9 @@
 // Práctica 3: Pablo González Arroyo, Rafael Argandoña Blácido
 #include "Game.h"
+#include "PlayState.h"
+#include "PauseState.h"
+#include "EndState.h"
+#include "MainMenuState.h"
 
 // Constructora
 Game::Game() {
