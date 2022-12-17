@@ -1,5 +1,7 @@
 #include "PlayState.h"
 #include "Game.h"
+#include "EndState.h"
+#include "PauseState.h"
 #include <iostream>
 #include <fstream>
 
@@ -125,15 +127,15 @@ void PlayState::update() {
 	else isPaused = false;
 
 	// Pantalla de victoria o fin del juego
-	if (win) game->end(true);
-	else if (gameOver) game->end(false);
+	if (win) game->getStateMachine()->changeState(new EndState(game, true));
+	else if (gameOver) game->getStateMachine()->changeState(new EndState(game, false));
 }
 
 // Maneja los eventos de pausa y movimiento de la pala
 void PlayState::handleEvent(SDL_Event event) {
 	if (event.key.keysym.sym == SDLK_ESCAPE && !isPaused) {	// Si el jugador ha pulsado ESCAPE, se lanza el estado de pausa
 		isPaused = true;
-		game->pause();
+		game->getStateMachine()->pushState(new PauseState(game));
 	}
 	else paddle->handleEvent(event);						// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
 }

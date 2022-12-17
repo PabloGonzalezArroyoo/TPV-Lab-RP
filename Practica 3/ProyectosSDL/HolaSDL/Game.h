@@ -81,17 +81,19 @@ public:
 	void update();
 	void handleEvents();
 
-	// Coger texturas
+	// Getters
 	Texture* getTexture(int texture);
-
+	GameStateMachine* getStateMachine() { return gsm; };
+	void changeControl() { exit = true; };
+	
 	// Maquina de estados
-	void newGame();
-	void loadGame();
+	/*void newGame();
+	void loadGame();*/
 	void saveGame();
-	void quit();
+	/*void quit();
 	void resume();
 	void mainMenu();
 	void pause();
-	void end(bool win);
+	void end(bool win);*/
 };
 

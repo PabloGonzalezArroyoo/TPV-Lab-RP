@@ -13,16 +13,20 @@ private:
 	Vector2D pos;
 	Texture* texture;
 	int state;
+	Callback* myC;
+	Game* game;
 
 public:
-	Callback* myC;
+	// Constructora
 	MenuButton();
-	MenuButton(Vector2D _pos, Texture* _txt, Callback* _c );
+	MenuButton(Vector2D _pos, Texture* _txt, Callback* _c, Game* g);
 	
+	// Métodos eneciales
 	virtual void render();
-	virtual void handleEvent(SDL_Event e);
+	bool handleEvents(SDL_Event e);
 	virtual void update();
 
+	// Getter
 	int getState() { return state; }
 };
 

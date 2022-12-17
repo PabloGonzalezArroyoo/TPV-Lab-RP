@@ -32,6 +32,9 @@ Game::~Game() {
 	// Borrar Texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
 
+	// Eliminar máquina de estados
+	delete(gsm);
+
 	// Borrar render y window
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -72,6 +75,7 @@ void Game::update() {
 	gsm->currentState()->update();
 }
 
+// Manejo del input
 void Game::handleEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
@@ -79,102 +83,20 @@ void Game::handleEvents() {
 	}
 }
 
-// Guardar en arhivo
-/*
-void Game::saveToFile(string filename) {
-
-	ofstream out;
-	out.open("saves/" + filename + ".txt");
-
-	// Guardar nivel actual y vida
-	out << currentLevel << " " << life << endl;
-
-	// Guardar objetos de la lista de objetos
-	for (list<ArkanoidObject*>::iterator it = objects.begin(); it != next(itBall); it++) {
-		(*it)->saveToFile(out); out << endl;
-	}
-
-	// Guardar los rewards en caso de haber
-	if (objects.size() > 5)
-	{
-		out << (objects.size() - 6) << endl;
-		for (list<ArkanoidObject*>::iterator it = next(itBall); it != objects.end(); it++) {
-			(*it)->saveToFile(out); out << endl;
-		}
-	}
-	
-	out.close();
-}
-*/
-
-// Debe cargar un juego completamente nuevo, es decir, cargar PlayState
-void Game::newGame() {
-	gsm->changeState(new PlayState(this));
-}
-
-// Debe cargar un juego completamente nuevo, es decir, cargar PlayState, pero a partir de datos previos
-void Game::loadGame() {
-	bool cargado = false;
-	ifstream in;
-	do {
-		try{
-			string playerId = " ";
-			cout << "Introduzca el codigo numerico (0X) de la partida: ";
-			cin >> playerId;
-			in.open("saves/" + playerId + ".txt");
-			cargado = true;
-		}
-		catch (ArkanoidError e) {
-			cout << e.what() << endl;
-			cout << "- Por favor, introduzca un nombre de archivo válido -";
-			cargado = false;
-		}
-	} while (!cargado);
-
-	gsm->changeState(new PlayState(this, in));
-	in.close();
-}
-
-
+// Guardar en un archivo el estado del juego
 void Game::saveGame() {
 	// Pedir info de usuario
 	string codUser = "";
 	cout << "Introduce tu codigo de usuario (0X): ";
 	cin >> codUser;
-	resume();
+	gsm->popState();
 
 	PlayState* play = static_cast<PlayState*> (gsm->currentState());
 	ofstream out;
 	out.open("saves/" + codUser + ".txt");
 	play->saveToFile(out);
 	out.close();
-	pause();
-}
-
-// Debe cerrar el juego
-void Game::quit() {
-	exit = true;
-	delete(gsm);
-}
-
-// Al llamarse en el PauseState, debe borrarse y dejar que el estado de debajo se ejecute
-void Game::resume() {
-	gsm->popState();
-}
-
-// Borrar todos los estados previos y empezar una nueva pila con el menú como único estado
-void Game::mainMenu() {
-	gsm->discardStates();
-	gsm->pushState(new MainMenuState(this));
-}
-
-// Añade un nuevo estado de pausa a la pila
-void Game::pause() {
 	gsm->pushState(new PauseState(this));
-}
-
-void Game::end(bool win) {
-	gsm->changeState(new EndState(this, win));
 }
 
 // Devuelve la textura correspondiente

@@ -21,8 +21,7 @@ void GameState::handleEvent(SDL_Event e) {
 
 	while (!control && it != objects.end()) {
 		MenuButton* myB = dynamic_cast<MenuButton*> (*it);
-		myB->handleEvent(e);
-		if (myB->getState() == 2) { control = true; myB->myC(game); }
-		else it++;
+		control = myB->handleEvents(e);
+		if (!control )it++;
 	}
 }
