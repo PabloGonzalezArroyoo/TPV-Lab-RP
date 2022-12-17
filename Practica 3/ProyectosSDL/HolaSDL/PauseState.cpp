@@ -1,4 +1,5 @@
 #include "PauseState.h"
+#include "GameStateMachine.h"
 
 // Constructora
 PauseState::PauseState(Game* g) : GameState(g) {
@@ -15,15 +16,27 @@ PauseState::PauseState(Game* g) : GameState(g) {
 
 // Llama al método de resume de Game
 void PauseState::resume(Game* g) {
-	g->resume();
+	g->getGameStateMachine()->pushState(new PauseState(g));
 }
 
 // Llama al método de saveGame de Game
 void PauseState::saveGame(Game* g) {
-	g->saveGame();
+	// Pedir info de usuario
+	string codUser = "";
+	cout << "Introduce tu codigo de usuario (0X): ";
+	cin >> codUser;
+	//resume();
+
+	PlayState* play = static_cast<PlayState*> (g->getGameStateMachine()->currentState());
+	ofstream out;
+	out.open("saves/" + codUser + ".txt");
+	play->saveToFile(out);
+	out.close();
+	//pause();
 }
 
 // Llama al método de mainMenu de Game
 void PauseState::mainMenu(Game* g) {
-	g->mainMenu();
+	g->getGameStateMachine()->discardStates();
+	g->getGameStateMachine()->pushState(new MainMenuState(g));
 }

@@ -1,4 +1,5 @@
 #include "MainMenuState.h"
+#include "GameStateMachine.h"
 
 // Constructora
 MainMenuState::MainMenuState(Game* g) : GameState(g) {
@@ -15,15 +16,34 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 
 // Llama al método de newGame de Game
 void MainMenuState::newGame(Game* g) {
-	g->newGame();
+	g->getGameStateMachine()->changeState(new PlayState(g));
 }
 
 // Llama al método de loadGame de Game
 void MainMenuState::loadGame(Game* g) {
-	g->loadGame();
+	bool cargado = false;
+	ifstream in;
+	do {
+		try {
+			string playerId = " ";
+			cout << "Introduzca el codigo numerico (0X) de la partida: ";
+			cin >> playerId;
+			in.open("saves/" + playerId + ".txt");
+			cargado = true;
+		}
+		catch (ArkanoidError e) {
+			cout << e.what() << endl;
+			cout << "- Por favor, introduzca un nombre de archivo válido -";
+			cargado = false;
+		}
+	} while (!cargado);
+
+	g->getGameStateMachine()->changeState(new PlayState(g, in));
+	in.close();
 }
 
 // Llama al método de quit de Game
 void MainMenuState::quit(Game* g) {
-	g->quit();
+	g->changeControl();
+	delete(g->getGameStateMachine());
 }
