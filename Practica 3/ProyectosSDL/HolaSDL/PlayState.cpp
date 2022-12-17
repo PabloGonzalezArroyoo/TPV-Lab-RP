@@ -20,7 +20,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	currentLevel = 0; life = NUM_LIFES;
 	gameOver = false; win = false; isPaused = false;
 
-	//Añadimos el mapa de bloques
+	// Añadimos el mapa de bloques
 	ifstream in;
 	in.open(levels[currentLevel] + ".dat");
 	if (!in.is_open()) throw FileNotFoundError("Couldn't load file (" + levels[currentLevel] + ".dat)"); // Si no se ha encontrado el archivo
@@ -30,26 +30,33 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	itAux = objects.begin();
 	blocksmap = static_cast<BlocksMap*> (*itAux);
 	
-	//Añadimos las paredes
-
-	objects.push_back(new Wall(Vector2D(0, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(1, 0)));
-	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, 0 + WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(-1, 0)));
+	// Añadimos las paredes
+	objects.push_back(new Wall(Vector2D(0, WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(1, 0)));
+	objects.push_back(new Wall(Vector2D(WIN_WIDTH - WALL_WIDTH, WALL_WIDTH), WALL_WIDTH, WIN_HEIGHT - WALL_WIDTH, game->getTexture(SideWall), Vector2D(-1, 0)));
 	objects.push_back(new Wall(Vector2D(0, 0), WIN_WIDTH, WALL_WIDTH, game->getTexture(TopWall), Vector2D(0, 1)));
 	for (int i = 0; i < 3; i++) {
 		itAux++;
 		walls[i] = static_cast<Wall*>(*itAux);
 	}
 
-	//Añadimos la plataforma
-	objects.push_back(new Paddle(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH * 2, WIN_HEIGHT - 30), 100, 10, game->getTexture(PaddleTxt), Vector2D(0, 0)));
+	// Añadimos las imagenes de las vidas
+	for (int i = 0; i < life; i++) {
+		objects.push_back(new Image(game->getTexture(BallTxt), Vector2D(LIFES_GAP * i, LIFE_HEIGHT), BALL_WIDTH, BALL_HEIGHT));
+		lifes.push(prev(objects.end()));
+		itAux++;
+	}
+
+	// Añadimos la plataforma
+	objects.push_back(new Paddle(Vector2D(PADDLE_X, PADDLE_Y), PADDLE_WIDTH, PADDLE_HEIGHT, game->getTexture(PaddleTxt), Vector2D(0, 0)));
 	itAux++;
 	paddle = static_cast<Paddle*> (*itAux);
 
-	//Añadimos la pelota
-	objects.push_back(new Ball(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGHT - 50), 15, 15, game->getTexture(BallTxt), Vector2D(1, -1), this));
+	// Añadimos la pelota
+	objects.push_back(new Ball(Vector2D(BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT, game->getTexture(BallTxt), Vector2D(1, -1), this));
 	itAux++;
 	ball = static_cast<Ball*> (*itAux);
 
+	// Asignar iterador de rewards
 	itFirstReward = objects.end();
 }
 
@@ -74,6 +81,12 @@ PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
 	wallAux = new Wall(); wallAux->loadFromFile(in, game->getTexture(SideWall)); objects.push_back(wallAux); walls[1] = wallAux;
 	wallAux = new Wall(); wallAux->loadFromFile(in, game->getTexture(TopWall)); objects.push_back(wallAux); walls[2] = wallAux;
 
+	// Añadimos las imagenes de las vidas
+	for (int i = 0; i < life; i++) {
+		objects.push_back(new Image(game->getTexture(BallTxt), Vector2D(LIFES_GAP * i, LIFE_HEIGHT), BALL_WIDTH, BALL_HEIGHT));
+		lifes.push(prev(objects.end()));
+	}
+
 	// Leer la pala
 	pAux = new Paddle(); pAux->loadFromFile(in, game->getTexture(PaddleTxt)); objects.push_back(pAux);
 	paddle = pAux;
@@ -93,11 +106,6 @@ PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
 	itFirstReward = objects.end();
 }
 
-// Destructora
-PlayState::~PlayState() {
-	
-}
-
 // Renderizado
 void PlayState::render() {
 	// Renderizado de los objetos del juego
@@ -113,6 +121,7 @@ void PlayState::update() {
 		for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 			(*it)->update();
 		}
+
 		// Recorremos la lista de objetos a destruir
 		for (int i = 0; i < objToDestroy.size(); i++) {
 			GameObject* objTD = *objToDestroy[i];				// Nos guardamos a donde apunta el iterador
@@ -143,7 +152,10 @@ void PlayState::handleEvent(SDL_Event event) {
 // Comprobar colisiones del Ball
 bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - DeadLine
-	if (rectBall.y >= WIN_HEIGHT - 10) { checkLife(); return true; }
+	if (rectBall.y >= WIN_HEIGHT - 10) {
+		removeLife(); 
+		return true; 
+	}
 
 	// Ball - Blocksmap
 	if (rectBall.y <= WIN_HEIGHT / 2) {
@@ -202,7 +214,7 @@ void PlayState::createReward(Vector2D rPos) {
 void PlayState::rewardBehaviour(char type) {
 	switch (type) {
 	case 'L': checkNextLevel(true); break;					// Cambio de nivel
-	case 'R': ++life; lifeLeft(); break;					// +1 de vida
+	case 'R': addLife(); break;								// +1 de vida
 	case 'E': paddle->changeDimensions(true); break;		// Alargar pala
 	case 'S': paddle->changeDimensions(false); break;		// Acortar pala
 	}
@@ -240,25 +252,24 @@ void PlayState::checkNextLevel(bool rewardAct) {
 	}
 }
 
-// Gestionar vida: quitar un punto de vida y resetear posiciones de entidades
-void PlayState::checkLife() {
-	--life;											// Decrementamos la vida							
-	if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
-	else reloadItems();								// Si quedan, resetear la posición inicial la pala y la pelota
-	lifeLeft();										// Mostrar info en la consola
+// Añade una vida al jugador y al HUD
+void PlayState::addLife() {
+	
+
+	// Crear la nueva imagen del HUD, insertándola en la lista de obejtos y en el stack
+	auto it = objects.insert(lifes.top(), new Image(game->getTexture(BallTxt), Vector2D(LIFES_GAP * life, LIFE_HEIGHT), BALL_WIDTH, BALL_HEIGHT));
+	lifes.push(it);
+	// Añadir vida
+	++life;
 }
 
-// Muestra en consola la vida actual
-void PlayState::lifeLeft() {
-	// Borrar consola según SO
-	#ifdef _WIN32
-		system("cls");
-	#else
-		system("clear");
-	#endif
-
-	// Escribir en consola
-	cout << "VIDAS RESTANTES: " << life << endl;
+// Quitar un punto de vida y resetear posiciones de entidades, comprobando si se pierde o no el nivel
+void PlayState::removeLife() {
+	--life;											// Decrementamos la vida
+	objToDestroy.push_back(lifes.top());
+	lifes.pop();
+	if (life <= 0) gameOver = true;					// Si no quedan vidas, fin de la partida
+	else reloadItems();								// Si quedan, resetear la posición inicial la pala y la pelota
 }
 
 // Vuelve los items a su estado inicial (p.ej: cuando se pierde una vida)
@@ -283,7 +294,7 @@ void PlayState::saveToFile(ofstream& out) {
 	// Guardar objetos de la lista de objetos
 	for (list<GameObject*>::iterator it = objects.begin(); it != itFirstReward; it++) {
 		ArkanoidObject* myOb = dynamic_cast<ArkanoidObject*> (*it);
-		myOb->saveToFile(out); 
+		if (myOb != nullptr) myOb->saveToFile(out); 
 		out << endl;
 	}
 

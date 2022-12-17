@@ -27,6 +27,9 @@ private:
 	Wall* walls[3];
 	Ball* ball;
 
+	//Pila de iteradores apuntando a las vidas del jugador
+	stack<list<GameObject*>::iterator> lifes;
+
 	// Iteradores
 	list<GameObject*>::iterator itFirstReward;
 	vector<list<GameObject*>::iterator> objToDestroy;
@@ -36,7 +39,7 @@ public:
 	PlayState();
 	PlayState(Game* g);
 	PlayState(Game* g, ifstream& in);
-	virtual ~PlayState();
+	virtual ~PlayState() {};
 
 	// Métodos esenciales
 	virtual void update();
@@ -52,10 +55,15 @@ public:
 	void rewardBehaviour(char type);
 	void deleteReward(list<GameObject*>::iterator reward);
 
-	// Comprobaciones y vidas
+	// Comprobaciones de nivel y vidas
 	void checkNextLevel(bool rewardAct);
-	void checkLife();
-	void lifeLeft();
+	//void checkLife();
+	
+	// Vidas
+	void addLife();
+	void removeLife();
+
+	// Guardado y reposicionamiento de items
 	void reloadItems();
 	void saveToFile(ofstream& out);
 };

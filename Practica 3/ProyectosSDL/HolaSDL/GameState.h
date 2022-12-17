@@ -6,7 +6,7 @@
 #include "BlocksMap.h"
 #include "Wall.h"
 #include "Reward.h"
-#include "Menu.h"
+#include "Image.h"
 #include "MenuButton.h"
 #include "Game.h"
 

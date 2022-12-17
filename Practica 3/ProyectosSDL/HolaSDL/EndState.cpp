@@ -8,8 +8,8 @@ EndState::EndState() : GameState() {
 
 EndState::EndState(Game* g, bool win) : GameState(g){
 	//Imagen correspondiente
-	if (win) objects.push_back(new Menu(game->getTexture(Winner)));
-	else objects.push_back(new Menu(game->getTexture(GameOver)));
+	if (win) objects.push_back(new Image(game->getTexture(Winner)));
+	else objects.push_back(new Image(game->getTexture(GameOver)));
 
 	// Botones correspondientes
 	int centerWidth = WIN_WIDTH / 2 - BUTTON_WIDTH / 2;

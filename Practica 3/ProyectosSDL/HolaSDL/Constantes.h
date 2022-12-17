@@ -25,8 +25,20 @@ const uint WALL_WIDTH = 15;
 const uint BUTTON_WIDTH = 300;
 const uint BUTTON_HEIGHT = 75;
 
+// Ball
+const uint BALL_WIDTH = 15, BALL_HEIGHT = 15;
+const double BALL_X = WIN_WIDTH / 2 - WALL_WIDTH;
+const double BALL_Y = WIN_HEIGHT - 50;
+
+// Lifes
+const uint LIFES_GAP = 20;
+const double LIFE_HEIGHT = WIN_HEIGHT - 20;
+
 // Paddle
 const uint PADDLE_AREA = WIN_HEIGHT - 40;
+const uint PADDLE_WIDTH = 100, PADDLE_HEIGHT = 10;
+const double PADDLE_X = WIN_WIDTH / 2 - WALL_WIDTH * 2;
+const double PADDLE_Y = WIN_HEIGHT - 30;
 
-//Reward
+// Reward
 const uint REWARD_WIDTH = 35, REWARD_HEIGHT = 20;

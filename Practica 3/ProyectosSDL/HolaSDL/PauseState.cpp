@@ -4,7 +4,7 @@
 // Constructora
 PauseState::PauseState(Game* g) : GameState(g) {
 	// Imagen de pausa
-	objects.push_back(new Menu(game->getTexture(Pause)));
+	objects.push_back(new Image(game->getTexture(Pause)));
 
 	// Botones correspondientes
 	int centerWidth = WIN_WIDTH / 2 - BUTTON_WIDTH / 2;
@@ -21,7 +21,14 @@ void PauseState::resume(Game* g) {
 
 // Llama al método de saveGame de Game
 void PauseState::saveGame(Game* g) {
+	//Borramos consola
+	#ifdef _WIN32
+		system("cls");
+	#else
+		system("clear");
+	#endif
 	g->saveGame();
+	cout << endl << "PARTIDA GUARDADA --- Si desea, puede seguir jugando" << endl;
 }
 
 // Llama al método de mainMenu de Game

@@ -22,6 +22,12 @@ Game::Game() {
 		const TextureDescription& desc = textDescription[i];
 		textures[i] = new Texture(renderer, "../images/" +  desc.filename + ".png", desc.hframes, desc.vframes);
 	}
+	//Borramos consola
+	#ifdef _WIN32
+		system("cls");
+	#else
+		system("clear");
+	#endif
 
 	// Máquina de estados
 	gsm = new GameStateMachine(new MainMenuState(this));
