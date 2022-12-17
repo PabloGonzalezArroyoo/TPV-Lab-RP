@@ -1,3 +1,4 @@
+// Práctica 3: Pablo González Arroyo, Rafael Argandoña Blácido
 #pragma once
 #include "MovingObject.h"
 #include <list>
