@@ -93,7 +93,7 @@ PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
 
 // Destructora
 PlayState::~PlayState() {
-	//for (GameObject* myOb : objects) delete(myOb);
+	
 }
 
 // Renderizado
@@ -111,21 +111,20 @@ void PlayState::update() {
 		for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 			(*it)->update();
 		}
-
-		/*for (list<GameObject*>::iterator it = next(reward); it != objects.end(); (it++)++) {
-			Reward* myR = static_cast<Reward*> (*it);
-			myR->changeIterator();
-		}*/
-
+		// Recorremos la lista de objetos a destruir
 		for (int i = 0; i < objToDestroy.size(); i++) {
-			objects.erase(objToDestroy[i]);
+			GameObject* objTD = *objToDestroy[i];				// Nos guardamos a donde apunta el iterador
+			objects.erase(objToDestroy[i]);						// Retiramos el objeto de la lista principal de objetos
+			delete(objTD);										// Borramos la memoria del objeto, una vez ya este eliminado de la lista
 		}
-		objToDestroy.clear();
+		objToDestroy.clear();									// Limpiamos la lista de objetos a destruir, para llenarla si es necesario en el siguiente update
 
+		// Comprobar si se debe cambiar de nivel (false -> no es una llamada por parte de una reward)
 		checkNextLevel(false);
 	}
 	else isPaused = false;
 
+	// Pantalla de victoria o fin del juego
 	if (win) game->end(true);
 	else if (gameOver) game->end(false);
 }
@@ -137,7 +136,6 @@ void PlayState::handleEvent(SDL_Event event) {
 		game->pause();
 	}
 	else paddle->handleEvent(event);						// Si el evento es de otro tipo llamamos a la pala (por si son sus teclas de mov)
-
 }
 
 // Comprobar colisiones del Ball
@@ -148,7 +146,7 @@ bool PlayState::collidesBall(SDL_Rect rectBall, Vector2D& colV) {
 	// Ball - Blocksmap
 	if (rectBall.y <= WIN_HEIGHT / 2) {
 		if (blocksmap->collides(rectBall, colV)) {
-			//createReward(blocksmap->getDestroyedBlock());
+			createReward(blocksmap->getDestroyedBlock());
 			return true;
 		}
 	}
@@ -183,10 +181,10 @@ void PlayState::createReward(Vector2D rPos) {
 	// Asignar tipo
 	char type = 'x';
 	switch (random) {
-	case 0: type = 'L'; break;
-	case 1: type = 'R'; break;
-	case 2: type = 'E'; break;
-	case 3: type = 'S'; break;
+		case 0: type = 'L'; break;
+		case 1: type = 'R'; break;
+		case 2: type = 'E'; break;
+		case 3: type = 'S'; break;
 	}
 
 	// Si no es de tipo vacío, instanciarlo y añadirlo a la lista
@@ -208,9 +206,10 @@ void PlayState::rewardBehaviour(char type) {
 	}
 }
 
-void PlayState::deleteReward(list<GameObject*>::iterator reward) {									
+// Añade la reward a la lisa de objetos para borrar
+void PlayState::deleteReward(list<GameObject*>::iterator reward) {
+	if (reward == itFirstReward) itFirstReward++;					// Si es la primera reward, actualizar el iterador para evitar errores
 	objToDestroy.push_back(reward);									// Borramos de la lista la reward
-	//delete(*reward);												// Eliminamos el objeto en la memoria
 }
 
 // Comprobar si se ha pasado de nivel
@@ -267,6 +266,8 @@ void PlayState::reloadItems() {
 	for (list<GameObject*>::iterator it = itFirstReward; it != objects.end(); it++) {
 		objToDestroy.push_back(it);
 	}
+
+	itFirstReward = objects.end();
 
 	// Poner la bola y la pala en las posiciones y velocidades inciales
 	ball->setPosition(Vector2D(WIN_WIDTH / 2 - WALL_WIDTH, WIN_HEIGHT - 50), Vector2D(1, -1)); // Movemos la pelota a la posición inicial del juego

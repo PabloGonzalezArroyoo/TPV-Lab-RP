@@ -24,7 +24,7 @@ public:
 	virtual void loadFromFile(istream& in, Texture* _texture);
 	virtual void saveToFile(ostream& out);
 	void setGameDepend(PlayState* _game) { game = _game; }
-	void changeIterator() { miPos--; }
+	//void changeIterator() { miPos--; }
 	void setIterator(list<GameObject*>::iterator it) { miPos = it; }
 
 	// Obtener tipo
