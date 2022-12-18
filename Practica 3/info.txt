@@ -5,4 +5,4 @@ Pablo González Arroyo y Rafael Argandoña Blácido
 Ninguna
 
 -- COSAS QUE NO FUNCIONAN CORRECTAMENTE --
-Que sepamos, solo ocurre de forma irregular una aceleración de la pelota al rebotar con kas esquinas de la pala
+Que sepamos, solo ocurre de forma irregular una aceleración de la pelota al rebotar con las esquinas de la pala
