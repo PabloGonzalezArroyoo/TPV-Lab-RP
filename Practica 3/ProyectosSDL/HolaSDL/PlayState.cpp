@@ -99,11 +99,13 @@ PlayState::PlayState(Game* g, ifstream& in) : GameState(g) {
 	// Comprobar si hay rewards y leerlas en caso afirmativo
 	int numRewards = 0;
 	in >> numRewards;
+	if (numRewards == 0) itFirstReward = objects.end();
+
 	for (int i = 0; i < numRewards; ++i) {
 		rAux = new Reward(); rAux->loadFromFile(in, game->getTexture(Rewards));
 		rAux->setGameDepend(this); objects.push_back(rAux);
+		if (i == 0) itFirstReward = prev(objects.end());
 	}
-	itFirstReward = objects.end();
 }
 
 // Renderizado
