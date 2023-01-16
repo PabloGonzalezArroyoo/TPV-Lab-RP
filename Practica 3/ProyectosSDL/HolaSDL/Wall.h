@@ -5,6 +5,17 @@
 
 typedef unsigned int uint;
 
+// CLASE WALL - OBJETO DEL JUEGO:
+// Propiedades
+//		- Hereda de ArkanoidObject (w, h, pos, texture)
+//		- colVector: vector a devolver cuando se colisiona con ella (vector normal)
+// Métodos:
+//		Constructora	-> Vacía y sobrecargada con los parámetros necesarios
+//		Destructora		-> Llama a su destructora
+//		collides		-> si intersecta la pelota con la pared, devuelve si intersecta y cambia el vector colisión de pelota
+//		loadFromFile	-> carga la pared a partir de un archivo de texto
+//		saveToFile		-> guarda la información de la pared en un archivo de texto
+
 class Wall : public ArkanoidObject{
 private:
 	Vector2D colVector;
