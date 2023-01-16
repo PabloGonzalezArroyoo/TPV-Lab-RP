@@ -2,6 +2,19 @@
 #pragma once
 #include "ArkanoidObject.h"
 
+// CLASE MOVINGOBJECT - PROTOTIPO DE UN ARKANOIDOBJECT CON MOVIMIENTO:
+// Propiedades
+//		- Hereda las de ArkanoidObject (w, h, pos y texture)
+//		- vel: véctor de velocidad [(1, 0), (0, 1), etc]
+// Metodos:
+//		Constructora	-> Vacía y sobrecargada tanto con los parametros necesarios
+//		Destructora		-> Se ejecuta la destructora del padre
+//		setPosition		-> coloca el objeto en una posicion recibida
+//		getVelocity		-> devuelve el vector dirección del objeto
+//		getPosition		-> devuelve la posición del objeto
+//		loadFromFile	-> ejecuta el loadFromFile del padre y además guarda los valores propios de esta clase (vel)
+//		saveToFile		-> ejecuta el saveToFile del padre y además carga los valores propios de esta clase (vel)
+
 class MovingObject : public ArkanoidObject
 {
 protected:

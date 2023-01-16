@@ -5,6 +5,16 @@
 #include "Constantes.h"
 #include "checkML.h"
 
+// INTERFAZ GAMEOBJECT:
+// Propiedades: no gracias
+// Métodos:
+//		render -> método abstracto que será redefinido obligatoriamente por las clases hijas
+//		update y handleEvent -> metodos virtuales que serán redefinidos por las clases hijas si es necesario
+
+// Métodos abstractos [metodo() = 0] -> deben definirse SÍ O SÍ en las clases hijas sin ser definidas en la clase padre. Si una clase tiene un método
+//										abstracto, esta se vuelve interfaz
+// Métodos virtuales [virtual metodo();] -> pueden o no redefinirse en las clases hijas. Si no se redefinen, usan la implemtación del padre
+
 typedef unsigned int uint;
 
 class GameObject

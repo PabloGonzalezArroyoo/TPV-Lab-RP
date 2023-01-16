@@ -3,6 +3,8 @@
 
 #include "MovingObject.h"
 
+
+
 typedef unsigned int uint;
 const uint MAX_WIDTH = 200, MIN_WIDTH = 50;
 

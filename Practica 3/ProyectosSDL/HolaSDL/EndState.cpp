@@ -2,10 +2,7 @@
 #include "MainMenuState.h"
 #include "PlayState.h"
 
-EndState::EndState() : GameState() {
-	
-}
-
+// Constructora
 EndState::EndState(Game* g, bool win) : GameState(g){
 	//Imagen correspondiente
 	if (win) objects.push_back(new Image(game->getTexture(Winner)));

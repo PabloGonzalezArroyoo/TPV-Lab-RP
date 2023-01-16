@@ -17,6 +17,16 @@ enum TextureName {
 	PlayButton, LoadButton, ExitButton, ResumeButton, MainMenuButton, RestartButton, SaveButton		// Botones
 };
 
+// CLASE GAMESTATE - PROTOTIPO ESCENA DEL JUEGO:
+// Propiedades
+//		- objects: lista de punteros a objetos
+//		- game: puntero al juego
+// Metodos:
+//		Constructora	-> Vacía y sobrecargada con el puntero al juego
+//		Destructora		-> Elimina los objetos de la lista de objetos
+//		update, render	-> recorre la lista de objetos llamando a este método
+//		hadleEvent		-> recorre los botones comprobando si se pulsa alguno
+
 class GameState
 {
 // Protected -> Accesible desde esta clase y sus herederas

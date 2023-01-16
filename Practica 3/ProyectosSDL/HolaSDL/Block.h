@@ -5,6 +5,18 @@
 
 typedef unsigned int uint;
 
+// CLASE BLOCK - OBJETO DEL JUEGO (ARKANOIDOBJECT):
+// Propiedades:
+//		- Heredada las de ArkanoidObject (w, h, texture, pos)
+//		- color (int = {0, 1, 2, 3, 4, 5, 6})
+// Metodos:
+//		Constructora	-> Vacía y con parámetros
+//		Destructora		-> Se ejecuta la destructora del padre (ArkanoidObject)
+//		render			-> Sobrecarga el metodo heredado de ArkanoidObject para pintar un frame de la imagen de Bloques, el del color correspondiente
+//		collides		-> Procesa las colisiones de la pelota, calculándo un vector director nuevo según donde choca la bola que se le pasará a esta
+//		getColor		-> devuelve el color del bloque
+//		getPosition		-> devuelve la posición
+
 class Block : public ArkanoidObject{
 private:
 	uint color;

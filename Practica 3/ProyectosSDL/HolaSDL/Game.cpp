@@ -13,7 +13,7 @@ Game::Game() {
 		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) throw SDLError("Couldn't load screen.");
-
+	
 	// Variables de flujo
 	exit = false;
 

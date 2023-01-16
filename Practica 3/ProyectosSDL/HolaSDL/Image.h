@@ -3,6 +3,16 @@
 #include "GameObject.h"
 #include <list>
 
+// CLASE IMAGE - PROTOTIPO DE IMAGEN:
+// Propiedades
+//		- texture: puntero a la textura de la imagen
+//		- pos: posición de la imagen
+//		- w y h: tamaño de la imagen
+// Metodos:
+//		Constructora	-> Vacía y sobrecargada tanto con el puntero a la textura como con este y el resto de propiedades
+//		Destructora		-> Llama al método del padre
+//		render			-> renderiza la imagen
+
 class Image : public GameObject
 {
 private:

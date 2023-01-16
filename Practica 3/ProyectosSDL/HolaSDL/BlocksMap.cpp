@@ -85,10 +85,10 @@ bool BlocksMap::collides(SDL_Rect rectBall, Vector2D& collisionVector) {
 
 // Guardar en archivo
 void BlocksMap::saveToFile(ostream& out) {
-	out << r << " " << c << endl;
+	out << r << " " << c << endl;							// Escribir columnas y filas (tamaño)
 	for (int i = 0; i < r; i++) {
 		for (int j = 0; j < c; j++) {
-			if (map[i][j] == nullptr) out << 0 << " ";
+			if (map[i][j] == nullptr) out << 0 << " ";		// Escribimos en el archivo el color del bloque o un 0 si no hay en esa posición
 			else out << map[i][j]->getColor() << " ";
 		}
 		out << endl;

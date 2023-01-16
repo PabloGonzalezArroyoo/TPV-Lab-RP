@@ -237,7 +237,6 @@ void PlayState::checkNextLevel(bool rewardAct) {
 
 		if (currentLevel >= NUM_LEVELS) win = true;											// Si es el último nivel el jugador ha ganado
 		else {																				// Si no es el último nivel
-
 			reloadItems();																	// Volver los items a su posición inicial
 			ifstream in;
 			in.open(levels[currentLevel] + ".dat");
@@ -256,8 +255,6 @@ void PlayState::checkNextLevel(bool rewardAct) {
 
 // Añade una vida al jugador y al HUD
 void PlayState::addLife() {
-	
-
 	// Crear la nueva imagen del HUD, insertándola en la lista de obejtos y en el stack
 	auto it = objects.insert(lifes.top(), new Image(game->getTexture(BallTxt), Vector2D(LIFES_GAP * life, LIFE_HEIGHT), BALL_WIDTH, BALL_HEIGHT));
 	lifes.push(it);

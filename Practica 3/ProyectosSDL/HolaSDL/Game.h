@@ -55,6 +55,26 @@ class MainMenuState;
 class PauseState;
 class EndState;
 class GameStateMachine;
+
+//CLASE GAME - JUEGO:
+// Propiedades:
+//		- window y render: punteros para crear la ventana SDL
+//		- exit: booleano de control para saber si el jugador ha salido del juego
+//		- textures: array con las distintas texturas
+//		- gsm: puntero a la máquina de estados
+// Metodos:
+//		Constructora	-> crea la aplicación de SDL, crea las textura y la máquina de estados para controlar las escenas del juego
+//		Destructora		-> elimina las texturas, destruye la máquina de estados y cierra la aplicación de SDL
+//		run				-> método que contiene el bucle de juego
+//		render			-> limpia la pantalla, llama al método de renderizado de la escena actual y pinta en la pantalla
+//		update			-> llama al update de la escena actual de la máquina de estados
+//		handleEvents	-> si hay un evento, se pide que la escena actual del juego decida que hacer con él
+//		getTexture		-> devuelve el puntero a la textura en base a un entero recibido
+//		getStateMachine	-> devuelve el púntero de la gameStateMachine
+//		changeControl	-> marca el cierre del juego
+//		saveGame		-> pide el código del jugador (nombre del archivo), genera el archivo de guardado y llama a la función de guardar
+//						estado de play
+
 class Game {
 private:
 	// Punteros SDL
@@ -71,7 +91,7 @@ private:
 	GameStateMachine* gsm;
 
 public:
-	// Constructora (vacía y a partir de archivo) y destructora
+	// Constructora y destructora
 	Game();
 	~Game();
 
@@ -87,13 +107,6 @@ public:
 	void changeControl() { exit = true; };
 	
 	// Maquina de estados
-	/*void newGame();
-	void loadGame();*/
 	void saveGame();
-	/*void quit();
-	void resume();
-	void mainMenu();
-	void pause();
-	void end(bool win);*/
 };
 
