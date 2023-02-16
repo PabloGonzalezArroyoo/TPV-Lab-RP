@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Manager.h"
+#include "../utils/Constants.h"
 
 class Component {
 public:
