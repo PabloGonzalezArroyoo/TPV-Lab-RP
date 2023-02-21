@@ -29,7 +29,7 @@ SDLUtils::SDLUtils(std::string windowTitle, int width, int height) :
 SDLUtils::SDLUtils(std::string windowTitle, int width, int height,
 		std::string filename) :
 		SDLUtils(windowTitle, width, height) {
-	loadReasources(filename);
+	loadResources(filename);
 }
 
 SDLUtils::~SDLUtils() {
@@ -109,7 +109,7 @@ void SDLUtils::initSDLExtensions() {
 
 }
 
-void SDLUtils::loadReasources(std::string filename) {
+void SDLUtils::loadResources(std::string filename) {
 	// TODO check the correctness of values and issue a corresponding
 	// exception. Now we just do some simple checks, and assume input
 	// is correct.

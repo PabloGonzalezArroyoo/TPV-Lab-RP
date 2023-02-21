@@ -4,7 +4,7 @@
 #include "../sdlUtils/Texture.h"
 
 class Image : public Component {
-private:
+protected:
 	Texture* texture;
 	Transform* tr;
 

@@ -13,6 +13,7 @@ public:
 	void update();
 	void render();
 
+	virtual Entity* getPlayer() { };
 
 	Entity* addEntity();
 
