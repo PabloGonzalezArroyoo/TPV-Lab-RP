@@ -1,5 +1,6 @@
 #include "FighterCtrl.h"
 #include "../sdlutils/InputHandler.h"
+#include "../ecs/Entity.h"
 
 void FighterCtrl::initComponent() {
 	tr = myObj->getComponent<Transform>();

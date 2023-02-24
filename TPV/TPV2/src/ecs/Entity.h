@@ -3,8 +3,8 @@
 #include <array>
 #include "Component.h"
 #include "../game/ecs_def.h"
+using namespace std;
 
-class Component;
 class Manager;
 class Entity {
 protected:

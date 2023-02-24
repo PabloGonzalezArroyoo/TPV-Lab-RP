@@ -9,6 +9,8 @@ private:
 	Texture* texture;
 
 public:
+	static const int id = _HEALTH;
+
 	// Constructora
 	Health(Texture* _txt) : Component(), lifes(0), texture(_txt) { }
 

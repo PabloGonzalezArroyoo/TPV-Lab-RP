@@ -7,6 +7,8 @@ private:
 	Transform* tr;
 
 public:
+	static const int id = _GUN;
+
 	// Constructora
 	Gun() : Component(), tr(nullptr) { }
 

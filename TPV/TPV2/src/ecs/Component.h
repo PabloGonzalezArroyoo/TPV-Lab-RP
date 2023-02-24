@@ -1,9 +1,12 @@
 #pragma once
 #include "../game/ecs_def.h"
-#include "Entity.h"
+#include "../utils/Constants.h"
+
+using namespace std;
 
 class Manager;
 class Entity;
+
 class Component {
 protected:
 	Entity* myObj = nullptr;
@@ -21,8 +24,8 @@ public:
 	}
 
 	// Métodos virtuales
-	virtual void initComponent() {};
-	virtual void update() {};
-	virtual void render() {};
-	virtual void handleInput() {};
+	virtual void initComponent() { };
+	virtual void update() { };
+	virtual void render() { };
+	virtual void handleInput() { };
 };

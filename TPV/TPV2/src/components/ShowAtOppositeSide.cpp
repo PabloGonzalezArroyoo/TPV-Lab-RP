@@ -1,5 +1,5 @@
 #include "ShowAtOppositeSide.h"
-
+#include "../ecs/Entity.h"
 
 void ShowAtOppositeSide::initComponent() {
 	tr = myObj->getComponent<Transform>();

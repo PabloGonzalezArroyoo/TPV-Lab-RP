@@ -1,4 +1,5 @@
 #include "Follow.h"
+#include "../ecs/Entity.h"
 
 void Follow::initComponent() {
 	myTr = myObj->getComponent<Transform>();

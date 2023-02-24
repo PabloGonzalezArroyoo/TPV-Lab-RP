@@ -1,6 +1,7 @@
 #include "Gun.h"
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/VirtualTimer.h"
+#include "../ecs/Entity.h"
 
 void Gun::initComponent() {
 	tr = myObj->getComponent<Transform>();

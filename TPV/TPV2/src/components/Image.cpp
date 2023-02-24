@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "../ecs/Entity.h"
 
 void Image::initComponent() {
 	tr = myObj->getComponent<Transform>();

@@ -239,5 +239,8 @@
     <ClCompile Include="src\utils\GameState.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\DeAcceleration.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

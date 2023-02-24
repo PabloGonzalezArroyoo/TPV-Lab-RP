@@ -1,4 +1,5 @@
 #include "DisableOnExit.h"
+#include "../ecs/Entity.h"
 
 void DisableOnExit::initComponent() {
 	myTr = myObj->getComponent<Transform>();

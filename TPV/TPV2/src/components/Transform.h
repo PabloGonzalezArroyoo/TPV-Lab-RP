@@ -11,6 +11,8 @@ private:
 	float rotation;
 
 public:
+	static const int id = _TRANSFORM;
+
 	// Constructoras
 	Transform();
 	Transform(Vector2D _pos, Vector2D _vel, int _width, int _height, float _rotation = 0);

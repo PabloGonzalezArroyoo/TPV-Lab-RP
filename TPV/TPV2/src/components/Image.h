@@ -10,6 +10,8 @@ protected:
 	Transform* tr;
 
 public:
+	static const int id = _IMAGE;
+
 	// Constructoras
 	Image() : Component(), texture(nullptr), tr(nullptr) { }
 	Image(Texture* _txt) : Component(), texture(_txt), tr(nullptr) { }
