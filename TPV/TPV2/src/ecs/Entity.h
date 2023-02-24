@@ -2,7 +2,7 @@
 #include <vector>
 #include <array>
 #include "Component.h"
-#include "../game/ecs_def.h"
+#include "../utils/Constants.h"
 using namespace std;
 
 class Manager;

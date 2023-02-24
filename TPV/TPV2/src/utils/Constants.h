@@ -1,10 +1,10 @@
 #pragma once
 
 //PANTALLA
-int WIN_WIDTH = 800;
-int WIN_HEIGHT = 600;
-int UPPER_LEFT_CORNER_X = 10;
-int UPPER_LEFT_CORNER_Y = 10;
+const int WIN_WIDTH = 800;
+const int WIN_HEIGHT = 600;
+const int UPPER_LEFT_CORNER_X = 10;
+const int UPPER_LEFT_CORNER_Y = 10;
 
 //PLAYER
-int MAX_LIFES = 3;
+const int MAX_LIFES = 3;
