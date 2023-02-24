@@ -1,0 +1,32 @@
+{
+  "fonts": [
+    { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 16 },
+    { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 24 },
+    { "id": "CHIMERA", "file": "resources/fonts/NES-Chimera.ttf", "size": 48 }
+  ],
+
+  "images": [
+    { "id": "GameLogo", "file": "../resources/images/asteroid.png" },
+    { "id": "GameLogo", "file": "../resources/images/asteroid_gold.png" },
+    { "id": "GameLogo", "file": "../resources/images/fighter.png" },
+    { "id": "GameLogo", "file": "../resources/images/fighter2.png" },
+    { "id": "GameLogo", "file": "../resources/images/fire.png" },
+    { "id": "GameLogo", "file": "../resources/images/heart.png" }
+  ],
+
+  "messages": [
+    { "id": "PressAnyKey", "text": "Press Any Key", "font": "ARIAL24", "color": "0x112233ff", "bg": "0xffffffff" },
+    { "id": "HelloSDL", "text": "Hello SDL!", "font": "ARIAL48", "color": "0x0000ffff" }
+  ],
+
+  "sounds": [
+    { "id": "wall_hit", "file": "../resources/sound/wall_hit.wav" },
+    { "id": "explosion", "file": "../resources/sound/explosion.wav" },
+    { "id": "gunshot", "file": "../resources/sound/gunshot.wav" }
+  ],
+
+  "musics": [
+    { "id": "beat", "file": "resources/sound/beat.wav" }
+  ]
+
+}

@@ -243,4 +243,9 @@
       <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\config\asteroids.resources.json">
+      <Filter>Header Files\json</Filter>
+    </None>
+  </ItemGroup>
 </Project>

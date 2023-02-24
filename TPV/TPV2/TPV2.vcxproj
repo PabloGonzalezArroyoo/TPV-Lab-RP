@@ -85,6 +85,9 @@
     <ClCompile Include="src\utils\GameState.cpp" />
     <ClCompile Include="src\utils\Vector2D.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\config\asteroids.resources.json" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
