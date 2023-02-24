@@ -3,7 +3,7 @@
 #include "../sdlutils/VirtualTimer.h"
 
 void Gun::initComponent() {
-	tr = ent_->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void Gun::update() {

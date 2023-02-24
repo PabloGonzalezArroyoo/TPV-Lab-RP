@@ -1,7 +1,7 @@
 #include "Image.h"
 
 void Image::initComponent() {
-	tr = ent_->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void Image::render() {
@@ -12,8 +12,8 @@ SDL_Rect Image::getRect() const{
 	SDL_Rect r;
 	r.x = tr->getPosition().getX();
 	r.y = tr->getPosition().getY();
-	r.w = tr->getScale().getX();
-	r.h = tr->getScale().getY();
+	r.w = tr->getWidth();
+	r.h = tr->getHeight();
 
 	return r;
 }

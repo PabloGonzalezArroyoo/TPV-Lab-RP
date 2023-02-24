@@ -9,6 +9,7 @@ private:
 	int fw, fh;
 	int rows, cols;
 	SDL_Rect src;
+
 public:
 	FramedImage(Texture* _txt, int _fw, int _fh, int r, int c);
 

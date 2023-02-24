@@ -8,7 +8,7 @@ private:
 
 public:
 	ShowAtOppositeSide() : Component(), tr(nullptr) { }
-	
+
 	virtual void initComponent();
 	virtual void update();
-}
+};

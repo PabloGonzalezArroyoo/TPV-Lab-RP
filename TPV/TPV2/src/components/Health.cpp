@@ -1,6 +1,5 @@
 #include "Health.h"
 
-
 void Health::render() {
 	SDL_Rect r;
 	r.x = UPPER_LEFT_CORNER_X;

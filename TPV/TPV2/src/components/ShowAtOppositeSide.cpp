@@ -2,7 +2,7 @@
 
 
 void ShowAtOppositeSide::initComponent() {
-	tr = ent_->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void ShowAtOppositeSide::update() {

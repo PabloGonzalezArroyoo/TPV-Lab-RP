@@ -2,7 +2,7 @@
 #include "../sdlutils/InputHandler.h"
 
 void FighterCtrl::initComponent() {
-	tr = ent_->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void FighterCtrl::update() {
@@ -11,10 +11,10 @@ void FighterCtrl::update() {
 
 void FighterCtrl::handleInput() {
 	if (InputHandler::instance()->isKeyDown(SDLK_LEFT)) {
-
+		// TO-DO: rotar
 	}
 	else if (InputHandler::instance()->isKeyDown(SDLK_RIGHT)) {
-
+		// TO-DO: rotar
 	}
 	
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
