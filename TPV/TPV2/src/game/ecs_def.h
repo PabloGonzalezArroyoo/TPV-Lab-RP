@@ -16,7 +16,7 @@ enum cmpId : cmpId_type {
 	_GENERATIONS,
 	_FOLLOW,
 	_DISABLE_ON_EXIT,
-
+	_BUTTON,
 
 	//DO NOT REMOVE THIS
 	_LAST_CMP_ID

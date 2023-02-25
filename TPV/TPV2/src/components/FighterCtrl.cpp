@@ -3,7 +3,7 @@
 #include "../ecs/Entity.h"
 
 void FighterCtrl::initComponent() {
-	tr = myObj->getComponent<Transform>();
+	tr = myObj->getComponent<Transform>(_TRANSFORM);
 }
 
 void FighterCtrl::update() {
@@ -20,5 +20,9 @@ void FighterCtrl::handleInput() {
 	
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
 		tr->translate();
+	}
+
+	if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
+		
 	}
 }

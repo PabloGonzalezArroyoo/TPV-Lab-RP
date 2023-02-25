@@ -1,14 +1,19 @@
 #pragma once
 #include "../ecs/Manager.h"
-
+#include <list>
+class Game;
 class GameState {
 protected:
-	// list<GameObject*> objects;
-	// Game* game;
+	Manager* mng;
+	Game* game;
 
 public:
+	GameState() : game(nullptr) { }
+	GameState(Game* g) : game(g) { }
 	// Métodos esenciales
 	virtual void update();
 	virtual void render();
 	virtual void handleEvent();
+
+	virtual void newState();
 };

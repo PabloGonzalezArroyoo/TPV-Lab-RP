@@ -14,7 +14,7 @@ public:
 	}
 
 	virtual ~Entity() {
-		for (auto c : currCmps_) delete c;
+		for (Component* c : currCmps_) delete c;
 	}
 
 	inline void setContext(Manager* mngr);
@@ -22,7 +22,7 @@ public:
 	inline void setAlive(bool alive);
 
 	template<typename T, typename ...Ts>
-	inline T* addComponet(cmpId_type cId, Ts&&...args) {
+	inline T* addComponent(cmpId_type cId, Ts&&...args) {
 		T* c = new T(forward<Ts>(args));
 
 		removeComponent(cId);
@@ -61,7 +61,7 @@ public:
 	}
 
 	inline void render() {
-		auto n = currCmps_.size();
+		int n = currCmps_.size();
 		for (auto i = 0u; i < n; i++) currCmps_[i]->render();
 	}
 

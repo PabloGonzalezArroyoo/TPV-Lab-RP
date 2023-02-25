@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "sdlutils/sdlutils_demo.h"
+#include "game/Game.h"
 
 int main(int ac, char **av) {
 	//try {
@@ -16,7 +17,15 @@ int main(int ac, char **av) {
 	//} catch (...) {
 	//	std::cerr << "Caught and exception of unknown type ...";
 	//}
+	try {
 
+		Game* g = new Game();
+		g->run();
+		delete g;
+	}
+	catch (string e){
+		cout << e << endl;
+	}
 	return 0;
 }
 

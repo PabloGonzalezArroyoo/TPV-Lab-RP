@@ -2,7 +2,7 @@
 #include "../ecs/Entity.h"
 
 void DeAcceleration::initComponent() {
-	tr = myObj->getComponent<Transform>();
+	tr = myObj->getComponent<Transform>(_TRANSFORM);
 }
 
 void DeAcceleration::update() {

@@ -2,7 +2,7 @@
 #include "../ecs/Entity.h"
 
 void Follow::initComponent() {
-	myTr = myObj->getComponent<Transform>();
+	myTr = myObj->getComponent<Transform>(_TRANSFORM);
 	//Cojo el Transform del player
 }
 
