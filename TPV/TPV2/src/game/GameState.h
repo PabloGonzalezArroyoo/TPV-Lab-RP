@@ -10,6 +10,7 @@ protected:
 public:
 	GameState() : game(nullptr) { }
 	GameState(Game* g) : game(g) { }
+
 	// Métodos esenciales
 	virtual void update();
 	virtual void render();

@@ -28,7 +28,7 @@ typedef struct {
 // Descripción de las texturas (según la estructura del struct anterior)
 const TextureDescription textDescription[NUM_TEXTURES] = {
 	// Objetos
-	{"fighter", 1, 1},
+	{"fighter", 1, 1}
 };
 
 class Game {

@@ -16,7 +16,7 @@ Game::Game() {
 	// Para cargar texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) {
 		const TextureDescription& desc = textDescription[i];
-		textures[i] = new Texture(renderer, "../../resources/images/" + textDescription[i].filename + ".png");
+		textures[i] = new Texture(renderer, "../image/images/" + textDescription[i].filename + ".png");
 	}
 	//Borramos consola
 #ifdef _WIN32
