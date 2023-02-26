@@ -2,7 +2,7 @@
 #include "../ecs/Entity.h"
 
 void Image::initComponent() {
-	tr = myObj->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void Image::render() {

@@ -6,7 +6,7 @@ private:
 	int gen;
 
 public:
-	static const int id = _GENERATIONS;
+	constexpr static cmpId_type id = _GENERATIONS;
 
 	Generations(int g) : Component(), gen(g) { }
 

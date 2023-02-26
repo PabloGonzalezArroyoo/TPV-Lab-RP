@@ -3,7 +3,7 @@
 #include "../ecs/Entity.h"
 
 void FighterCtrl::initComponent() {
-	tr = myObj->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void FighterCtrl::update() {

@@ -11,7 +11,7 @@ private:
 	float rotation;
 
 public:
-	static const int id = _TRANSFORM;
+	constexpr static cmpId_type id = _TRANSFORM;
 
 	// Constructoras
 	Transform();

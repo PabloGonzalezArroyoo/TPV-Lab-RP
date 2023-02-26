@@ -6,4 +6,5 @@ private:
 	bool paused, gameOver;
 public:
 	PlayState(Game* g);
+	virtual ~PlayState();
 };

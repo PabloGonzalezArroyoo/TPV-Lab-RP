@@ -4,7 +4,7 @@
 #include "../ecs/Entity.h"
 
 void Gun::initComponent() {
-	tr = myObj->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void Gun::update() {

@@ -42,9 +42,10 @@ public:
 
 	// Añade un componente y devuelve un puntero a este
 	template<typename T, typename ...Ts>
-	inline T* addComponent(cmpId_type cId, Ts&&...args) {
+	inline T* addComponent(Ts&&...args) {
 		T* c = new T(std::forward<Ts>(args)...);
-		removeComponent(cId);
+		constexpr cmpId_type cId = T::id;
+		removeComponent<T>();
 		currCmps.push_back(c);
 		cmps[cId] = c;
 		c->setContext(this, myMng);
@@ -53,8 +54,9 @@ public:
 	}
 
 	// Borra el componente de la entidad
-	inline void removeComponent(cmpId_type cId) {
-
+	template<typename T>
+	inline void removeComponent() {
+		constexpr cmpId_type cId = T::id;
 		if (cmps[cId] != nullptr) {
 			auto iter = std::find(currCmps.begin(),
 				currCmps.end(), cmps[cId]);
@@ -66,13 +68,15 @@ public:
 
 	// Devuelve un puntero al componente
 	template<typename T>
-	inline T* getComponent(cmpId_type cId) {
+	inline T* getComponent() {
+		constexpr cmpId_type cId = T::id;
 		return static_cast<T*>(cmps[cId]);
 	}
 
 	// Comrpueba si tiene el componente
 	template <typename T>
-	inline bool hasComponent(cmpId_type cId) {
+	inline bool hasComponent() {
+		constexpr cmpId_type cId = T::id;
 		return cmps[cId] != nullptr;
 	}
 

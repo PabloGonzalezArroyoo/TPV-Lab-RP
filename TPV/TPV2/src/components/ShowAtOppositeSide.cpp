@@ -2,7 +2,7 @@
 #include "../ecs/Entity.h"
 
 void ShowAtOppositeSide::initComponent() {
-	tr = myObj->getComponent<Transform>(_TRANSFORM);
+	tr = myObj->getComponent<Transform>();
 }
 
 void ShowAtOppositeSide::update() {

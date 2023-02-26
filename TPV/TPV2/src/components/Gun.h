@@ -7,7 +7,7 @@ private:
 	Transform* tr;
 
 public:
-	static const int id = _GUN;
+	constexpr static cmpId_type id = _GUN;
 
 	// Constructora
 	Gun() : Component(), tr(nullptr) { }

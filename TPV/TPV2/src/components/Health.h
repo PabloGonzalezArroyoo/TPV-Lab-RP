@@ -9,7 +9,7 @@ private:
 	Texture* texture;
 
 public:
-	static const int id = _HEALTH;
+	constexpr static cmpId_type id = _HEALTH;
 
 	// Constructora
 	Health(Texture* _txt) : Component(), lifes(0), texture(_txt) { }

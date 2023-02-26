@@ -22,6 +22,12 @@ void GameState::handleEvent() {
 	//}
 }
 
+void GameState::run() {
+	mng->update();
+	mng->render();
+	mng->refresh();
+}
+
 void GameState::newState() {
 
 }

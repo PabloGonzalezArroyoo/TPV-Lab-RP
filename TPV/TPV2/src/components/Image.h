@@ -10,7 +10,7 @@ protected:
 	Transform* tr;
 
 public:
-	static const int id = _IMAGE;
+	constexpr static cmpId_type id = _IMAGE;
 
 	// Constructoras
 	Image() : Component(), texture(nullptr), tr(nullptr) { }

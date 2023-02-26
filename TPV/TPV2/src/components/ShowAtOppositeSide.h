@@ -7,7 +7,7 @@ private:
 	Transform* tr;
 
 public:
-	static const int id = _SHOWATOPPOSITESIDE;
+	constexpr static cmpId_type id = _SHOWATOPPOSITESIDE;
 
 	ShowAtOppositeSide() : Component(), tr(nullptr) { }
 

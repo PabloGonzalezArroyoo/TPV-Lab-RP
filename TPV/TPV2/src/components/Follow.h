@@ -7,7 +7,7 @@ private:
 	Transform* myTr;
 	Transform* plTr;
 public:
-	static const int id = _FOLLOW;
+	constexpr static cmpId_type id = _FOLLOW;
 
 	virtual void initComponent();
 	virtual void update();

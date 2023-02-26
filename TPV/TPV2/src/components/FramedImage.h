@@ -11,7 +11,7 @@ private:
 	SDL_Rect src;
 
 public:
-	static const int id = _FRAMED_IMAGE;
+	constexpr static cmpId_type id = _FRAMED_IMAGE;
 
 	FramedImage(Texture* _txt, int _fw, int _fh, int r, int c);
 

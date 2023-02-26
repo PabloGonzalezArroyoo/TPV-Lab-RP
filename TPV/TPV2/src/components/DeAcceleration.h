@@ -8,7 +8,7 @@ private:
 	Transform* tr;
 
 public:
-	static const int id = _DEACCELERATION;
+	constexpr static cmpId_type id = _DEACCELERATION;
 
 	DeAcceleration() : Component() { } 
 

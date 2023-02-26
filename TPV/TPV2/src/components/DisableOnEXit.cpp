@@ -2,7 +2,7 @@
 #include "../ecs/Entity.h"
 
 void DisableOnExit::initComponent() {
-	myTr = myObj->getComponent<Transform>(_TRANSFORM);
+	myTr = myObj->getComponent<Transform>();
 }
 
 void DisableOnExit::update() {
