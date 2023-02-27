@@ -11,6 +11,8 @@
 #include <list>
 #include <vector>
 #include "../../../SDL2-2.0.7/include/SDL_error.h"
+#include "../sdlutils/Music.h"
+#include "../sdlutils/SoundEffect.h"
 
 #ifdef _WIN32
 #include<windows.h>

@@ -162,7 +162,7 @@
     <ClInclude Include="src\game\GameStateMachine.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\AsteroidsManager.h">
+    <ClInclude Include="src\game\AsteroidsController.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\PlayState.h">
@@ -236,7 +236,7 @@
     <ClCompile Include="src\game\GameStateMachine.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\AsteroidsManager.cpp">
+    <ClCompile Include="src\game\AsteroidsController.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\GameState.cpp">

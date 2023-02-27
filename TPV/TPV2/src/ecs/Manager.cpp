@@ -1,36 +1,48 @@
 #include "Manager.h"
 
-Manager::Manager() : gObjs() {
-	gObjs.reserve(100);
+Manager::Manager() : entsByGroup() {
+	for (auto& groupEntities : entsByGroup) {
+		groupEntities.reserve(100);
+	}
 }
 
 Manager::~Manager() {
-	for (auto g : gObjs) delete g;
+	for (int i = 0; i < maxGroupId; i++) {
+		for (auto g : entsByGroup[i]) delete g;
+	}
 }
 
-Entity* Manager::addEntity() {
+Entity* Manager::addEntity(grpId_type gId) {
 	Entity* g = new Entity();
 	g->setAlive(true);
 	g->setContext(this);
-	gObjs.push_back(g);
+	entsByGroup[gId].push_back(g);
 	return g;
 }
 
 void Manager::refresh() {
-	gObjs.erase(
-		remove_if(gObjs.begin(), gObjs.end(), [](Entity* g) {
-			if (g->isAlive()) return false;
-			else { delete g; return true; }
-		}), gObjs.end()
-	);
+	for (grpId_type gId = 0; gId < maxGroupId; gId++) {
+		auto& grpEnts = entsByGroup[gId];
+		grpEnts.erase(
+			remove_if(grpEnts.begin(), grpEnts.end(),
+				[](Entity* g) {
+					if (g->isAlive()) return false;
+					else { delete g; return true; }
+				}), grpEnts.end()
+			);
+	}
 }
 
 void Manager::update() {
-	auto n = gObjs.size();
-	for (auto i = 0u; i < n; i++) gObjs[i]->update();
+	for (auto& ents : entsByGroup) {
+		auto n = ents.size();
+		for (auto i = 0u; i < n; i++) ents[i]->update();
+	}
 }
 
 void Manager::render() {
-	auto n = gObjs.size();
-	for (auto i = 0u; i < n; i++) gObjs[i]->render();
+	for (auto& ents : entsByGroup) {
+		auto n = ents.size();
+		for (auto i = 0u; i < n; i++) ents[i]->render();
+	}
 }

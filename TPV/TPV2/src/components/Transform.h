@@ -18,7 +18,7 @@ public:
 	Transform(Vector2D _pos, Vector2D _vel, int _width, int _height, float _rotation = 0);
 
 	// Movimiento
-	void translate();
+	virtual void update();
 
 	// Setters
 	inline void setPosition(Vector2D _pos) { pos = _pos; };

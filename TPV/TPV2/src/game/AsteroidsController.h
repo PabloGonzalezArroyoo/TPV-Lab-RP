@@ -1,18 +1,23 @@
 #pragma once
 #include <list>
 #include "../components/Follow.h"
+#include "../ecs/Manager.h"
+#include "../components/FramedImage.h"
 
-class AsteroidsManager
+class AsteroidsController
 {
 private:
-	Manager* mn;
-	list<Entity*> asts;
+	Manager* mng;
 	int numAst;
 
 public:
-	AsteroidsManager(Manager* _mn);
+	AsteroidsController(Manager* _mn);
 	void createAsteroids(int n);
 	void addAsteroidsFrequently();
 	void destroyAllAsteroids();
 	void OnCollision(Entity* a);
+
+	// Creación de asteroide
+	Vector2D randomPos();
+	Vector2D randomVel();
 };

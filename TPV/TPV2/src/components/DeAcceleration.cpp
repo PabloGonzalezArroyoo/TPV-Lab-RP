@@ -13,5 +13,4 @@ void DeAcceleration::update() {
 			newVelocity = Vector2D();
 		tr->setVelocity(newVelocity);
 	}
-	tr->translate();
 }

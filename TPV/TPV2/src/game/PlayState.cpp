@@ -9,6 +9,8 @@ PlayState::PlayState(Game* g) : GameState(g), paused(false), gameOver(false) {
 	player->addComponent<FighterCtrl>();
 	player->addComponent<DeAcceleration>();
 	player->addComponent<ShowAtOppositeSide>();
+
+	mng->setHandler(_hdlr_FIGHTER, player);
 }
 
 PlayState::~PlayState() {

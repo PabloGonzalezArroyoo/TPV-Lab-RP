@@ -8,6 +8,6 @@ Transform::Transform(Vector2D _pos, Vector2D _vel, int _width, int _height, floa
 	Component(), pos(_pos), vel(_vel), width(_width), height(_height), rotation(_rotation) { }
 
 // Muve la nave sumando a la posición la velocidad por la dirección
-void Transform::translate() {
+void Transform::update() {
 	pos = pos + vel;
 }

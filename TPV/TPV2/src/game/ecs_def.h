@@ -31,6 +31,7 @@ using grpId_type = unsigned int;
 enum grpId : grpId_type {
 	_grp_GENERAL,
 	_grp_ASTEROIDS,
+	_grp_BULLETS,
 
 	//DO NOT REMOVE THIS
 	_LAST_GRP_ID
