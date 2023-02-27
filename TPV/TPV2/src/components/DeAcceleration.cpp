@@ -7,7 +7,11 @@ void DeAcceleration::initComponent() {
 
 void DeAcceleration::update() {
 	Vector2D newVelocity = tr->getVelocity();
-	newVelocity = newVelocity * 0.995;
-	if (newVelocity.getX() <= 0.05) newVelocity = 0;
-	tr->setVelocity(newVelocity);
+	if (newVelocity.magnitude() >= 0.05) {
+		newVelocity = newVelocity * 0.995;
+		if (newVelocity.magnitude() <= 0.05) 
+			newVelocity = Vector2D();
+		tr->setVelocity(newVelocity);
+	}
+	tr->translate();
 }

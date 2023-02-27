@@ -18,6 +18,7 @@ Game::Game() {
 		const TextureDescription& desc = textDescription[i];
 		textures[i] = new Texture(renderer, "../image/images/" + textDescription[i].filename + ".png");
 	}
+
 	//Borramos consola
 #ifdef _WIN32
 	system("cls");
@@ -50,7 +51,7 @@ void Game::run() {
 	startTime = SDL_GetTicks();
 	SDL_Delay(1500);
 	while (!exit) {
-		//handleEvents();
+		InputHandler::instance()->refresh();
 
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= 5 && !exit) {				// Comprobamos si el tiempo de frame es mayor al ratio

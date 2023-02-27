@@ -6,7 +6,7 @@ void Image::initComponent() {
 }
 
 void Image::render() {
-	texture->render(getRect());
+	texture->render(getRect(), tr->getRotation());
 }
 
 SDL_Rect Image::getRect() const{

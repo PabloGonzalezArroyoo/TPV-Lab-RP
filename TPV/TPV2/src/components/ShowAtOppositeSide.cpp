@@ -6,10 +6,8 @@ void ShowAtOppositeSide::initComponent() {
 }
 
 void ShowAtOppositeSide::update() {
-	/*if (tr != nullptr) {
-		if (tr->getPosition()->getX() > WIN_WIDTH) tr->setPosition(Vector2D(0, tr->getPosition()->getY()));
-		else if (tr->getPosition()->getX() < 0) tr->setPosition(Vector2D(WIN_WIDTH, tr->getPosition()->getY()));
-		else if (tr->getPosition()->getY() < 0) tr->setPosition(Vector2D(tr->getPosition()->getX(), 0));
-		else if (tr->getPosition()->getY() > 0) tr->setPosition(Vector2D(tr->getPosition()->getX(), WIN_HEIGHT));
-	}*/
+	if (tr->getPosition().getX() > WIN_WIDTH) tr->setPosition(Vector2D(0, tr->getPosition().getY()));
+	else if (tr->getPosition().getX() < 0) tr->setPosition(Vector2D(WIN_WIDTH, tr->getPosition().getY()));
+	else if (tr->getPosition().getY() < 0) tr->setPosition(Vector2D(tr->getPosition().getX(), WIN_HEIGHT));
+	else if (tr->getPosition().getY() > WIN_HEIGHT) tr->setPosition(Vector2D(tr->getPosition().getX(), 0));
 }

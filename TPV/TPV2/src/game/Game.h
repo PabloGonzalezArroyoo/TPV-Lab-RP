@@ -5,6 +5,7 @@
 #include "../utils/Vector2D.h"
 #include "../sdlutils/Texture.h"
 #include "../utils/chekML.h"
+#include "../sdlutils/InputHandler.h"
 #include <iostream>
 #include <fstream>
 #include <list>

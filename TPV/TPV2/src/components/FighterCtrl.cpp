@@ -12,14 +12,21 @@ void FighterCtrl::update() {
 
 void FighterCtrl::handleInput() {
 	if (InputHandler::instance()->isKeyDown(SDLK_LEFT)) {
-		// TO-DO: rotar
+		r = (r - 5) % 360;
+		tr->setRotation(r);
 	}
 	else if (InputHandler::instance()->isKeyDown(SDLK_RIGHT)) {
-		// TO-DO: rotar
+		r = (r + 5) % 360;
+		tr->setRotation(r);
 	}
 	
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
-		tr->translate();
+		Vector2D vel = tr->getVelocity();
+		Vector2D aux = Vector2D(0, -1).rotate(r) * thrust;
+		vel = vel + aux;
+		cout << vel.magnitude() << endl;
+		if (vel.magnitude() > speedLimit) vel = vel.normalize() * speedLimit;
+		tr->setVelocity(vel);
 	}
 
 	if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
