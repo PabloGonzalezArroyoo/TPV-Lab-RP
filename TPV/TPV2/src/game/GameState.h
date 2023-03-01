@@ -11,6 +11,7 @@
 #include "../components/Image.h"
 #include "../components/ShowAtOppositeSide.h"
 #include "../components/Transform.h"
+#include "../utils/Collisions.h"
 #include <list>
 
 enum TEXTURE_NAME {

@@ -26,4 +26,6 @@ public:
 	// Creación de asteroide
 	Vector2D randomPos();
 	Vector2D randomVel(Vector2D posAst);
+
+	void createSon(Transform* father, int newGen);
 };

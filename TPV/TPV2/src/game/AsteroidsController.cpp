@@ -10,10 +10,15 @@ void AsteroidsController::createAsteroids(int n) {
 	for (int i = 0; i < n; i++) {
 		Entity* asteroid = mng->addEntity(_grp_ASTEROIDS);
 		
+		// Generaciones
+		int gen = SDLUtils::instance()->rand().nextInt(1, 4);
+		asteroid->addComponent<Generations>(gen);
+
 		// Calculamos su posicion y velocidad
 		Vector2D pos = randomPos();
 		Vector2D vel = randomVel(pos);
-		asteroid->addComponent<Transform>(pos, vel, ASTEROIDS_WIDTH, ASTEROIDS_HEIGHT);
+		int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * gen;
+		asteroid->addComponent<Transform>(pos, vel, dimensions, dimensions);
 
 		// Tipo B
 		if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
@@ -37,11 +42,17 @@ void AsteroidsController::addAsteroidsFrequently() {
 }
 
 void AsteroidsController::destroyAllAsteroids() {
-
+	auto ents = mng->getEntities(_grp_ASTEROIDS);
+	for (Entity* e : ents) e->setAlive(false);
 }
 
 void AsteroidsController::OnCollision(Entity* a) {
-
+	a->setAlive(false);
+	int gen = a->getComponent<Generations>()->getGenerations();
+	if (gen >= 2) {
+		createSon(a->getComponent<Transform>(), gen - 1);
+		createSon(a->getComponent<Transform>(), gen - 1);
+	}
 }
 
 Vector2D AsteroidsController::randomPos() {
@@ -80,4 +91,27 @@ Vector2D AsteroidsController::randomVel(Vector2D posAst) {
 		Vector2D(SDLUtils::instance()->rand().nextInt(-100, 101), SDLUtils::instance()->rand().nextInt(-100, 101));
 	
 	return (c - posAst).normalize() * speed;
+}
+
+void AsteroidsController::createSon(Transform* father, int newGen) {
+	auto r = SDLUtils::instance()->rand().nextInt(0, 360);
+	auto pos = father->getPosition() + father->getVelocity().rotate(r)
+		* 2 * max(father->getWidth(), father->getHeight());
+	auto vel = father->getVelocity().rotate(r) * 1.1f;
+
+	Entity* ast = mng->addEntity(_grp_ASTEROIDS);
+	int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * newGen;
+	ast->addComponent<Transform>(pos, vel, dimensions, dimensions);
+	ast->addComponent<Generations>(newGen);
+	ast->addComponent<DisableOnExit>();
+
+	// Tipo B
+	if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
+		ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_GOLD), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+		ast->addComponent<Follow>();
+	}
+	// Tipo A
+	else {
+		ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_SILVER), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+	}
 }

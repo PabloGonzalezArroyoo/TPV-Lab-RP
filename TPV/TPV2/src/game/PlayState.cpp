@@ -25,3 +25,8 @@ void PlayState::update() {
 	GameState::update();
 	astController->addAsteroidsFrequently();
 }
+
+void PlayState::checkCollisions() {
+	// Recorrer asteroides comprobando si alguno colisiona o con el player o con la bala
+	// Collisions::collidesWithRotation();
+}

@@ -11,4 +11,6 @@ public:
 	virtual ~PlayState();
 
 	virtual void update();
+
+	void checkCollisions();
 };
