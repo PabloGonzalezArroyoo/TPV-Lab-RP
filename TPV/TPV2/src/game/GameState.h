@@ -14,7 +14,7 @@
 #include <list>
 
 enum TEXTURE_NAME {
-	FIGTHER, ASTEROIDS
+	FIGTHER, ASTEROIDS_GOLD, ASTEROIDS_SILVER, FIRE
 };
 
 class Game;
@@ -30,8 +30,7 @@ public:
 	// Métodos esenciales
 	virtual void update();
 	virtual void render();
-	virtual void handleEvent();
-	virtual void run();
+	virtual void refresh();
 
 	virtual void newState();
 };

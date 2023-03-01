@@ -8,6 +8,7 @@ Game::Game() {
 	window = SDL_CreateWindow("ASTEROIDS", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDL_SetRenderDrawColor(renderer, 0, 123, 123, 1);
 	if (window == nullptr || renderer == nullptr) return ;
 
 	// Variables de flujo
@@ -56,6 +57,7 @@ void Game::run() {
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= 5 && !exit) {				// Comprobamos si el tiempo de frame es mayor al ratio
 			update();								// Actualizamos el estado del juego
+			refresh();
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 			render();
 		}
@@ -77,6 +79,10 @@ void Game::render() {
 void Game::update() {
 	// UPDATE MÁQUINA DE ESTADOS
 	gsm->currentState()->update();
+}
+
+void Game::refresh() {
+	gsm->currentState()->refresh();
 }
 
 // Devuelve la textura correspondiente

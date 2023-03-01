@@ -18,7 +18,7 @@
 #include<windows.h>
 #endif
 
-const int NUM_TEXTURES = 1;
+const int NUM_TEXTURES = 4;
 using namespace std;
 typedef unsigned int uint;
 
@@ -31,7 +31,10 @@ typedef struct {
 // Descripción de las texturas (según la estructura del struct anterior)
 const TextureDescription textDescription[NUM_TEXTURES] = {
 	// Objetos
-	{"fighter", 1, 1}
+	{"fighter", 1, 1},
+	{"asteroid_gold", 5, 6},
+	{"asteroid", 5, 6},
+	{"fire", 1, 1}
 };
 
 class Game {
@@ -58,7 +61,7 @@ public:
 	void run();
 	void render();
 	void update();
-	//void handleEvents();
+	void refresh();
 
 	// Getters
 	Texture* getTexture(int texture);

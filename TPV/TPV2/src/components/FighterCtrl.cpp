@@ -24,7 +24,6 @@ void FighterCtrl::handleInput() {
 		Vector2D vel = tr->getVelocity();
 		Vector2D aux = Vector2D(0, -1).rotate(r) * thrust;
 		vel = vel + aux;
-		cout << vel.magnitude() << endl;
 		if (vel.magnitude() > speedLimit) vel = vel.normalize() * speedLimit;
 		tr->setVelocity(vel);
 	}

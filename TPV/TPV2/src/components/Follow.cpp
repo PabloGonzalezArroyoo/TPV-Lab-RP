@@ -9,6 +9,6 @@ void Follow::initComponent() {
 }
 
 void Follow::update() {
-	Vector2D newVel = (myTr->getPosition() - plTr->getPosition()).normalize();
+	Vector2D newVel = (plTr->getPosition() - myTr->getPosition()).normalize() * randomSpeed;
 	myTr->setVelocity(newVel);
 }
