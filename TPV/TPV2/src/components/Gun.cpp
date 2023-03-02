@@ -17,6 +17,7 @@ void Gun::update() {
 void Gun::handleInput() {
 	lastShotTime = SDLUtils::instance()->currRealTime() - startTime;
 	if (InputHandler::instance()->isKeyDown(SDLK_s) && lastShotTime >= 250) {
+		sound->play();
 		startTime = SDLUtils::instance()->currRealTime();
 		Entity* b = myMng->addEntity(_grp_BULLETS);
 		b->addComponent<Transform>(bulletPos(), bulletVel(), BULLET_WIDTH, BULLET_HEIGTH, tr->getRotation());

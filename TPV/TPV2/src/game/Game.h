@@ -40,12 +40,12 @@ const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 };
 
 const string soundsDescription[NUM_SOUNDS] = {
-	"doom.wav",
-	"explosion.wav",
-	"fire.wav",
-	"oof.wav",
-	"select.wav",
-	"thrust.wav"
+	"doom",
+	"explosion",
+	"fire",
+	"oof",
+	"select",
+	"thrust"
 };
 
 class Game {

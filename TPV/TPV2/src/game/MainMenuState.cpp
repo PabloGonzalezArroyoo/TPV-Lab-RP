@@ -20,6 +20,10 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 
 void MainMenuState::update() {
 	if (InputHandler::instance()->isKeyDown(SDLK_SPACE)) {
+		game->getSound(SELECT)->play();
 		game->getStateMachine()->changeState(new PlayState(game));
+	}
+	else if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
+		game->changeControl();
 	}
 }

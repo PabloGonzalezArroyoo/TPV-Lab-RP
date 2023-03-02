@@ -18,6 +18,10 @@ PauseState::PauseState(Game* g, int plLifes) : GameState(g) {
 
 void PauseState::update() {
 	if (InputHandler::instance()->isKeyDown(SDLK_SPACE)) {
+		game->getSound(SELECT)->play();
 		game->getStateMachine()->popState();
+	}
+	else if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
+		game->changeControl();
 	}
 }

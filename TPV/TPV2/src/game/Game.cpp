@@ -7,6 +7,9 @@ Game::Game() {
 	// Inicialización de la ventana
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
+	Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_MOD);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Mix_AllocateChannels(8);
 
 	window = SDL_CreateWindow("ASTEROIDS", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -15,7 +18,7 @@ Game::Game() {
 	if (window == nullptr || renderer == nullptr) return ;
 
 	//Cargamos fuentes
-	string filename = "../image/fonts/NES-Chimera.ttf";
+	string filename = "resources/fonts/NES-Chimera.ttf";
 	myFont = new Font(filename, 20);
 
 	// Variables de flujo
@@ -24,13 +27,13 @@ Game::Game() {
 	// Para cargar texturas de imagen
 	for (int i = 0; i < NUM_TEXTURES - 3; i++) {
 		const TextureDescription& desc = textDescription[i];
-		textures[i] = new Texture(renderer, "../image/images/" + textDescription[i].filename + ".png");
+		textures[i] = new Texture(renderer, "resources/images/" + textDescription[i].filename + ".png");
 	}
 
 	// Cargar sonidos
-	/*for (int i = 0; i < NUM_SOUNDS; i++) {
-		sounds[i] = new SoundEffect("../image/sound/" + soundsDescription[i]);
-	}*/
+	for (int i = 0; i < NUM_SOUNDS; i++) {
+		sounds[i] = new SoundEffect("resources/sound/" + soundsDescription[i] + ".wav");
+	}
 
 	// Creamos texturas de texto
 	SDL_Color colour = { 0, 10, 87, 1 };
@@ -60,6 +63,7 @@ Game::Game() {
 Game::~Game() {
 	// Borrar Texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
+	for (int i = 0; i < NUM_SOUNDS; i++) delete(sounds[i]);
 
 	// Eliminar máquina de estados
 	delete(gsm);

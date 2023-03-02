@@ -4,14 +4,15 @@
 #include "PauseState.h"
 
 PlayState::PlayState(Game* g) : GameState(g), gameOver(false) {
+	// game->getSound(DOOM)->play();
 	mng = new Manager();
 	auto player = mng->addEntity();
 	player->addComponent<Transform>(PLAYER_INITIAL_POS, Vector2D(), PLAYER_WIDTH, PLAYER_HEIGHT);
 	player->addComponent<Image>(g->getTexture(FIGTHER));
-	player->addComponent<FighterCtrl>(g);
+	player->addComponent<FighterCtrl>(g, g->getSound(THRUST));
 	player->addComponent<DeAcceleration>();
 	player->addComponent<ShowAtOppositeSide>();
-	player->addComponent<Gun>(g);
+	player->addComponent<Gun>(g, g->getSound(FIRESFX));
 	player->addComponent<Health>(g->getTexture(HEALTH));
 
 	mng->setHandler(_hdlr_FIGHTER, player);
@@ -47,7 +48,7 @@ void PlayState::checkCollisions() {
 			plCollided = Collisions::collidesWithRotation(
 				plTr->getPosition(), plTr->getWidth(), plTr->getHeight(), plTr->getRotation(),
 				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
-
+			
 			if (!plCollided) {
 				for (auto itB = bullets.begin(); itB != bullets.end(); itB++) {
 					if ((*itB)->isAlive()) {
@@ -56,6 +57,7 @@ void PlayState::checkCollisions() {
 							blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
 							astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
 						if (astCollided) {
+							game->getSound(EXPLOSION)->play();
 							astController->OnCollision(*it);
 							(*itB)->setAlive(false);
 						}
@@ -63,6 +65,7 @@ void PlayState::checkCollisions() {
 				}
 			}
 			else {
+				game->getSound(OOF)->play();
 				astController->destroyAllAsteroids();
 				plCollided = true;
 				auto health = player->getComponent<Health>();
