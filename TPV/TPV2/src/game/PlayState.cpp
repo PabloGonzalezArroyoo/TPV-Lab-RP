@@ -23,10 +23,47 @@ PlayState::~PlayState() {
 
 void PlayState::update() {
 	GameState::update();
+	checkCollisions();
 	astController->addAsteroidsFrequently();
 }
 
 void PlayState::checkCollisions() {
-	// Recorrer asteroides comprobando si alguno colisiona o con el player o con la bala
-	// Collisions::collidesWithRotation();
+	// Cogemos los grupos
+	auto asts = mng->getEntities(_grp_ASTEROIDS);
+	auto bullets = mng->getEntities(_grp_BULLETS);
+	Entity* player = mng->getHandler(_hdlr_FIGHTER);
+	// Guardamos componentes necesarios
+	Transform* plTr = player->getComponent<Transform>();
+	Transform* astTr = nullptr;
+	Transform* blltTr = nullptr;
+
+	bool plCollided = player->isAlive();
+	for (auto it = asts.begin(); it != asts.end() && plCollided; it++) {
+		if ((*it)->isAlive()) {
+			astTr = (*it)->getComponent<Transform>();
+			plCollided = Collisions::collidesWithRotation(
+				plTr->getPosition(), plTr->getWidth(), plTr->getHeight(), plTr->getRotation(),
+				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
+
+			if (!plCollided) {
+				for (auto itB = bullets.begin(); itB != asts.end(); itB++) {
+					if ((*itB)->isAlive()) {
+						blltTr = (*itB)->getComponent<Transform>();
+						bool astCollided = Collisions::collidesWithRotation(
+							blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
+							astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
+						if (astCollided) {
+							(*it)->setAlive(false);
+							(*itB)->setAlive(false);
+						}
+					}
+				}
+			}
+			else {
+				player->setAlive(false);
+				(*it)->setAlive(false);
+				plCollided = true;
+			}
+		}		
+	}
 }
