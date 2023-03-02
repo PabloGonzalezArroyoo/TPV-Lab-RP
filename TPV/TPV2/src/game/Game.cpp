@@ -27,6 +27,11 @@ Game::Game() {
 		textures[i] = new Texture(renderer, "../image/images/" + textDescription[i].filename + ".png");
 	}
 
+	// Cargar sonidos
+	/*for (int i = 0; i < NUM_SOUNDS; i++) {
+		sounds[i] = new SoundEffect("../image/sound/" + soundsDescription[i]);
+	}*/
+
 	// Creamos texturas de texto
 	SDL_Color colour = { 0, 10, 87, 1 };
 	string MM_MESSAGE = "PRESS SPACE TO START";
@@ -35,6 +40,8 @@ Game::Game() {
 	textures[NUM_TEXTURES - 3] = new Texture(renderer, MM_MESSAGE, (*myFont), colour);
 	textures[NUM_TEXTURES - 2] = new Texture(renderer, PAUSE_MESSAGE, (*myFont), {0,0,0,1}, {255, 255, 255, 1});
 	textures[NUM_TEXTURES - 1] = new Texture(renderer, GAME_OVER, (*myFont), colour);
+
+
 
 
 	//Borramos consola
@@ -105,4 +112,8 @@ void Game::refresh() {
 // Devuelve la textura correspondiente
 Texture* Game::getTexture(int texture) {
 	return textures[texture];
+}
+
+SoundEffect* Game::getSound(int sound) {
+	return sounds[sound];
 }

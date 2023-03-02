@@ -19,6 +19,7 @@
 #endif
 
 const int NUM_TEXTURES = 8;
+const int NUM_SOUNDS = 6;
 using namespace std;
 typedef unsigned int uint;
 
@@ -38,6 +39,15 @@ const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 	{"heart", 1, 1}
 };
 
+const string soundsDescription[NUM_SOUNDS] = {
+	"doom.wav",
+	"explosion.wav",
+	"fire.wav",
+	"oof.wav",
+	"select.wav",
+	"thrust.wav"
+};
+
 class Game {
 private:
 	// Punteros SDL
@@ -49,6 +59,8 @@ private:
 
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
+	// Sonidos
+	SoundEffect* sounds[NUM_SOUNDS];
 	// Máquina de estados
 	GameStateMachine* gsm;
 
@@ -65,6 +77,7 @@ public:
 
 	// Getters
 	Texture* getTexture(int texture);
+	SoundEffect* getSound(int sound);
 	GameStateMachine* getStateMachine() { return gsm; };
 	void changeControl() { exit = true; };
 };
