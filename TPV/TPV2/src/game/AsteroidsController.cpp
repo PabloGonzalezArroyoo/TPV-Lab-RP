@@ -7,6 +7,7 @@ AsteroidsController::AsteroidsController(Manager* _mng, Game* g) : mng(_mng), ga
 
 // TO-DO
 void AsteroidsController::createAsteroids(int n) {
+	numAst += n;
 	for (int i = 0; i < n; i++) {
 		Entity* asteroid = mng->addEntity(_grp_ASTEROIDS);
 		
@@ -35,13 +36,14 @@ void AsteroidsController::createAsteroids(int n) {
 
 void AsteroidsController::addAsteroidsFrequently() {
 	frameTime = SDL_GetTicks() - startTime;
-	if (frameTime >= 5000) {
+	if (frameTime >= 5000 && numAst < LIMIT_ASTEROIDS) {
 		createAsteroids(1);
 		startTime = SDL_GetTicks();
 	}
 }
 
 void AsteroidsController::destroyAllAsteroids() {
+	numAst = 0;
 	auto ents = mng->getEntities(_grp_ASTEROIDS);
 	for (Entity* e : ents) e->setAlive(false);
 }
@@ -53,6 +55,7 @@ void AsteroidsController::OnCollision(Entity* a) {
 		createSon(a->getComponent<Transform>(), gen - 1);
 		createSon(a->getComponent<Transform>(), gen - 1);
 	}
+	numAst--;
 }
 
 Vector2D AsteroidsController::randomPos() {
@@ -94,24 +97,27 @@ Vector2D AsteroidsController::randomVel(Vector2D posAst) {
 }
 
 void AsteroidsController::createSon(Transform* father, int newGen) {
-	auto r = SDLUtils::instance()->rand().nextInt(0, 360);
-	auto pos = father->getPosition() + father->getVelocity().rotate(r)
-		* 2 * max(father->getWidth(), father->getHeight());
-	auto vel = father->getVelocity().rotate(r) * 1.1f;
+	if (numAst + 1 < LIMIT_ASTEROIDS) {
+		numAst++;
+		auto r = SDLUtils::instance()->rand().nextInt(0, 360);
+		auto pos = father->getPosition() + father->getVelocity().rotate(r)
+			* 2 * max(father->getWidth(), father->getHeight());
+		auto vel = father->getVelocity().rotate(r) * 1.1f;
 
-	Entity* ast = mng->addEntity(_grp_ASTEROIDS);
-	int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * newGen;
-	ast->addComponent<Transform>(pos, vel, dimensions, dimensions);
-	ast->addComponent<Generations>(newGen);
-	ast->addComponent<DisableOnExit>();
+		Entity* ast = mng->addEntity(_grp_ASTEROIDS);
+		int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * newGen;
+		ast->addComponent<Transform>(pos, vel, dimensions, dimensions);
+		ast->addComponent<Generations>(newGen);
+		ast->addComponent<DisableOnExit>();
 
-	// Tipo B
-	if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
-		ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_GOLD), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
-		ast->addComponent<Follow>();
-	}
-	// Tipo A
-	else {
-		ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_SILVER), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+		// Tipo B
+		if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
+			ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_GOLD), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+			ast->addComponent<Follow>();
+		}
+		// Tipo A
+		else {
+			ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_SILVER), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+		}
 	}
 }

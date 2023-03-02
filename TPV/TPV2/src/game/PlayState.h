@@ -4,8 +4,8 @@
 
 class PlayState : public GameState {
 private:
-	bool paused, gameOver;
 	AsteroidsController* astController;
+	bool gameOver;
 public:
 	PlayState(Game* g);
 	virtual ~PlayState();
@@ -13,4 +13,7 @@ public:
 	virtual void update();
 
 	void checkCollisions();
+
+	void OnPlayerDamage(Entity* pl);
+	void OnPlayerDies();
 };

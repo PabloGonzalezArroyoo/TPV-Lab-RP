@@ -18,7 +18,7 @@
 #include<windows.h>
 #endif
 
-const int NUM_TEXTURES = 4;
+const int NUM_TEXTURES = 8;
 using namespace std;
 typedef unsigned int uint;
 
@@ -29,12 +29,13 @@ typedef struct {
 } TextureDescription;
 
 // Descripción de las texturas (según la estructura del struct anterior)
-const TextureDescription textDescription[NUM_TEXTURES] = {
+const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 	// Objetos
 	{"fighter", 1, 1},
 	{"asteroid_gold", 5, 6},
 	{"asteroid", 5, 6},
-	{"fire", 1, 1}
+	{"fire", 1, 1},
+	{"heart", 1, 1}
 };
 
 class Game {
@@ -42,13 +43,12 @@ private:
 	// Punteros SDL
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-
+	Font* myFont;
 	// Variables de flujo
 	bool exit;
 
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
-
 	// Máquina de estados
 	GameStateMachine* gsm;
 
@@ -67,7 +67,4 @@ public:
 	Texture* getTexture(int texture);
 	GameStateMachine* getStateMachine() { return gsm; };
 	void changeControl() { exit = true; };
-
-	// Maquina de estados
-	//void saveGame();
 };

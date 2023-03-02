@@ -1,15 +1,18 @@
 #include "PlayState.h"
 #include "Game.h"
+#include "GameOverState.h"
+#include "PauseState.h"
 
-PlayState::PlayState(Game* g) : GameState(g), paused(false), gameOver(false) {
+PlayState::PlayState(Game* g) : GameState(g), gameOver(false) {
 	mng = new Manager();
 	auto player = mng->addEntity();
-	player->addComponent<Transform>(Vector2D(WIN_WIDTH / 2, WIN_HEIGHT/2), Vector2D(0,0), 85, 77);
+	player->addComponent<Transform>(PLAYER_INITIAL_POS, Vector2D(), PLAYER_WIDTH, PLAYER_HEIGHT);
 	player->addComponent<Image>(g->getTexture(FIGTHER));
-	player->addComponent<FighterCtrl>();
+	player->addComponent<FighterCtrl>(g);
 	player->addComponent<DeAcceleration>();
 	player->addComponent<ShowAtOppositeSide>();
 	player->addComponent<Gun>(g);
+	player->addComponent<Health>(g->getTexture(HEALTH));
 
 	mng->setHandler(_hdlr_FIGHTER, player);
 
@@ -24,7 +27,7 @@ PlayState::~PlayState() {
 void PlayState::update() {
 	GameState::update();
 	checkCollisions();
-	astController->addAsteroidsFrequently();
+	if (!gameOver) astController->addAsteroidsFrequently();
 }
 
 void PlayState::checkCollisions() {
@@ -37,8 +40,8 @@ void PlayState::checkCollisions() {
 	Transform* astTr = nullptr;
 	Transform* blltTr = nullptr;
 
-	bool plCollided = player->isAlive();
-	for (auto it = asts.begin(); it != asts.end() && plCollided; it++) {
+	bool plCollided = !player->isAlive();
+	for (auto it = asts.begin(); it != asts.end() && !plCollided; it++) {
 		if ((*it)->isAlive()) {
 			astTr = (*it)->getComponent<Transform>();
 			plCollided = Collisions::collidesWithRotation(
@@ -46,24 +49,43 @@ void PlayState::checkCollisions() {
 				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
 
 			if (!plCollided) {
-				for (auto itB = bullets.begin(); itB != asts.end(); itB++) {
+				for (auto itB = bullets.begin(); itB != bullets.end(); itB++) {
 					if ((*itB)->isAlive()) {
 						blltTr = (*itB)->getComponent<Transform>();
 						bool astCollided = Collisions::collidesWithRotation(
 							blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
 							astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
 						if (astCollided) {
-							(*it)->setAlive(false);
+							astController->OnCollision(*it);
 							(*itB)->setAlive(false);
 						}
 					}
 				}
 			}
 			else {
-				player->setAlive(false);
-				(*it)->setAlive(false);
+				astController->destroyAllAsteroids();
 				plCollided = true;
+				auto health = player->getComponent<Health>();
+				health->removeLife();
+				SDL_Delay(1000);
+				if (health->checkLifes() <= 0) OnPlayerDies();
+				else OnPlayerDamage(player);
 			}
 		}		
 	}
+}
+
+void PlayState::OnPlayerDamage(Entity* pl) {
+	Transform* plTr = pl->getComponent<Transform>();
+	plTr->setPosition(PLAYER_INITIAL_POS);
+	plTr->setVelocity(Vector2D());
+	plTr->setRotation(0);
+	astController->createAsteroids(10);
+	pl->getComponent<FighterCtrl>()->setRot(0);
+	game->getStateMachine()->pushState(new PauseState(game, pl->getComponent<Health>()->checkLifes()));
+}
+
+void PlayState::OnPlayerDies() {
+	gameOver = true;
+	game->getStateMachine()->changeState(new GameOverState(game));
 }
