@@ -8,10 +8,10 @@ using namespace std;
 class Manager;
 class Entity {
 protected:
-	bool alive;
 	Manager* myMng = nullptr;
 	std::vector<Component*> currCmps;
 	std::array<Component*, maxComponentId> cmps;
+	bool alive;
 
 public:
 	// Constructora

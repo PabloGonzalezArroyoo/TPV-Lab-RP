@@ -13,7 +13,3 @@ void GameState::update() {
 void GameState::refresh() {
 	mng->refresh();
 }
-
-void GameState::newState() {
-
-}

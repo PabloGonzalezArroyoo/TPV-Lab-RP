@@ -5,10 +5,13 @@
 
 class Health : public Component {
 private:
-	int lifes;
+	// Referencia a la textura de las vidas
 	Texture* texture;
+	// Variable del numero de vidas
+	int lifes;
 
 public:
+	// Id del componente
 	constexpr static cmpId_type id = _HEALTH;
 
 	// Constructora

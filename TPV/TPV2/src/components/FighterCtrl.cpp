@@ -23,8 +23,8 @@ void FighterCtrl::handleInput() {
 	}
 	
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
-		lastShotTime = SDLUtils::instance()->currRealTime() - startTime;
-		if (lastShotTime >= 320) { sound->play(); startTime = SDLUtils::instance()->currRealTime(); }
+		lastSoundTime = SDLUtils::instance()->currRealTime() - startTime;
+		if (lastSoundTime >= 320) { sound->play(); startTime = SDLUtils::instance()->currRealTime(); }
 		Vector2D vel = tr->getVelocity();
 		Vector2D aux = Vector2D(0, -1).rotate(r) * thrust;
 		vel = vel + aux;

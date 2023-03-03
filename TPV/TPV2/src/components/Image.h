@@ -6,10 +6,12 @@
 class Entity;
 class Image : public Component {
 protected:
+	// Referencia a la textura que debemos renderizar y a mi transform
 	Texture* texture;
 	Transform* tr;
 
 public:
+	// Id del componente
 	constexpr static cmpId_type id = _IMAGE;
 
 	// Constructoras

@@ -41,6 +41,7 @@ void PlayState::checkCollisions() {
 	Transform* astTr = nullptr;
 	Transform* blltTr = nullptr;
 
+	// Comienza la fiesta
 	bool plCollided = !player->isAlive();
 	for (auto it = asts.begin(); it != asts.end() && !plCollided; it++) {
 		if ((*it)->isAlive()) {

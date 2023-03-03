@@ -14,22 +14,27 @@
 #include "../utils/Collisions.h"
 #include <list>
 
+// Enumerado de las texturas
 enum TEXTURE_NAME {
 	FIGTHER, ASTEROIDS_GOLD, ASTEROIDS_SILVER, FIRE, HEALTH,
 	MM_MESSAGE, PAUSE_MESSAGE, GO_MESSAGE,
 };
 
+// Enumerado de los sonidos
 enum SOUND_NAME {
 	DOOM, EXPLOSION, FIRESFX, OOF, SELECT, THRUST
 };
 
+// Para evitar la dependencia circular
 class Game;
 class GameState {
 protected:
+	// Referencia al manager que contengo y a Game
 	Manager* mng;
 	Game* game;
 
 public:
+	// Constructoras
 	GameState() : game(nullptr) { }
 	GameState(Game* g) : game(g) { }
 
@@ -37,6 +42,4 @@ public:
 	virtual void update();
 	virtual void render();
 	virtual void refresh();
-
-	virtual void newState();
 };

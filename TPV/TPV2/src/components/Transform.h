@@ -4,6 +4,7 @@
 
 class Transform : public Component {
 private:
+	// Variables de mi posicion, velocidad, dimensiones y rotacion
 	Vector2D pos;
 	Vector2D vel;
 	int width;
@@ -11,6 +12,7 @@ private:
 	float rotation;
 
 public:
+	// Id del componente
 	constexpr static cmpId_type id = _TRANSFORM;
 
 	// Constructoras

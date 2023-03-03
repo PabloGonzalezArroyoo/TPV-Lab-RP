@@ -6,13 +6,16 @@
 class Game;
 class Gun : public Component {
 private:
-	Transform* tr;
+	// Referencia a Game, a mi transform y a mi sonido a reproducir
 	Game* game;
+	Transform* tr;
+	SoundEffect* sound;
+	// Variables para el cooldown de disparo
 	float startTime;
 	float lastShotTime;
-	SoundEffect* sound;
 
 public:
+	// Id del componente
 	constexpr static cmpId_type id = _GUN;
 
 	// Constructora

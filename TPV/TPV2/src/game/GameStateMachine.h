@@ -7,6 +7,7 @@ using namespace std;
 class GameStateMachine
 {
 private:
+	// Pila de estados
 	stack<GameState*> states;
 
 public:

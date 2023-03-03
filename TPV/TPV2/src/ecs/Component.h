@@ -3,11 +3,13 @@
 
 using namespace std;
 
+// Para evitar la dependencia circular
 class Manager;
 class Entity;
 
 class Component {
 protected:
+	// Referencia a mi entidad y a mi manager
 	Entity* myObj = nullptr;
 	Manager* myMng;
 

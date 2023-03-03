@@ -39,6 +39,7 @@ const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 	{"heart", 1, 1}
 };
 
+// Paths de los sonidos del juego 
 const string soundsDescription[NUM_SOUNDS] = {
 	"doom",
 	"explosion",
@@ -79,5 +80,7 @@ public:
 	Texture* getTexture(int texture);
 	SoundEffect* getSound(int sound);
 	GameStateMachine* getStateMachine() { return gsm; };
+
+	// Cambio de flujo para acabar el juego
 	void changeControl() { exit = true; };
 };
