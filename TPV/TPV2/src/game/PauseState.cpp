@@ -23,7 +23,7 @@ PauseState::PauseState(Game* g, int plLifes) : GameState(g) {
 // Manejo del input en el pasueState
 void PauseState::update() {
 	// Si el jugador presiona espacio, continuar
-	if (InputHandler::instance()->isKeyDown(SDLK_SPACE)) {
+	if (InputHandler::instance()->isKeyUp(SDLK_SPACE)) {
 		game->getSound(SELECT)->play();
 		game->getStateMachine()->popState();
 	}

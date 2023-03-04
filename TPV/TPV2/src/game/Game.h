@@ -40,7 +40,7 @@ const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 	{"heart", 1, 1}
 };
 
-// Paths de los sonidos del juego 
+// Nombres de los sonidos del juego 
 const string soundsDescription[NUM_SOUNDS] = {
 	"explosion",
 	"fire",
@@ -49,7 +49,8 @@ const string soundsDescription[NUM_SOUNDS] = {
 	"thrust"
 };
 
-const string musicDescription[NUM_MUSIC]{
+// Nombres de la música del juego
+const string musicDescription[NUM_MUSIC] = {
 	"galaxy"
 };
 

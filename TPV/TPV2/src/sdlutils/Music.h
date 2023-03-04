@@ -4,6 +4,7 @@
 
 #include <string>
 #include <SDL_mixer.h>
+#include <cassert>
 
 class Music {
 public:

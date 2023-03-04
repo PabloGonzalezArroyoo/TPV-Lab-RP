@@ -13,11 +13,20 @@ Game::Game() {
 	// Variables de flujo
 	exit = false;
 
+	// Cargamos fuentes
+	myFont = new Font("resources/fonts/NES-Chimera.ttf", 20);
+
 	// Para cargar texturas de imagen
 	for (int i = 0; i < NUM_TEXTURES - 3; i++) {
 		const TextureDescription& desc = textDescription[i];
 		textures[i] = new Texture(renderer, "resources/images/" + textDescription[i].filename + ".png");
 	}
+
+	// Creamos texturas de textos
+	string MM_MESSAGE = "PRESS SPACE TO START", PAUSE_MESSAGE = "PRESS SPACE TO CONTINUE", GAME_OVER = "GAME OVER";
+	textures[NUM_TEXTURES - 3] = new Texture(renderer, MM_MESSAGE, (*myFont), { 0, 10, 87, 1 });
+	textures[NUM_TEXTURES - 2] = new Texture(renderer, PAUSE_MESSAGE, (*myFont), { 255, 255, 255, 1 });
+	textures[NUM_TEXTURES - 1] = new Texture(renderer, GAME_OVER, (*myFont), { 0, 10, 87, 1 });
 
 	// Cargar sonidos
 	for (int i = 0; i < NUM_SOUNDS; i++) {
@@ -25,18 +34,9 @@ Game::Game() {
 	}
 
 	// Cargar música
-	/*for (int i = 0; i < NUM_MUSIC; i++) {
-		music[i] = new Music("resources/music/" + musicDescription[i] + ".wav");
-	}*/
-	
-	// Cargamos fuentes
-	myFont = new Font("resources/fonts/NES-Chimera.ttf", 20);
-
-	// Creamos texturas de textox
-	string MM_MESSAGE = "PRESS SPACE TO START", PAUSE_MESSAGE = "PRESS SPACE TO CONTINUE", GAME_OVER = "GAME OVER";
-	textures[NUM_TEXTURES - 3] = new Texture(renderer, MM_MESSAGE, (*myFont), { 0, 10, 87, 1 });
-	textures[NUM_TEXTURES - 2] = new Texture(renderer, PAUSE_MESSAGE, (*myFont), {255, 255, 255, 1});
-	textures[NUM_TEXTURES - 1] = new Texture(renderer, GAME_OVER, (*myFont), { 0, 10, 87, 1 });
+	for (int i = 0; i < NUM_MUSIC; i++) {
+		music[i] = new Music("../../resources/music/" + musicDescription[i] + ".wav");
+	}
 
 	// Máquina de estados
 	gsm = new GameStateMachine(new MainMenuState(this));
@@ -54,15 +54,18 @@ Game::~Game() {
 	// Borrar Texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
 	for (int i = 0; i < NUM_SOUNDS; i++) delete(sounds[i]);
-	// for (int i = 0; i < NUM_MUSIC; i++) delete(music[i]);
+	for (int i = 0; i < NUM_MUSIC; i++) delete(music[i]);
 
 	// Eliminar máquina de estados
 	delete(gsm);
 
 	// Borrar render y window
-	SDL_DestroyRenderer(renderer);
+	/*SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	SDL_Quit();
+	SDLUtils::close();
+	SDL_Quit();*/
+
+	sdlutils().~SDLUtils();
 }
 
 // Bucle principal del juego

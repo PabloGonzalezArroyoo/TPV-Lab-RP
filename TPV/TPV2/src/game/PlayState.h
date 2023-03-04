@@ -16,8 +16,8 @@ public:
 
 	// Comprobacion de colisiones
 	void checkCollisions();
-	bool collisionAsteroidPlayer(Entity* player);
-	void collisionAsteroidBullet(Entity* asteroid, Entity* bullet);
+	bool collisionAsteroidPlayer(Entity* player, Transform* astTr);
+	bool collisionAsteroidBullet(Transform* asteroid);
 
 	// Métodos de reacción ante eventos sobre el jugador
 	void OnPlayerDamage(Entity* pl);

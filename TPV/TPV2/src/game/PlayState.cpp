@@ -13,7 +13,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	mng = new Manager();
 
 	// Reproducimos la música de fondo	
-	// game->getMusic(GALAXY)->play();
+	game->getMusic(GALAXY)->play();
 
 	// Añadimos al jugador con todos sus componentes
 	auto player = mng->addEntity();
@@ -45,15 +45,14 @@ void PlayState::update() {
 void PlayState::checkCollisions() {
 	// Cogemos los grupos
 	auto asts = mng->getEntities(_grp_ASTEROIDS);
-	auto bullets = mng->getEntities(_grp_BULLETS);
 	Entity* player = mng->getHandler(_hdlr_FIGHTER);
 	// Guardamos componentes necesarios
 	Transform* plTr = player->getComponent<Transform>();
 	Transform* astTr = nullptr;
-	Transform* blltTr = nullptr;
 
 	// Nos guardamos el estado del jugador (vivo o no)
 	bool plCollided = !player->isAlive();
+	bool blltCollided = false;
 
 	// Recorremos el grupo de asteroides mientras el jugador no haya colisionado
 	for (auto it = asts.begin(); it != asts.end() && !plCollided; it++) {
@@ -61,33 +60,15 @@ void PlayState::checkCollisions() {
 		if ((*it)->isAlive()) {
 			// Me guardo su componente transform
 			astTr = (*it)->getComponent<Transform>();
+			plCollided = collisionAsteroidPlayer(player, astTr);
 
-			// Comprobar colisión con el jugador
-			plCollided = Collisions::collidesWithRotation(
-				plTr->getPosition(), plTr->getWidth(), plTr->getHeight(), plTr->getRotation(),
-				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
-
-			// Si el asteroide no colisiona con el jugador, compruebo las balas
+			// Si el asteroide no ha chocado con el jugador, compruebo con las balas
 			if (!plCollided) {
-				// Recorro las balas 
-				for (auto itB = bullets.begin(); itB != bullets.end(); itB++) {
-					// Si la bala a comprobar sigue viva
-					if ((*itB)->isAlive()) {
-						// Me guardo el componente transform de la bala
-						blltTr = (*itB)->getComponent<Transform>();
-
-						// Comprobar colisión con la bala
-						bool bllCollided = Collisions::collidesWithRotation(
-							blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
-							astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
-						
-						// Si colisiona con la bala
-						if (bllCollided) collisionAsteroidBullet(*it, *itB);
-					}
-				}
+				// Llamo al método de la comprobacion y me guardo la información
+				blltCollided = collisionAsteroidBullet(astTr);
+				// Si el asteroide colisiona con la bala desactivo la bala
+				if (blltCollided) (*it)->setAlive(false);
 			}
-			// Si el asteroide colisiona con el jugador
-			else plCollided = collisionAsteroidPlayer(player);
 		}		
 	}
 }
@@ -115,34 +96,63 @@ void PlayState::OnPlayerDies() {
 }
 
 // Colisión del asteroide con el jugador
-bool PlayState::collisionAsteroidPlayer(Entity* player) {
-	// Reproducir sonido de muerte
-	game->getSound(OOF)->play();
+bool PlayState::collisionAsteroidPlayer(Entity* player, Transform* astTr) {
+	// Nos guardamos el estado del jugador (vivo o no)
+	bool collision = !player->isAlive();
+	Transform* plTr = player->getComponent<Transform>();
 
-	// Destruir los asteroides y marcar la colisión
-	astController->destroyAllAsteroids();
+	// Comprobar colisión con el jugador
+	collision = Collisions::collidesWithRotation(
+		plTr->getPosition(), plTr->getWidth(), plTr->getHeight(), plTr->getRotation(),
+		astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
 
-	// Actualizar vidas y añadir un retardo
-	auto health = player->getComponent<Health>();
-	health->removeLife();
-	SDL_Delay(1000);
+	if (collision) {
+		// Reproducir sonido de muerte
+		game->getSound(OOF)->play();
 
-	// Comprobar según el nº de vidas si el jugador debe morir o solo recibir daño
-	if (health->checkLifes() <= 0) OnPlayerDies();
-	else OnPlayerDamage(player);
+		// Destruir los asteroides y marcar la colisión
+		astController->destroyAllAsteroids();
 
-	// Confirmar colisión
-	return true;
+		// Actualizar vidas y añadir un retardo
+		auto health = player->getComponent<Health>();
+		health->removeLife();
+		SDL_Delay(1000);
+
+		// Comprobar según el nº de vidas si el jugador debe morir o solo recibir daño
+		if (health->checkLifes() <= 0) OnPlayerDies();
+		else OnPlayerDamage(player);
+
+		// Confirmar colisión
+		return true;
+	}
+	return false;
 }
 
 // Colisión del asteroide con la bala
-void PlayState::collisionAsteroidBullet(Entity* asteroid, Entity* bullet) {
-	// Reproducir sonido de explosión
-	game->getSound(EXPLOSION)->play();
+bool PlayState::collisionAsteroidBullet(Transform* astTr) {
+	bool collision = false;
+	auto bullets = mng->getEntities(_grp_BULLETS);
+	Transform* blltTr = nullptr;
 
-	// Procesar destrucción del asteroide
-	astController->OnCollision(asteroid);
+	//Recorro las balas 
+	for (auto itB = bullets.begin(); itB != bullets.end() && !collision; itB++) {
+		// Si la bala a comprobar sigue viva
+		if ((*itB)->isAlive()) {
+			// Me guardo el componente transform de la bala
+			blltTr = (*itB)->getComponent<Transform>();
 
-	// Desactivar bala
-	bullet->setAlive(false);
+			// Comprobar colisión con la bala
+			collision = Collisions::collidesWithRotation(
+				blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
+				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
+
+			if (collision) {
+				// Reproducir sonido de explosión
+				game->getSound(EXPLOSION)->play();
+				// Desactivar bala
+				(*itB)->setAlive(false);
+			}
+		}
+	}
+	return collision;
 }
