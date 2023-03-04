@@ -35,7 +35,7 @@ Game::Game() {
 
 	// Cargar música
 	for (int i = 0; i < NUM_MUSIC; i++) {
-		music[i] = new Music("../../resources/music/" + musicDescription[i] + ".wav");
+		//music[i] = new Music("../../resources/music/" + musicDescription[i] + ".wav");
 	}
 
 	// Máquina de estados
@@ -58,12 +58,6 @@ Game::~Game() {
 
 	// Eliminar máquina de estados
 	delete(gsm);
-
-	// Borrar render y window
-	/*SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDLUtils::close();
-	SDL_Quit();*/
 
 	sdlutils().~SDLUtils();
 }

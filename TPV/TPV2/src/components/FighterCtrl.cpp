@@ -44,7 +44,7 @@ void FighterCtrl::handleInput() {
 	}
 
 	// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa
-	if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
+	if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
 		game->getStateMachine()->pushState(new PauseState(game, myObj->getComponent<Health>()->checkLifes()));
 	}
 }

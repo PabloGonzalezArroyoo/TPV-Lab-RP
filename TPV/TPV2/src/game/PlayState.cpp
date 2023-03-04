@@ -13,7 +13,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	mng = new Manager();
 
 	// Reproducimos la música de fondo	
-	game->getMusic(GALAXY)->play();
+	//game->getMusic(GALAXY)->play();
 
 	// Añadimos al jugador con todos sus componentes
 	auto player = mng->addEntity();
@@ -67,7 +67,7 @@ void PlayState::checkCollisions() {
 				// Llamo al método de la comprobacion y me guardo la información
 				blltCollided = collisionAsteroidBullet(astTr);
 				// Si el asteroide colisiona con la bala desactivo la bala
-				if (blltCollided) (*it)->setAlive(false);
+				if (blltCollided) astController->OnCollision((*it));
 			}
 		}		
 	}
@@ -112,6 +112,7 @@ bool PlayState::collisionAsteroidPlayer(Entity* player, Transform* astTr) {
 
 		// Destruir los asteroides y marcar la colisión
 		astController->destroyAllAsteroids();
+		mng->removeEntities(_grp_BULLETS);
 
 		// Actualizar vidas y añadir un retardo
 		auto health = player->getComponent<Health>();

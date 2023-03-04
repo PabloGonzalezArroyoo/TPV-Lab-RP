@@ -29,6 +29,12 @@ public:
 		return entsByGroup[gId];
 	}
 
+	void removeEntities(grpId_type gId) {
+		for (Entity* e : entsByGroup[gId]) {
+			e->setAlive(false);
+		}
+	}
+
 	inline Entity* getHandler(hdlrId_type hId) {
 		return handlers[hId];
 	}

@@ -27,12 +27,12 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 // Manejo del input en el mainMenu
 void MainMenuState::update() {
 	// Si se presiona espacio, reproducir sonido y cargar estado
-	if (InputHandler::instance()->isKeyDown(SDLK_SPACE)) {
+	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
 		game->getSound(SELECT)->play();
 		game->getStateMachine()->changeState(new PlayState(game));
 	}
 	// Si se pulsa escape, cerrar ventana
-	else if (InputHandler::instance()->isKeyDown(SDLK_ESCAPE)) {
+	else if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
 		game->changeControl();
 	}
 }
