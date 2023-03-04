@@ -21,6 +21,7 @@ SDLUtils::SDLUtils(std::string windowTitle, int width, int height) :
 		soundsAccessWrapper_(sounds_, "Sounds Table"), //
 		musicsAccessWrapper_(musics_, "Musics Table") ///
 {
+	initWindow();
 	initSDLExtensions();
 }
 

@@ -1,25 +1,15 @@
 #include "Game.h"
 #include "PlayState.h"
 #include "MainMenuState.h"
+#include "../sdlutils/SDLUtils.h"
 
 // Constructora
 Game::Game() {
 	// Inicialización de la ventana
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
-	Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_MOD);
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	Mix_AllocateChannels(8);
-
-	window = SDL_CreateWindow("ASTEROIDS", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDLUtils::init("ASTEROIDS V1", WIN_WIDTH, WIN_HEIGHT);
+	window = sdlutils().window();
+	renderer = sdlutils().renderer();
 	SDL_SetRenderDrawColor(renderer, 0, 123, 123, 1);
-	if (window == nullptr || renderer == nullptr) return ;
-
-	//Cargamos fuentes
-	string filename = "resources/fonts/NES-Chimera.ttf";
-	myFont = new Font(filename, 20);
 
 	// Variables de flujo
 	exit = false;
@@ -35,17 +25,15 @@ Game::Game() {
 		sounds[i] = new SoundEffect("resources/sound/" + soundsDescription[i] + ".wav");
 	}
 
+	// Cargamos fuentes
+	myFont = new Font("resources/fonts/NES-Chimera.ttf", 20);
+
 	// Creamos texturas de texto
 	SDL_Color colour = { 0, 10, 87, 1 };
-	string MM_MESSAGE = "PRESS SPACE TO START";
-	string PAUSE_MESSAGE = "PRESS SPACE TO CONTINUE";
-	string GAME_OVER = "GAME OVER";
+	string MM_MESSAGE = "PRESS SPACE TO START", PAUSE_MESSAGE = "PRESS SPACE TO CONTINUE", GAME_OVER = "GAME OVER";
 	textures[NUM_TEXTURES - 3] = new Texture(renderer, MM_MESSAGE, (*myFont), colour);
 	textures[NUM_TEXTURES - 2] = new Texture(renderer, PAUSE_MESSAGE, (*myFont), {0,0,0,1}, {255, 255, 255, 1});
 	textures[NUM_TEXTURES - 1] = new Texture(renderer, GAME_OVER, (*myFont), colour);
-
-
-
 
 	//Borramos consola
 #ifdef _WIN32
@@ -57,7 +45,6 @@ Game::Game() {
 	// Máquina de estados
 	gsm = new GameStateMachine(new MainMenuState(this));
 }
-
 
 // Destructora
 Game::~Game() {
@@ -118,6 +105,7 @@ Texture* Game::getTexture(int texture) {
 	return textures[texture];
 }
 
+// Devuelve el sonido correspondiente
 SoundEffect* Game::getSound(int sound) {
 	return sounds[sound];
 }

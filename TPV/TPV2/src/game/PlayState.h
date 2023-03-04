@@ -6,8 +6,7 @@ class PlayState : public GameState {
 private:
 	// Refrencia a mi controlador de asteroides
 	AsteroidsController* astController;
-	// 
-	bool gameOver;
+
 public:
 	// Constructora y destructora
 	PlayState(Game* g);
@@ -18,6 +17,8 @@ public:
 
 	// Comprobacion de colisiones
 	void checkCollisions();
+	bool collisionAsteroidPlayer();
+	void collisionAsteroidBullet();
 
 	// Métodos de reacción ante eventos sobre el jugador
 	void OnPlayerDamage(Entity* pl);

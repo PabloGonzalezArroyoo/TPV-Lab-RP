@@ -38,6 +38,8 @@ public:
 	GameState() : game(nullptr) { }
 	GameState(Game* g) : game(g) { }
 
+	virtual ~GameState();
+
 	// Métodos esenciales
 	virtual void update();
 	virtual void render();

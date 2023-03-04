@@ -7,6 +7,7 @@ private:
 	// Variables con informacion del spritesheet, el frame actual, el contador de tiempo y la ventana del frame ne la textura
 	int fw, fh;
 	int rows, cols;
+	int frameNumber;
 	int currentFrame;
 	float startTime;
 	SDL_Rect src;
