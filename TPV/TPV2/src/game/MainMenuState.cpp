@@ -4,6 +4,9 @@
 
 // Constructora
 MainMenuState::MainMenuState(Game* g) : GameState(g) {
+	// Fondo verde
+	SDL_SetRenderDrawColor(sdlutils().renderer(), 0, 123, 17, 1);
+
 	// Creamos el manager del estado
 	mng = new Manager();
 

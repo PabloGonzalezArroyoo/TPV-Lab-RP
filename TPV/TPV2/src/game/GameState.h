@@ -22,7 +22,12 @@ enum TEXTURE_NAME {
 
 // Enumerado de los sonidos
 enum SOUND_NAME {
-	DOOM, EXPLOSION, FIRESFX, OOF, SELECT, THRUST
+	EXPLOSION, FIRESFX, OOF, SELECT, THRUST
+};
+
+// Enumerado de los sonidos
+enum MUSIC_NAME {
+	GALAXY
 };
 
 // Para evitar la dependencia circular

@@ -10,15 +10,14 @@ private:
 public:
 	// Constructora y destructora
 	PlayState(Game* g);
-	virtual ~PlayState();
 
 	//Sobrecarga del metodo update
 	virtual void update();
 
 	// Comprobacion de colisiones
 	void checkCollisions();
-	bool collisionAsteroidPlayer();
-	void collisionAsteroidBullet();
+	bool collisionAsteroidPlayer(Entity* player);
+	void collisionAsteroidBullet(Entity* asteroid, Entity* bullet);
 
 	// Métodos de reacción ante eventos sobre el jugador
 	void OnPlayerDamage(Entity* pl);

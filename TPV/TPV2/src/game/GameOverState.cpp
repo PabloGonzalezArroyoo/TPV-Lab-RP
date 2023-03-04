@@ -4,6 +4,9 @@
 
 // Constructora
 GameOverState::GameOverState(Game* g) : GameState(g) {
+	// Fondo rojo
+	SDL_SetRenderDrawColor(sdlutils().renderer(), 123, 0, 36, 1);
+
 	// Añadir el manager
 	mng = new Manager();
 

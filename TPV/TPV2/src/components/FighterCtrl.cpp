@@ -31,7 +31,7 @@ void FighterCtrl::handleInput() {
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
 		// Reproducir sonido de movimiento correctamente pasados unos milisegundos
 		lastSoundTime = sdlutils().currRealTime() - startTime;
-		if (lastSoundTime >= 320) { sound->play(); startTime = sdlutils().currRealTime(); }
+		if (lastSoundTime >= 285) { sound->play(); startTime = sdlutils().currRealTime(); }
 		
 		// Calcular el vector velocidad
 		Vector2D vel = tr->getVelocity() + Vector2D(0, -1).rotate(r) * thrust;

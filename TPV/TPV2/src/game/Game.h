@@ -19,7 +19,8 @@
 #endif
 
 const int NUM_TEXTURES = 8;
-const int NUM_SOUNDS = 6;
+const int NUM_SOUNDS = 5;
+const int NUM_MUSIC = 1;
 using namespace std;
 typedef unsigned int uint;
 
@@ -41,12 +42,15 @@ const TextureDescription textDescription[NUM_TEXTURES - 3] = {
 
 // Paths de los sonidos del juego 
 const string soundsDescription[NUM_SOUNDS] = {
-	"doom",
 	"explosion",
 	"fire",
 	"oof",
 	"select",
 	"thrust"
+};
+
+const string musicDescription[NUM_MUSIC]{
+	"galaxy"
 };
 
 class Game {
@@ -60,8 +64,13 @@ private:
 
 	// Texturas
 	Texture* textures[NUM_TEXTURES];
+
 	// Sonidos
 	SoundEffect* sounds[NUM_SOUNDS];
+
+	// Música
+	Music* music[NUM_MUSIC];
+
 	// Máquina de estados
 	GameStateMachine* gsm;
 
@@ -79,6 +88,7 @@ public:
 	// Getters
 	Texture* getTexture(int texture);
 	SoundEffect* getSound(int sound);
+	Music* getMusic(int _music);
 	GameStateMachine* getStateMachine() { return gsm; };
 
 	// Cambio de flujo para acabar el juego
