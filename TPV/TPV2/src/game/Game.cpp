@@ -35,7 +35,7 @@ Game::Game() {
 
 	// Cargar música
 	for (int i = 0; i < NUM_MUSIC; i++) {
-		//music[i] = new Music("../../resources/music/" + musicDescription[i] + ".wav");
+		music[i] = new Music("resources/music/" + musicDescription[i] + ".mp3");
 	}
 
 	// Máquina de estados

@@ -1,6 +1,7 @@
 #pragma once
 #include "../sdlutils/SoundEffect.h"
 #include "Transform.h"
+
 class Game;
 class FighterCtrl : public Component {
 private:
@@ -20,8 +21,7 @@ public:
 	constexpr static cmpId_type id = _FIGHTERCTRL;
 
 	// Constructora
-	FighterCtrl(Game* g, SoundEffect* _sound): Component(), game(g), tr(nullptr), 
-		thrust(0.2), r(0), speedLimit(1.5), sound(_sound) {}
+	FighterCtrl(Game* g, SoundEffect* _sound);
 	
 	// Métodos virtuales
 	virtual void initComponent();

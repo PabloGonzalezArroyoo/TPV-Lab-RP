@@ -10,6 +10,7 @@ private:
 public:
 	// Constructora y destructora
 	PlayState(Game* g);
+	~PlayState();
 
 	//Sobrecarga del metodo update
 	virtual void update();

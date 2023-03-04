@@ -29,6 +29,7 @@ public:
 		return entsByGroup[gId];
 	}
 
+	// Elimina todas las entidades de un grupo deseado
 	void removeEntities(grpId_type gId) {
 		for (Entity* e : entsByGroup[gId]) {
 			e->setAlive(false);

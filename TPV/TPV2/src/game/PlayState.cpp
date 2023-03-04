@@ -13,7 +13,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	mng = new Manager();
 
 	// Reproducimos la música de fondo	
-	//game->getMusic(GALAXY)->play();
+	game->getMusic(GALAXY)->play();
 
 	// Añadimos al jugador con todos sus componentes
 	auto player = mng->addEntity();
@@ -31,6 +31,12 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	//Creamos el controlador de asteroides y añadimos 10 al juego
 	astController = new AsteroidsController(mng, game);
 	astController->createAsteroids(10);
+}
+
+//Destructora de PlayState
+PlayState::~PlayState() {
+	game->getMusic(GALAXY)->haltMusic();
+	GameState::~GameState();
 }
 
 // Llamamos al update del padre (que llama al del manager), 
@@ -110,7 +116,7 @@ bool PlayState::collisionAsteroidPlayer(Entity* player, Transform* astTr) {
 		// Reproducir sonido de muerte
 		game->getSound(OOF)->play();
 
-		// Destruir los asteroides y marcar la colisión
+		// Destruir los asteroides y las balas
 		astController->destroyAllAsteroids();
 		mng->removeEntities(_grp_BULLETS);
 

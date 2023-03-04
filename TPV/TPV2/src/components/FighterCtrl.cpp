@@ -4,6 +4,10 @@
 #include "../game/Game.h"
 #include "../game/PauseState.h"
 
+FighterCtrl::FighterCtrl(Game* g, SoundEffect* _sound) : Component(), game(g), tr(nullptr),
+					thrust(0.2), r(0), speedLimit(1.5), sound(_sound),
+					startTime(sdlutils().currRealTime()), lastSoundTime(0) { }
+
 // Inicializar el componente, cogiendo el transform del objeto
 void FighterCtrl::initComponent() {
 	tr = myObj->getComponent<Transform>();

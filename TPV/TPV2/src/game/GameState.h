@@ -40,8 +40,8 @@ protected:
 
 public:
 	// Constructoras
-	GameState() : game(nullptr) { }
-	GameState(Game* g) : game(g) { }
+	GameState() : game(nullptr), mng(nullptr) { }
+	GameState(Game* g) : game(g), mng(nullptr) { }
 
 	virtual ~GameState();
 
