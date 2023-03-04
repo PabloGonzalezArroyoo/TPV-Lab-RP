@@ -54,6 +54,7 @@ Game::~Game() {
 	// Borrar Texturas
 	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
 	for (int i = 0; i < NUM_SOUNDS; i++) delete(sounds[i]);
+	// for (int i = 0; i < NUM_MUSIC; i++) delete(music[i]);
 
 	// Eliminar máquina de estados
 	delete(gsm);
