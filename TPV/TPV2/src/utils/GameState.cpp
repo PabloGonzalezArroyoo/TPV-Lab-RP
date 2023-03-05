@@ -2,7 +2,7 @@
 
 // Destructora - Elimina el manager
 GameState::~GameState() {
-	delete mng;
+ 	delete mng;
 }
 // Renderizado - llama a todos los renders de su lista de objetos
 void GameState::render() {

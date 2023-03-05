@@ -35,8 +35,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 
 //Destructora de PlayState
 PlayState::~PlayState() {
-	game->getMusic(GALAXY)->haltMusic();
-	GameState::~GameState();
+	delete astController;
 }
 
 // Llamamos al update del padre (que llama al del manager), 
@@ -98,6 +97,7 @@ void PlayState::OnPlayerDamage(Entity* pl) {
 
 // Cargar el estado de gameOver al morir
 void PlayState::OnPlayerDies() {
+	game->getMusic(GALAXY)->haltMusic();
 	game->getStateMachine()->changeState(new GameOverState(game));
 }
 
