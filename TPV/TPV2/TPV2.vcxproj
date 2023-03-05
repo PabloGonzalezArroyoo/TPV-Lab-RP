@@ -56,6 +56,7 @@
     <ClInclude Include="src\sdlutils\SoundEffect.h" />
     <ClInclude Include="src\sdlutils\Texture.h" />
     <ClInclude Include="src\sdlutils\VirtualTimer.h" />
+    <ClInclude Include="src\utils\chekML.h" />
     <ClInclude Include="src\utils\Collisions.h" />
     <ClInclude Include="src\utils\Constants.h" />
     <ClInclude Include="src\utils\mpl.h" />

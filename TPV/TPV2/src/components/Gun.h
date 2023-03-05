@@ -20,7 +20,7 @@ public:
 
 	// Constructora
 	Gun(Game* g, SoundEffect* _sound) : Component(), tr(nullptr), game(g),
-		startTime(SDLUtils::instance()->currRealTime()), lastShotTime(0), sound(_sound) { }
+		startTime(sdlutils().currRealTime()), lastShotTime(0), sound(_sound) { }
 
 	// Métodos virtuales
 	virtual void initComponent();

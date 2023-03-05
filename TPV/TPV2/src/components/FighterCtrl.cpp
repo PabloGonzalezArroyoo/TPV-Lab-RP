@@ -20,6 +20,10 @@ void FighterCtrl::update() {
 
 // Procesamos el input del jugador
 void FighterCtrl::handleInput() {
+
+	// Reproducir sonido de movimiento correctamente pasados unos milisegundos
+	lastSoundTime = sdlutils().currRealTime() - startTime;
+
 	// Si ha pulsado la flecha izquierda rotamos la nave hacia la izquierda
 	if (InputHandler::instance()->isKeyDown(SDLK_LEFT)) {
 		r = (r - 2) % 360;
@@ -33,9 +37,7 @@ void FighterCtrl::handleInput() {
 	
 	// Si se ha pulsado hacia arriba
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
-		// Reproducir sonido de movimiento correctamente pasados unos milisegundos
-		lastSoundTime = sdlutils().currRealTime() - startTime;
-		if (lastSoundTime >= 285) { sound->play(); startTime = sdlutils().currRealTime(); }
+		if (lastSoundTime >= 500) {sound->play(); startTime = sdlutils().currRealTime(); }
 		
 		// Calcular el vector velocidad
 		Vector2D vel = tr->getVelocity() + Vector2D(0, -1).rotate(r) * thrust;
