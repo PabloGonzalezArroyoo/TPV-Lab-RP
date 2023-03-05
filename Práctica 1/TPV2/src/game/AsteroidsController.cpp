@@ -28,12 +28,12 @@ void AsteroidsController::createAsteroids(int n) {
 
 		// Tipo B -> tendrán animación específica y el componente follow para seguir al personaje
 		if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
-			asteroid->addComponent<FramedImage>(game->getTexture(ASTEROIDS_GOLD), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+			asteroid->addComponent<FramedImage>(&sdlutils().images().at(ASTEROID_B), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
 			asteroid->addComponent<Follow>();
 		}
 		// Tipo A -> solo tendrán una animación específica
 		else {
-			asteroid->addComponent<FramedImage>(game->getTexture(ASTEROIDS_SILVER), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+			asteroid->addComponent<FramedImage>(&sdlutils().images().at(ASTEROID_A), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
 		}
 
 		// Añadir el componente de desactivar al salir de la pantalla
@@ -148,12 +148,12 @@ void AsteroidsController::createSon(Transform* father, int newGen) {
 
 		// Tipo B -> tendrán animación específica y el componente follow para seguir al personaje
 		if (SDLUtils::instance()->rand().nextInt(0, 10) < 3) {
-			ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_GOLD), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+			ast->addComponent<FramedImage>(&sdlutils().images().at(ASTEROID_B), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
 			ast->addComponent<Follow>();
 		}
 		// Tipo A -> solo tendrán una animación específica
 		else {
-			ast->addComponent<FramedImage>(game->getTexture(ASTEROIDS_SILVER), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
+			ast->addComponent<FramedImage>(&sdlutils().images().at(ASTEROID_A), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
 		}
 	}
 }

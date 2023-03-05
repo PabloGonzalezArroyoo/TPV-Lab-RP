@@ -30,7 +30,7 @@ void Gun::handleInput() {
 		//Creamos la bala
 		Entity* b = myMng->addEntity(_grp_BULLETS);
 		b->addComponent<Transform>(bulletPos(), bulletVel(), BULLET_WIDTH, BULLET_HEIGTH, tr->getRotation());
-		b->addComponent<Image>(game->getTexture(FIRE));
+		b->addComponent<Image>(&sdlutils().images().at(FIRETXT));
 		b->addComponent<DisableOnExit>();
 	}
 }

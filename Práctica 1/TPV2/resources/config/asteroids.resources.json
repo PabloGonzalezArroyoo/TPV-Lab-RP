@@ -1,8 +1,8 @@
 {
   "fonts": [
-    { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 16 },
-    { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 24 },
-    { "id": "CHIMERA", "file": "resources/fonts/NES-Chimera.ttf", "size": 48 }
+    { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 20 },
+    { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 20 },
+    { "id": "CHIMERA", "file": "resources/fonts/NES-Chimera.ttf", "size": 20 }
   ],
 
   "images": [
@@ -15,8 +15,9 @@
   ],
 
   "messages": [
-    { "id": "PressAnyKey", "text": "Press Any Key", "font": "ARIAL24", "color": "0x112233ff", "bg": "0xffffffff" },
-    { "id": "HelloSDL", "text": "Hello SDL!", "font": "ARIAL48", "color": "0x0000ffff" }
+    { "id": "MM_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA", "color": "0x000a57ff" },
+    { "id": "PAUSE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA", "color": "0x000000ff", "bg": "0xffffffff" },
+    { "id": "GAMEOVER_MSG", "text": "GAME OVER", "font": "CHIMERA", "color": "0x000a57ff" }
   ],
 
   "sounds": [

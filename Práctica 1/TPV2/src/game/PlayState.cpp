@@ -13,17 +13,17 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	mng = new Manager();
 
 	// Reproducimos la música de fondo	
-	game->getMusic(GALAXY)->play();
+	sdlutils().musics().at(GALAXY).play();
 
 	// Añadimos al jugador con todos sus componentes
 	auto player = mng->addEntity();
 	player->addComponent<Transform>(PLAYER_INITIAL_POS, Vector2D(), PLAYER_WIDTH, PLAYER_HEIGHT);
-	player->addComponent<Image>(g->getTexture(FIGTHER));
-	player->addComponent<FighterCtrl>(g, g->getSound(THRUST));
+	player->addComponent<Image>(&sdlutils().images().at(FIGHTER));
+	player->addComponent<FighterCtrl>(g, &sdlutils().soundEffects().at(THRUST));
 	player->addComponent<DeAcceleration>();
 	player->addComponent<ShowAtOppositeSide>();
-	player->addComponent<Gun>(g, g->getSound(FIRESFX));
-	player->addComponent<Health>(g->getTexture(HEALTH));
+	player->addComponent<Gun>(g, &sdlutils().soundEffects().at(FIRESFX));
+	player->addComponent<Health>(&sdlutils().images().at(HEART));
 
 	// Configuramos el handler del jugador
 	mng->setHandler(_hdlr_FIGHTER, player);
@@ -97,7 +97,7 @@ void PlayState::OnPlayerDamage(Entity* pl) {
 
 // Cargar el estado de gameOver al morir
 void PlayState::OnPlayerDies() {
-	game->getMusic(GALAXY)->haltMusic();
+	sdlutils().musics().at(GALAXY).haltMusic();
 	game->getStateMachine()->changeState(new GameOverState(game));
 }
 
@@ -114,7 +114,7 @@ bool PlayState::collisionAsteroidPlayer(Entity* player, Transform* astTr) {
 
 	if (collision) {
 		// Reproducir sonido de muerte
-		game->getSound(OOF)->play();
+		sdlutils().soundEffects().at(OOF).play();
 
 		// Destruir los asteroides y las balas
 		astController->destroyAllAsteroids();
@@ -155,7 +155,7 @@ bool PlayState::collisionAsteroidBullet(Transform* astTr) {
 
 			if (collision) {
 				// Reproducir sonido de explosión
-				game->getSound(EXPLOSION)->play();
+				sdlutils().soundEffects().at(EXPLOSION).play();
 				// Desactivar bala
 				(*itB)->setAlive(false);
 			}
