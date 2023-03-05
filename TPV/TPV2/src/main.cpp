@@ -5,8 +5,8 @@
 #include "game/Game.h"
 
 int main(int ac, char **av) {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);	// Check Memory Leaks (Nos informa de la basura no gestionada)
 
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	try {
 		Game* g = new Game();
 		g->run();
@@ -15,6 +15,6 @@ int main(int ac, char **av) {
 	catch (string e){
 		cout << e << endl;
 	}
+
 	return 0;
 }
-

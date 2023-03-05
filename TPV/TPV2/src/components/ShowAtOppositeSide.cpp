@@ -10,7 +10,7 @@ void ShowAtOppositeSide::initComponent() {
 void ShowAtOppositeSide::update() {
 	// Si se ha salido por la derecha
 	if (tr->getPosition().getX() > WIN_WIDTH)
-		tr->setPosition(Vector2D(0, tr->getPosition().getY()));
+		tr->setPosition(Vector2D(0 - tr->getWidth(), tr->getPosition().getY()));
 
 	// Si se ha salido por la izquierda
 	else if (tr->getPosition().getX() < 0 - tr->getWidth())
@@ -22,5 +22,5 @@ void ShowAtOppositeSide::update() {
 	
 	// Si se ha salido por abajo
 	else if (tr->getPosition().getY() > WIN_HEIGHT)
-		tr->setPosition(Vector2D(tr->getPosition().getX(), 0));
+		tr->setPosition(Vector2D(tr->getPosition().getX(), 0 - tr->getHeight()));
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2D.h"
+#include "../utils/chekML.h"
 
 // PANTALLA
 const int WIN_WIDTH = 800;
@@ -25,6 +26,7 @@ const int LIMIT_ASTEROIDS = 30;
 const int AST_FRAME_NUMBER = ASTEROIDS_COLS * ASTEROIDS_ROWS;
 const int FRAME_RATE = 50;
 const int AST_FREQUENCY = 5000;
+
 // BALA
 const int BULLET_WIDTH = 5;
 const int BULLET_HEIGTH = 20;
