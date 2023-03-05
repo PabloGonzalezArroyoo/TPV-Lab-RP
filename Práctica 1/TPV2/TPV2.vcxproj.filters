@@ -31,23 +31,23 @@
     <Filter Include="Source Files\json">
       <UniqueIdentifier>{f050c7fb-d995-4366-9eaf-e78d399a13f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\components">
-      <UniqueIdentifier>{5ffbbae5-92dd-42d0-b7cf-4b81da54fef7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\components">
-      <UniqueIdentifier>{59cdf607-2cdc-424f-8aa6-827a7dc00abd}</UniqueIdentifier>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{7d32def5-2953-4b30-9714-b42ee4d40a85}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\ecs">
-      <UniqueIdentifier>{59efd062-845d-4be0-ac01-2cbfe793ea44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ecs">
-      <UniqueIdentifier>{4bb7d9b0-be7e-4681-8e48-2d42b7dff7b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\game">
-      <UniqueIdentifier>{c1dcf69c-251a-4ea0-8334-da0301b572dd}</UniqueIdentifier>
+      <UniqueIdentifier>{13ff10fc-95de-4497-8961-e73ffc3bf6a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\game">
-      <UniqueIdentifier>{6043a147-d047-4738-a39c-c92a44e53874}</UniqueIdentifier>
+      <UniqueIdentifier>{87e9b681-4681-463c-832c-245f4d6d1c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ecs">
+      <UniqueIdentifier>{83f5c159-0624-444a-940e-134961ef062d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components">
+      <UniqueIdentifier>{e118f263-cc16-464a-9ae7-c9631432c38e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\components">
+      <UniqueIdentifier>{84976901-0e45-4bea-b674-39cd09ae864b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,14 +108,14 @@
     <ClInclude Include="src\ecs\Component.h">
       <Filter>Header Files\ecs</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\ecs_def.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
     <ClInclude Include="src\ecs\Entity.h">
       <Filter>Header Files\ecs</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\Manager.h">
       <Filter>Header Files\ecs</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\ecs_def.h">
-      <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="src\components\Transform.h">
       <Filter>Header Files\components</Filter>
@@ -135,14 +135,50 @@
     <ClInclude Include="src\components\FighterCtrl.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\Gun.h">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
     <ClInclude Include="src\components\ShowAtOppositeSide.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
     <ClInclude Include="src\components\FramedImage.h">
       <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Generations.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Follow.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\Gun.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\components\DisableOnExit.h">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Game.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\GameState.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\GameStateMachine.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\AsteroidsController.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\PlayState.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\GameOverState.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\MainMenuState.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\PauseState.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\chekML.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +213,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\Manager.cpp">
-      <Filter>Source Files\ecs</Filter>
+      <Filter>Source Files\game</Filter>
     </ClCompile>
     <ClCompile Include="src\components\Transform.cpp">
       <Filter>Source Files\components</Filter>
@@ -191,11 +227,52 @@
     <ClCompile Include="src\components\FighterCtrl.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\Gun.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
     <ClCompile Include="src\components\ShowAtOppositeSide.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\FramedImage.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\Follow.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\Gun.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\DisableOnExit.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Game.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\GameStateMachine.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\AsteroidsController.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\GameState.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\DeAcceleration.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\PlayState.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\MainMenuState.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\GameOverState.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\PauseState.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\config\asteroids.resources.json">
+      <Filter>Header Files\json</Filter>
+    </None>
   </ItemGroup>
 </Project>

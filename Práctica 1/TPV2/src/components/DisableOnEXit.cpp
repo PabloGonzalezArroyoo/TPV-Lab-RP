@@ -1,11 +1,20 @@
-#include "DisableOnEXit.h"
+#include "DisableOnExit.h"
+#include "../ecs/Entity.h"
+#include <iostream>
+
+// Inicializa el componente, cogiendo el transform de la nave
 void DisableOnExit::initComponent() {
-	myTr = ent_->getComponent<Transform>(_TRANSFORM);
+	myTr = myObj->getComponent<Transform>();
 }
 
+// Comprobar si se sale de la pantalla para desactivar el objeto si es el caso
 void DisableOnExit::update() {
+	// Coger la posición
 	Vector2D position = myTr->getPosition();
-	if (position.getX() < 0 || position.getX() >= WIN_WIDTH || position.getY() < 0 || position.getY() >= WIN_HEIGHT) {
-		ent_->setAlive(false);
+
+	// Si se sale por algún lateral de la pantalla, desactivarlo
+	if (position.getX() < 0 - myTr->getWidth() || position.getX() > WIN_WIDTH
+		|| position.getY() < 0 - myTr->getHeight() || position.getY() > WIN_HEIGHT) {
+		myObj->setAlive(false);
 	}
 }

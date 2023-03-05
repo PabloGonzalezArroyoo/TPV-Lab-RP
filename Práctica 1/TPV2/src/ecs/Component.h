@@ -1,22 +1,32 @@
 #pragma once
-#include "Entity.h"
-#include "Manager.h"
-#include "../utils/Constants.h"
+#include "../game/ecs_def.h"
+
+using namespace std;
+
+// Para evitar la dependencia circular
+class Manager;
+class Entity;
 
 class Component {
+protected:
+	// Referencia a mi entidad y a mi manager
+	Entity* myObj = nullptr;
+	Manager* myMng;
+
 public:
-	Component() : ent_(), mngr_() {};
-	virtual ~Component() {};
-	inline void setContext(Entity* ent, Manager* mngr) {
-		ent_ = ent;
-		mngr_ = mngr;
+	// Constructora y destructora
+	Component(): myObj(nullptr), myMng(nullptr) { }
+	virtual ~Component() { }
+
+	// Setters
+	inline void setContext(Entity* _obj, Manager* _mng) {
+		myObj = _obj;
+		myMng = _mng;
 	}
 
-	virtual void initComponent() {};
-	virtual void update() {};
-	virtual void render() {};
-
-protected:
-	Entity* ent_;
-	Manager* mngr_;
+	// Métodos virtuales
+	virtual void initComponent() { };
+	virtual void update() { };
+	virtual void render() { };
+	virtual void handleInput() { };
 };

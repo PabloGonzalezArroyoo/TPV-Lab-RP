@@ -4,28 +4,35 @@
 
 class Transform : public Component {
 private:
+	// Variables de mi posicion, velocidad, dimensiones y rotacion
 	Vector2D pos;
-	Vector2D dir;
-	float velocity;
-	Vector2D scale;
+	Vector2D vel;
+	int width;
+	int height;
+	float rotation;
 
 public:
+	// Id del componente
+	constexpr static cmpId_type id = _TRANSFORM;
+
 	// Constructoras
 	Transform();
-	Transform(Vector2D _pos, Vector2D _dir, float _vel, Vector2D _scale);
+	Transform(Vector2D _pos, Vector2D _vel, int _width, int _height, float _rotation = 0);
 
 	// Movimiento
-	void translate();
+	virtual void update();
 
 	// Setters
-	void setPosition(Vector2D _pos) { pos = _pos; };
-	void setDirection(Vector2D _dir) { dir = _dir; };
-	void setVelocity(float _vel) { velocity = _vel; };
-	void setScale(Vector2D _scale) { scale = _scale; }
+	inline void setPosition(Vector2D _pos) { pos = _pos; };
+	inline void setVelocity(Vector2D _vel) { vel = _vel; };
+	inline void setRotation(float _rotation) { rotation = _rotation; }
+	inline void setWidth(int _width) { width = _width; }
+	inline void setHeight(int _height) { height = _height; }
 
 	// Getters
-	Vector2D getPosition() { return pos; };
-	Vector2D getDirection() { return dir; };
-	float getVelocity() { return velocity; };
-	Vector2D getScale() { return scale; };
+	inline Vector2D getPosition() { return pos; };
+	inline Vector2D getVelocity() { return vel; };
+	inline float getRotation() { return rotation; }
+	inline int getWidth() { return width; }
+	inline int getHeight() { return height; }
 };

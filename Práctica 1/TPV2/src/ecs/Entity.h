@@ -1,73 +1,93 @@
 #pragma once
-#include "Manager.h"
-#include "Component.h"
-#include "../game/ecs_def.h"	
 #include <vector>
 #include <array>
-
+#include "Component.h"
+#include "../utils/Constants.h"
 using namespace std;
 
+class Manager;
 class Entity {
+protected:
+	Manager* myMng = nullptr;
+	std::vector<Component*> currCmps;
+	std::array<Component*, maxComponentId> cmps;
+	bool alive;
+
 public:
-	Entity() : mngr_(nullptr), cmps_(), currCmps_(), alive_() {
-		currCmps_.reserve(maxComponentId);
+	// Constructora
+	Entity(): alive(true), myMng(nullptr), cmps(), currCmps() {
+		currCmps.reserve(maxComponentId);
 	}
 
-	virtual ~Entity() {
-		for (Component* c : currCmps_) delete c;
-	}
-
-	inline void setContext(Manager* mngr);
-	inline bool isAlive();
-	inline void setAlive(bool alive);
-
-	template<typename T, typename ...Ts>
-	inline T* addComponent(cmpId_type cId, Ts&&...args) {
-		T* c = new T(forward<Ts>(args));
-
-		removeComponent(cId);
-
-		currCmps_.push_back(c);
-		cmps_[cId] = c;
-
-		c->setContext(this, mngr_);
-		c->initComponent();
-
-		return c;
-	}
-
-	inline void removeComponent(cmpId_type cId) {
-		if (cmps_[cId] != nullptr) {
-			auto iter = find(currCmps_.begin(), currCmps_.end(), cmps_[cId]);
-			currCmps_.erase(iter);
-
-			delete cmps_[cId];
-			cmps_[cId] = nullptr;
+	// Destructora
+	~Entity() {
+		for (Component* cmp : currCmps) {
+			delete cmp;
+			cmp = nullptr;
+		}
+		for (Component* cmp : cmps) {
+			cmp = nullptr;
 		}
 	}
 
+	// Asignar puntero al manager
+	inline void setContext(Manager* mng) { myMng = mng; }
+
+	// Inicializar entidad
+	virtual void initEntity() {};
+
+	// Comprobar y asignar alive
+	inline bool isAlive() { return alive; }
+	inline void setAlive(bool a) { alive = a; }
+
+	// Añade un componente y devuelve un puntero a este
+	template<typename T, typename ...Ts>
+	inline T* addComponent(Ts&&...args) {
+		T* c = new T(std::forward<Ts>(args)...);
+		constexpr cmpId_type cId = T::id;
+		removeComponent<T>();
+		currCmps.push_back(c);
+		cmps[cId] = c;
+		c->setContext(this, myMng);
+		c->initComponent();
+		return c;
+	}
+
+	// Borra el componente de la entidad
 	template<typename T>
-	inline T* getComponent(cmpId_type cId) {
-		return static_cast<T*>(cmps_[cId]);
+	inline void removeComponent() {
+		constexpr cmpId_type cId = T::id;
+		if (cmps[cId] != nullptr) {
+			auto iter = std::find(currCmps.begin(),
+				currCmps.end(), cmps[cId]);
+				currCmps.erase(iter);
+				delete cmps[cId];
+				cmps[cId] = nullptr;
+		}
 	}
 
-	inline bool hasComponent(cmpId_type cId) {
-		return cmps_[cId] != nullptr;
+	// Devuelve un puntero al componente
+	template<typename T>
+	inline T* getComponent() {
+		constexpr cmpId_type cId = T::id;
+		return static_cast<T*>(cmps[cId]);
 	}
 
-	inline void update() {
-		auto n = currCmps_.size();
-		for (auto i = 0u; i < n; i++) currCmps_[i]->update();
+	// Comrpueba si tiene el componente
+	template <typename T>
+	inline bool hasComponent() {
+		constexpr cmpId_type cId = T::id;
+		return cmps[cId] != nullptr;
 	}
 
-	inline void render() {
-		int n = currCmps_.size();
-		for (auto i = 0u; i < n; i++) currCmps_[i]->render();
+	// Métodos virtuales
+	virtual void update() {
+		for (Component* cmp : currCmps) cmp->update();
 	}
-
-private:
-	bool alive_;
-	Manager* mngr_;
-	vector<Component*> currCmps_;
-	array<Component*, maxComponentId> cmps_;
+	virtual void render() const{
+		for (Component* cmp : currCmps) cmp->render();
+	}
+	virtual void handleInput() {
+		for (Component* cmp : currCmps) cmp->handleInput();
+	}
 };

@@ -1,23 +1,96 @@
 #pragma once
-#include "../components/DeAcceleration.h"
-#include "../components/DisableOnEXit.h"
-#include "../components/FighterCtrl.h"
-#include "../components/Follow.h"
-#include "../components/FramedImage.h"
-#include "../components/Generations.h"
-#include "../components/Gun.h"
-#include "../components/Health.h"
-#include "../components/Image.h"
-#include "../components/ShowAtOppositeSide.h"
-#include "../components/Transform.h"
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <vector>
+#include "SDL.h"
+#include "SDL_image.h"
+#include "../../../SDL2-2.0.7/include/SDL_error.h"
+#include "../sdlutils/Music.h"
+#include "../sdlutils/SoundEffect.h"
+#include "../sdlutils/Texture.h"
+#include "../sdlutils/InputHandler.h"
+#include "../utils/Vector2D.h"
+#include "GameStateMachine.h"
 
-class Game : public Manager
-{
+#ifdef _WIN32
+#include<windows.h>
+#endif
+
+const int NUM_TEXTURES = 8;
+const int NUM_SOUNDS = 5;
+const int NUM_MUSIC = 1;
+using namespace std;
+typedef unsigned int uint;
+
+// Struct con el nombre y las dimensiones de frames del archivo
+typedef struct {
+	string filename;
+	uint hframes, vframes;
+} TextureDescription;
+
+// Descripción de las texturas (según la estructura del struct anterior)
+const TextureDescription textDescription[NUM_TEXTURES - 3] = {
+	// Objetos
+	{"fighter", 1, 1},
+	{"asteroid_gold", 5, 6},
+	{"asteroid", 5, 6},
+	{"fire", 1, 1},
+	{"heart", 1, 1}
+};
+
+// Nombres de los sonidos del juego 
+const string soundsDescription[NUM_SOUNDS] = {
+	"explosion",
+	"fire",
+	"oof",
+	"select",
+	"thrust"
+};
+
+// Nombres de la música del juego
+const string musicDescription[NUM_MUSIC] = {
+	"galaxy"
+};
+
+class Game {
 private:
-	Entity* player;
+	// Punteros SDL
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	Font* myFont;
+	// Variables de flujo
+	bool exit;
+
+	// Texturas
+	Texture* textures[NUM_TEXTURES];
+
+	// Sonidos
+	SoundEffect* sounds[NUM_SOUNDS];
+
+	// Música
+	Music* music[NUM_MUSIC];
+
+	// Máquina de estados
+	GameStateMachine* gsm;
+
 public:
+	// Constructora y destructora
 	Game();
 	~Game();
 
-	virtual Entity* getPlayer() { return player; }
+	// Métodos esenciales
+	void run();
+	void render();
+	void update();
+	void refresh();
+
+	// Getters
+	Texture* getTexture(int texture);
+	SoundEffect* getSound(int sound);
+	Music* getMusic(int _music);
+	GameStateMachine* getStateMachine() { return gsm; };
+
+	// Cambio de flujo para acabar el juego
+	void changeControl() { exit = true; };
 };
