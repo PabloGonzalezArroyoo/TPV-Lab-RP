@@ -50,3 +50,41 @@ enum hdlrId : hdlrId_type {
 };
 
 constexpr hdlrId_type maxHandlerId = _LAST_HDLR_ID;
+
+// MESSAGES
+using msgId_type = uint8_t;
+enum msgId : msgId_type {
+	_m_STAR_EATEN, //
+	_m_ADD_STARS
+};
+
+struct Message {
+	msgId_type id;
+	// _m_STAR_EATEN
+	struct {
+		Entity* e;
+	} star_eaten_data;
+	// _m_ADD_STARS
+	struct {
+		unsigned int n;
+	} add_stars_data;
+};
+
+
+// SYSTEMS
+
+using sysId_type = unsigned int;
+
+enum sysId : sysId_type {
+	_sys_GAME_CTRL,
+	_sys_ASTEROIDS,
+	_sys_BULLET,
+	_sys_FIGHTER,
+	_sys_COLLISION,
+	_sys_RENDER,
+
+	//DO NOT REMOVE THIS
+	_LAST_SYS_ID
+};
+
+constexpr sysId_type maxSystemId = _LAST_SYS_ID;

@@ -14,9 +14,8 @@ Manager::~Manager() {
 }
 
 Entity* Manager::addEntity(grpId_type gId) {
-	Entity* g = new Entity();
-	g->setAlive(true);
-	g->setContext(this);
+	Entity* g = new Entity(gId);
+	g->alive = true;
 	entsByGroup[gId].push_back(g);
 	return g;
 }
@@ -27,7 +26,7 @@ void Manager::refresh() {
 		grpEnts.erase(
 			remove_if(grpEnts.begin(), grpEnts.end(),
 				[](Entity* g) {
-					if (g->isAlive()) return false;
+					if (g->alive) return false;
 					else { delete g; return true; }
 				}), grpEnts.end()
 			);
@@ -35,15 +34,9 @@ void Manager::refresh() {
 }
 
 void Manager::update() {
-	for (auto& ents : entsByGroup) {
-		auto n = ents.size();
-		for (auto i = 0u; i < n; i++) ents[i]->update();
-	}
+	// Update de los sistemas
 }
 
 void Manager::render() {
-	for (auto& ents : entsByGroup) {
-		auto n = ents.size();
-		for (auto i = 0u; i < n; i++) ents[i]->render();
-	}
+	// Render de los sistemas
 }

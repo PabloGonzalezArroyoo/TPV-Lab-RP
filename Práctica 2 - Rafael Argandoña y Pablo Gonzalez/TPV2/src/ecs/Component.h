@@ -7,26 +7,17 @@ using namespace std;
 class Manager;
 class Entity;
 
-class Component {
+struct Component {
 protected:
-	// Referencia a mi entidad y a mi manager
-	Entity* myObj = nullptr;
-	Manager* myMng;
+	Entity* ent_;
+	Manager* mngr_;
 
 public:
-	// Constructora y destructora
-	Component(): myObj(nullptr), myMng(nullptr) { }
+	Component() : ent_(), mngr_() { }
 	virtual ~Component() { }
-
-	// Setters
-	inline void setContext(Entity* _obj, Manager* _mng) {
-		myObj = _obj;
-		myMng = _mng;
+	inline void setContext(Entity* ent, Manager* mngr) {
+		ent_ = ent;
+		mngr_ = mngr;
 	}
-
-	// Métodos virtuales
-	virtual void initComponent() { };
-	virtual void update() { };
-	virtual void render() { };
-	virtual void handleInput() { };
+	virtual void initComponent() { }
 };
