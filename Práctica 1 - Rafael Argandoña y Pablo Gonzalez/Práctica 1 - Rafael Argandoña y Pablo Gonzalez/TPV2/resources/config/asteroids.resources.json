@@ -1,0 +1,35 @@
+{
+  "fonts": [
+    { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 20 },
+    { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 20 },
+    { "id": "CHIMERA", "file": "resources/fonts/NES-Chimera.ttf", "size": 20 }
+  ],
+
+  "images": [
+    { "id": "asteroidA", "file": "resources/images/asteroid.png" },
+    { "id": "asteroidB", "file": "resources/images/asteroid_gold.png" },
+    { "id": "fighter", "file": "resources/images/fighter.png" },
+    { "id": "fighter2", "file": "resources/images/fighter2.png" },
+    { "id": "fire", "file": "resources/images/fire.png" },
+    { "id": "heart", "file": "resources/images/heart.png" }
+  ],
+
+  "messages": [
+    { "id": "MM_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA", "color": "0x000a57ff" },
+    { "id": "PAUSE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA", "color": "0x000000ff", "bg": "0xffffffff" },
+    { "id": "GAMEOVER_MSG", "text": "GAME OVER", "font": "CHIMERA", "color": "0x000a57ff" }
+  ],
+
+  "sounds": [
+    { "id": "explosion", "file": "resources/sound/explosion.wav" },
+    { "id": "fire", "file": "resources/sound/fire.wav" },
+    { "id": "oof", "file": "resources/sound/oof.wav" },
+    { "id": "select", "file": "resources/sound/select.wav" },
+    { "id": "thrust", "file": "resources/sound/thrust.wav" }
+  ],
+
+  "musics": [
+    { "id": "galaxy", "file": "resources/music/galaxy.mp3" }
+  ]
+
+}
