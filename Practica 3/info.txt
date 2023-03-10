@@ -1,8 +1,0 @@
--- COMPONENTES DEL GRUPO --
-Pablo González Arroyo y Rafael Argandoña Blácido
-
--- FUNCIONALIDADES OPCIONALES --
-Ninguna
-
--- COSAS QUE NO FUNCIONAN CORRECTAMENTE --
-Que sepamos, solo ocurre de forma irregular una aceleración de la pelota al rebotar con las esquinas de la pala
