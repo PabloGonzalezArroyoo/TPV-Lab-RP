@@ -16,6 +16,7 @@
 
   "messages": [
     { "id": "MM_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA", "color": "0x000a57ff" },
+    { "id": "WIN_MSG", "text":  "GG CONGRATS FR FR :)", "font": "CHIMERA", "color":  "0x000000ff"},
     { "id": "PAUSE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA", "color": "0x000000ff", "bg": "0xffffffff" },
     { "id": "GAMEOVER_MSG", "text": "GAME OVER", "font": "CHIMERA", "color": "0x000a57ff" }
   ],

@@ -35,6 +35,7 @@ const string GALAXY = "galaxy";
 const string MM_MESSAGE = "MM_MSG";
 const string PAUSE_MESSAGE = "PAUSE_MSG";
 const string GAME_OVER_MESSAGE = "GAMEOVER_MSG";
+const string WIN_MESSAGE = "WIN_MSG";
 
 // PLAYER
 const int MAX_LIFES = 3;     

@@ -9,15 +9,15 @@ class Entity;
 
 struct Component {
 protected:
-	Entity* ent_;
-	Manager* mngr_;
+	Entity* ent;
+	Manager* mngr;
 
 public:
-	Component() : ent_(), mngr_() { }
+	Component() : ent(), mngr() { }
 	virtual ~Component() { }
-	inline void setContext(Entity* ent, Manager* mngr) {
-		ent_ = ent;
-		mngr_ = mngr;
+	inline void setContext(Entity* _ent, Manager* _mngr) {
+		ent = _ent;
+		mngr = _mngr;
 	}
 	virtual void initComponent() { }
 };

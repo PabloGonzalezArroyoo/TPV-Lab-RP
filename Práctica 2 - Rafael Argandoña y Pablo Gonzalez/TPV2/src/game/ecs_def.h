@@ -52,6 +52,7 @@ enum hdlrId : hdlrId_type {
 constexpr hdlrId_type maxHandlerId = _LAST_HDLR_ID;
 
 // MESSAGES
+class Entity;
 using msgId_type = uint8_t;
 enum msgId : msgId_type {
 	_m_STAR_EATEN, //
