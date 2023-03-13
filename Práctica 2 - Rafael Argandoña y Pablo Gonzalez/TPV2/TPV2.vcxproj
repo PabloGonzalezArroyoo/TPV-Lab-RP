@@ -20,6 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\DeAcceleration.h" />
+    <ClInclude Include="src\components\DisableOnExit.h" />
+    <ClInclude Include="src\components\FighterCtrl.h" />
+    <ClInclude Include="src\components\Follow.h" />
+    <ClInclude Include="src\components\FramedImage.h" />
+    <ClInclude Include="src\components\Generations.h" />
+    <ClInclude Include="src\components\Gun.h" />
+    <ClInclude Include="src\components\Health.h" />
+    <ClInclude Include="src\components\Image.h" />
+    <ClInclude Include="src\components\ShowAtOppositeSide.h" />
     <ClInclude Include="src\components\Transform.h" />
     <ClInclude Include="src\ecs\Component.h" />
     <ClInclude Include="src\ecs\Entity.h" />
@@ -47,6 +56,12 @@
     <ClInclude Include="src\sdlutils\SoundEffect.h" />
     <ClInclude Include="src\sdlutils\Texture.h" />
     <ClInclude Include="src\sdlutils\VirtualTimer.h" />
+    <ClInclude Include="src\systems\AsteroidsSystem.h" />
+    <ClInclude Include="src\systems\BulletSystem.h" />
+    <ClInclude Include="src\systems\CollisionsSystem.h" />
+    <ClInclude Include="src\systems\FighterSystem.h" />
+    <ClInclude Include="src\systems\GameCtrlSystem.h" />
+    <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\utils\chekML.h" />
     <ClInclude Include="src\utils\Collisions.h" />
     <ClInclude Include="src\utils\Constants.h" />

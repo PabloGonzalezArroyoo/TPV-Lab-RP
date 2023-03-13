@@ -2,14 +2,10 @@
 #include "Transform.h"
 #include "../ecs/Manager.h"
 
-struct DeAccelerationComponent : public Component {
-protected:
+struct ShowAtOppositeSide : public Component {
+private:
 	Transform* tr;
-
 public:
-	// ID
-	constexpr static cmpId_type id = _DEACCELERATION;
-
-	// Inicializar componente
+	constexpr static cmpId_type id = _SHOWATOPPOSITESIDE;
 	inline virtual void initComponent() { tr = mngr->getComponent<Transform>(ent); }
 };

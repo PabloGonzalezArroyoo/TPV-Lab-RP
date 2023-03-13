@@ -2,13 +2,12 @@
 #include "Transform.h"
 #include "../ecs/Manager.h"
 
-struct DeAccelerationComponent : public Component {
-protected:
+struct DisbaleOnExit : public Component {
+private:
 	Transform* tr;
 
 public:
-	// ID
-	constexpr static cmpId_type id = _DEACCELERATION;
+	constexpr static cmpId_type id = _DISABLE_ON_EXIT;
 
 	// Inicializar componente
 	inline virtual void initComponent() { tr = mngr->getComponent<Transform>(ent); }

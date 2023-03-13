@@ -9,8 +9,10 @@ protected:
 	float rotation;
 
 public:
+	// ID
 	constexpr static cmpId_type id = _TRANSFORM;
 
+	// Constructoras
 	Transform() : Component(), pos(Vector2D()), vel(Vector2D()), width(1), height(1), rotation(0) { }
 	Transform(Vector2D _p, Vector2D _v, int _w, int _h, float _r) : 
 			Component(), pos(_p), vel(_v), width(_w), height(_h), rotation(_r) { }
