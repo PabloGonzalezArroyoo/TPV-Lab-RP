@@ -1,16 +1,16 @@
 #pragma once
-
+#include "../sdlutils/SDLUtils.h"
 class Manager;
 
 class System {
 public:
 	virtual ~System() { }
-	void setContext(Manager* mngr) {
-		mngr_ = mngr;
+	void setContext(Manager* _mngr) {
+		mngr = _mngr;
 	}
 	virtual void initSystem() { }
 	virtual void update() { }
 	virtual void receive(const Message& m) { }
 protected:
-	Manager* mngr_;
+	Manager* mngr;
 };

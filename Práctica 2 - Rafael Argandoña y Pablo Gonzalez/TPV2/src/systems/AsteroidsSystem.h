@@ -1,11 +1,12 @@
 #pragma once
 #include "../ecs/System.h"
 #include "../game/ecs_def.h"
+#include "../components/Transform.h"
 
 class AsteroidsSystem : public System {
 public:
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
-	void receive(const Message& m) override {}
+	virtual void receive(const Message& m);
 
 	// Inicializar el sistema, etc.
 	void initSystem() override {}
@@ -27,6 +28,11 @@ private:
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema y
 	// añadir los asteroides iniciales (como en la práctica 1).
 	void onRoundStart() {}
+
+	//
+	Vector2D randomPos();
+	Vector2D randomVel(Vector2D posAst);
+	void createSon(Transform* father, int newGen);
 
 	// El número actual de asteroides en el juego (recuerda que no puede superar un
 	// límite)
