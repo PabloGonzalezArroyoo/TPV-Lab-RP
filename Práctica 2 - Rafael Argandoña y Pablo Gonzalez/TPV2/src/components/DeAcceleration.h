@@ -2,7 +2,7 @@
 #include "Transform.h"
 #include "../ecs/Manager.h"
 
-struct DeAccelerationComponent : public Component {
+struct DeAcceleration : public Component {
 protected:
 	Transform* tr;
 

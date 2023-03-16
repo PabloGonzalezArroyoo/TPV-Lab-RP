@@ -55,8 +55,9 @@ constexpr hdlrId_type maxHandlerId = _LAST_HDLR_ID;
 class Entity;
 using msgId_type = uint8_t;
 enum msgId : msgId_type {
-	_m_STAR_EATEN, //
-	_m_ADD_STARS
+	_m_PLAYER_DIED, //
+	_m_ASTEROID_COLLIDED,
+	_m_CREATE_BULLET
 };
 
 struct Message {
@@ -64,11 +65,14 @@ struct Message {
 	// _m_STAR_EATEN
 	struct {
 		Entity* e;
-	} star_eaten_data;
+	} player_died_data;
 	// _m_ADD_STARS
 	struct {
 		unsigned int n;
-	} add_stars_data;
+	} asteroid_collided_data;
+	struct {
+		Entity* pl;
+	} create_bullet_data;
 };
 
 

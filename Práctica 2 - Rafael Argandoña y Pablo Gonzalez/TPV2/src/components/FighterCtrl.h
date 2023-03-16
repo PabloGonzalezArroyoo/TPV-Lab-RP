@@ -20,4 +20,10 @@ public:
 		r = 0;
 		speedLimit = 1.5;
 	}
+
+	// Getters y setters
+	int getRot() { return r; }
+	void setRot(int _r) { r = _r; }
+	float getThrust() { return thrust; }
+	float getSpeedLimit() { return speedLimit; }
 };

@@ -2,7 +2,7 @@
 #include "Transform.h"
 #include "../ecs/Manager.h"
 
-struct DisbaleOnExit : public Component {
+struct DisableOnExit : public Component {
 private:
 	Transform* tr;
 
