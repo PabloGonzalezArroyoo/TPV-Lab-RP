@@ -1,6 +1,8 @@
 #pragma once
 #include "../ecs/System.h"
 #include "../game/ecs_def.h"
+#include "../components/Transform.h"
+#include "../utils/Collisions.h"
 
 class CollisionsSystem : public System {
 public:
@@ -20,6 +22,12 @@ private:
 
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
 	void onRoundStart();
+
+	void checkCollisions();
+
+	bool collisionAsteroidsFighter(Entity* player, Transform* astTr);
+
+	bool collisionAsteroidsBullets(Transform* astTr);
 
 	// Indica si el sistema está activo o no (modificar el valor en onRoundOver y
 	// onRoundStart, y en update no hacer nada si no está activo)
