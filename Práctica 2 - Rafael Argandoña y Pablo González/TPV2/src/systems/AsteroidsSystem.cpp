@@ -2,7 +2,9 @@
 #include "../ecs/Manager.h"
 
 void AsteroidsSystem::receive(const Message& m) {
-
+	if (m.id == _m_ASTEROID_COLLIDED) {
+		createSon(mngr->getComponent<Transform>(m.asteroid_collided_data.e), m.asteroid_collided_data.n);
+	}
 }
 
 void AsteroidsSystem::initSystem() {
@@ -160,7 +162,7 @@ void AsteroidsSystem::createSon(Transform* father, int newGen) {
 			* 2 * max(father->getWidth(), father->getHeight());
 		auto vel = father->getVelocity().rotate(r) * 1.1f;
 
-		Entity* ast = mngr->addEntity();
+		Entity* ast = mngr->addEntity(_grp_ASTEROIDS);
 		int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * newGen;
 		mngr->addComponent<Transform>(ast, pos, dimensions, dimensions, vel);
 		mngr->addComponent<Generations>(ast, newGen);

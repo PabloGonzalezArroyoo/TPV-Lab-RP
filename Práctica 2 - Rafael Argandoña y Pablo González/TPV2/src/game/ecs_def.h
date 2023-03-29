@@ -62,16 +62,17 @@ enum msgId : msgId_type {
 
 struct Message {
 	msgId_type id;
-	// _m_STAR_EATEN
+	// _m_PLAYER_DIED
 	struct {
 		Entity* e;
 	} player_died_data;
-	// _m_ADD_STARS
+	// _m_ASTEROIDS_COLLIDED
 	struct {
+		Entity* e;
 		unsigned int n;
 	} asteroid_collided_data;
+	// _m_CREATE_BULLET
 	struct {
-		Entity* pl;
 	} create_bullet_data;
 };
 
@@ -85,7 +86,7 @@ enum sysId : sysId_type {
 	_sys_ASTEROIDS,
 	_sys_BULLET,
 	_sys_FIGHTER,
-	_sys_COLLISION,
+	_sys_COLLISIONS,
 	_sys_RENDER,
 
 	//DO NOT REMOVE THIS

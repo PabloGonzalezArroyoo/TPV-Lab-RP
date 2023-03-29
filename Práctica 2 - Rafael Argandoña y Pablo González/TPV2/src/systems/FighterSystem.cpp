@@ -43,8 +43,16 @@ void FighterSystem::update() {
 		setFighterVelocity(tr, fc);
 	}
 
-	if (InputHandler::instance()->isKeyDown(SDLK_s)) {
-		// DISPARAR
+	// Aumentamos el cooldown de disparo
+	cooldown = sdlutils().currRealTime() - startTime;
+
+	// Si se ha pulsado el espacio
+	if (InputHandler::instance()->isKeyDown(SDLK_s) && cooldown >= 250) {
+		startTime = sdlutils().currRealTime();
+
+		Message m;
+		m.id = _m_CREATE_BULLET;
+		mngr->send(m);
 	}
 
 	//// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa

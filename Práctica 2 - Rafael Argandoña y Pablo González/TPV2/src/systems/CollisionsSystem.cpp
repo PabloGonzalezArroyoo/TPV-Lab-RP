@@ -1,5 +1,6 @@
 #include "CollisionsSystem.h"
 #include "../ecs/Manager.h"
+#include "../components/Generations.h"
 
 void CollisionsSystem::receive(const Message& m) {
 
@@ -26,7 +27,13 @@ void CollisionsSystem::checkCollisions() {
 			astTr = mngr->getComponent<Transform>(asts[i]);
 			plCollided = collisionAsteroidsFighter(pl, astTr);
 			
-			if (!plCollided && collisionAsteroidsBullets(astTr)); // WHATSAPPEO A ASTEROIDS SYSTEM
+			if (!plCollided && collisionAsteroidsBullets(astTr)) {
+				Message m;
+				m.id = _m_ASTEROID_COLLIDED;
+				m.asteroid_collided_data.n = mngr->getComponent<Generations>(asts[i])->getGenerations();
+				m.asteroid_collided_data.e = asts[i];
+				mngr->send(m);
+			}
 		}
 	}
 }
@@ -60,8 +67,6 @@ bool CollisionsSystem::collisionAsteroidsBullets(Transform* astTr) {
 	return collision;
 }
 
-void CollisionsSystem::onRoundOver() {
-}
+void CollisionsSystem::onRoundOver() { }
 
-void CollisionsSystem::onRoundStart() {
-}
+void CollisionsSystem::onRoundStart() { }

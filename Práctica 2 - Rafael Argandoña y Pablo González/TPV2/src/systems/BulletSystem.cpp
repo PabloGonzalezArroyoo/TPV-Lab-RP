@@ -2,7 +2,9 @@
 #include "../ecs/Manager.h"
 
 void BulletSystem::receive(const Message& m) {
-
+	if (m.id == _m_CREATE_BULLET) {
+		shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)));
+	}
 }
 
 void BulletSystem::initSystem() {

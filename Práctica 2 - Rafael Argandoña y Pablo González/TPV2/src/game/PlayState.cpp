@@ -7,6 +7,7 @@
 #include "../systems/FighterSystem.h"
 #include "../systems/BulletSystem.h"
 #include "../systems/AsteroidsSystem.h"
+#include "../systems/CollisionsSystem.h"
 
 // Constructora
 PlayState::PlayState(Game* g) : GameState(g) {
@@ -23,6 +24,7 @@ PlayState::PlayState(Game* g) : GameState(g) {
 	mng->addSystem<FighterSystem>();
 	mng->addSystem<AsteroidsSystem>();
 	mng->addSystem<BulletSystem>();
+	mng->addSystem<CollisionsSystem>();
 	mng->addSystem<RenderSystem>();
 
 	//// Añadimos al jugador con todos sus componentes
