@@ -7,6 +7,8 @@
 
 class AsteroidsSystem : public System {
 public:
+	constexpr static sysId_type id = _sys_ASTEROIDS;
+
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	virtual void receive(const Message& m) override;
 
@@ -17,6 +19,7 @@ public:
 	// en la práctica 1 y generar 1 asteroide nuevo cada 5 segundos (aparte
 	// de los 10 al principio de cada ronda).
 	virtual void update() override;
+
 private:
 	// Para gestionar el mensaje de que ha habido un choque de un asteroide con una
 	// bala. Desactivar el asteroide “a” y crear 2 asteroides como en la práctica 1,
@@ -35,6 +38,9 @@ private:
 	Vector2D randomPos();
 	Vector2D randomVel(Vector2D posAst);
 	void createSon(Transform* father, int newGen);
+
+	bool disableOnExit(Transform* tr);
+	void setFollowVelocity(Transform* myTr, Transform* plTr, float randomSpeed);
 
 	// El número actual de asteroides en el juego (recuerda que no puede superar un
 	// límite)

@@ -10,6 +10,8 @@
 
 class FighterSystem : public System {
 public:
+	constexpr static sysId_type id = _sys_FIGHTER;
+
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	void receive(const Message& m) override;
 
@@ -35,6 +37,12 @@ private:
 
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
 	void onRoundStart();
+
+	void setFighterVelocity(Transform* tr, FighterCtrl* fc);
+
+	Vector2D deAccelerate(Vector2D vel);
+
+	void showAtOppositeSide(Transform* tr);
 
 	float cooldown, startTime;
 };

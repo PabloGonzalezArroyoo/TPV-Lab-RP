@@ -16,4 +16,6 @@ public:
 		plTr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
 		randomSpeed = sdlutils().rand().nextInt(1, 6) / 10.0f;
 	}
+
+	inline float getRandomSpeed() { return randomSpeed; }
 };

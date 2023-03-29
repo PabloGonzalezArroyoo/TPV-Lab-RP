@@ -6,7 +6,7 @@
 // Constructora
 MainMenuState::MainMenuState(Game* g) : GameState(g) {
 	// Fondo verde
-	//SDL_SetRenderDrawColor(sdlutils().renderer(), 0, 123, 17, 1);
+	SDL_SetRenderDrawColor(sdlutils().renderer(), 0, 123, 17, 1);
 
 	// Creamos el manager del estado
 	mng = new Manager();
@@ -16,19 +16,13 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 	mng->setHandler(_hdlr_FIGHTER, ship);
 	mng->addComponent<Transform>(ship, Vector2D(WIN_WIDTH/2 - PLAYER_WIDTH/2, WIN_HEIGHT/2 - PLAYER_HEIGHT/2), PLAYER_WIDTH, PLAYER_HEIGHT);
 
+	// Sistemas
 	mng->addSystem<RenderSystem>();
-
-	// Añadir texto de mainMenu
-	/*Entity* text = mng->addEntity();
-	auto txt = &sdlutils().msgs().at(MM_MESSAGE);
-	mng->addComponent<Transform>(text, Vector2D(WIN_WIDTH / 2 - txt->width() / 2, WIN_HEIGHT * 2 / 3 - txt->height()/2),
-		Vector2D(), txt->width(), txt->height());
-	mng->addComponent<FramedImage>(text, txt);*/
 }
 
 // Manejo del input en el mainMenu
 void MainMenuState::update() {
-	mng->update();
+	GameState::update();
 	// Si se presiona espacio, reproducir sonido y cargar estado
 	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
 		sdlutils().soundEffects().at(SELECT).play();

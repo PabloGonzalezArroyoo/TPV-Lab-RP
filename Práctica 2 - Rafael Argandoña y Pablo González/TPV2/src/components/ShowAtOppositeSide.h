@@ -2,6 +2,8 @@
 #include "Transform.h"
 #include "../ecs/Manager.h"
 
+// BORRAR
+
 struct ShowAtOppositeSide : public Component {
 private:
 	Transform* tr;

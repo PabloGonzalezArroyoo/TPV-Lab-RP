@@ -41,10 +41,9 @@ void Game::run() {
 	startTime = SDL_GetTicks();
 	SDL_Delay(1500);
 	while (!exit) {
-		InputHandler::instance()->refresh();
-
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= 5 && !exit) {				// Comprobamos si el tiempo de frame es mayor al ratio
+			InputHandler::instance()->refresh();
 			update();								// Actualizamos el estado del juego
 			refresh();
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
@@ -57,17 +56,17 @@ void Game::run() {
 
 // Renderizado
 void Game::render() {
-	//SDL_RenderClear(renderer);							// Limpiamos la pantalla
-
-	gsm->currentState()->render();							// Renderizamos el estado actual
-
-	//SDL_RenderPresent(renderer);							// Pintamos
+	//gsm->currentState()->render();							// Renderizamos el estado actual
 }
 
 // Actualizar entidades
 void Game::update() {
+	SDL_RenderClear(renderer);							// Limpiamos la pantalla
+
 	// UPDATE MÁQUINA DE ESTADOS
 	gsm->currentState()->update();
+
+	SDL_RenderPresent(renderer);							// Pintamos
 }
 
 void Game::refresh() {

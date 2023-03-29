@@ -1,6 +1,10 @@
 #include "AsteroidsSystem.h"
 #include "../ecs/Manager.h"
 
+void AsteroidsSystem::receive(const Message& m) {
+
+}
+
 void AsteroidsSystem::initSystem() {
 	frameTime = 0.0f;
 	startTime = sdlutils().currRealTime();
@@ -20,6 +24,38 @@ void AsteroidsSystem::update() {
 		// Resetear startTime
 		startTime = sdlutils().currRealTime();
 	}
+
+	vector<Entity*> entities = mngr->getEntities(_grp_ASTEROIDS);
+	Transform* plTr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
+	Transform* tr = nullptr;
+	for (int i = 0; i < entities.size(); i++) {
+		tr = mngr->getComponent<Transform>(entities[i]);
+
+		if (mngr->hasComponent<Follow>(entities[i])) {
+			setFollowVelocity(tr, plTr, mngr->getComponent<Follow>(entities[i])->getRandomSpeed());
+		}
+
+		tr->setPosition(tr->getPosition() + tr->getVelocity());
+		if (disableOnExit(tr)) mngr->setAlive(entities[i], false);
+	}
+}
+
+bool AsteroidsSystem::disableOnExit(Transform* tr) {
+	// Coger la posición
+	Vector2D position = tr->getPosition();
+
+	// Si se sale por algún lateral de la pantalla, desactivarlo
+	return position.getX() < 0 - tr->getWidth() || position.getX() > WIN_WIDTH
+		|| position.getY() < 0 - tr->getHeight() || position.getY() > WIN_HEIGHT;
+}
+
+void AsteroidsSystem::setFollowVelocity(Transform* myTr, Transform* plTr, float randomSpeed) {
+	// Calculamos la nueva velocidad y le asignamos una rotación adecuada
+	Vector2D newVel = (plTr->getPosition() - myTr->getPosition()).normalize() * randomSpeed;
+	newVel.rotate(newVel.angle(plTr->getPosition() - myTr->getPosition()) > 0 ? 1.0f : -1.0f);
+
+	// Asignamos la nueva velocidad
+	myTr->setVelocity(newVel);
 }
 
 void AsteroidsSystem::onCollision_AsteroidBullet(Entity* a) {

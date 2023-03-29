@@ -8,6 +8,25 @@ void BulletSystem::receive(const Message& m) {
 void BulletSystem::initSystem() {
 }
 
+void BulletSystem::update() {
+	vector<Entity*> entities = mngr->getEntities(_grp_BULLETS);
+	Transform* tr = nullptr;
+	for (int i = 0; i < entities.size(); i++) {
+		tr = mngr->getComponent<Transform>(entities[i]);
+		tr->setPosition(tr->getPosition() + tr->getVelocity());
+		if (disableOnExit(tr)) mngr->setAlive(entities[i], false);
+	}
+}
+
+bool BulletSystem::disableOnExit(Transform* tr) {
+	// Coger la posición
+	Vector2D position = tr->getPosition();
+
+	// Si se sale por algún lateral de la pantalla, desactivarlo
+	return position.getX() < 0 - tr->getWidth() || position.getX() > WIN_WIDTH
+		|| position.getY() < 0 - tr->getHeight() || position.getY() > WIN_HEIGHT;
+}
+
 void BulletSystem::shoot(Transform* tr) {
 	//Creamos la bala
 	Entity* b = mngr->addEntity(_grp_BULLETS);

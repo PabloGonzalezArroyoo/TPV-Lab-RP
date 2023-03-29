@@ -40,27 +40,69 @@ void FighterSystem::update() {
 
 	// Si se ha pulsado hacia arriba
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
-		//if (lastSoundTime >= 500) { sound->play(); startTime = sdlutils().currRealTime(); }
-
-		// Calcular el vector velocidad
-		Vector2D vel = tr->getVelocity() + Vector2D(0, -1).rotate(fc->getRot()) * fc->getThrust();
-
-		// Si sobrepasa el limite de velocidad, restringirlo
-		if (vel.magnitude() > fc->getSpeedLimit()) vel = vel.normalize() * fc->getSpeedLimit();
-
-		// Setear la velocidad
-		tr->setVelocity(vel);
+		setFighterVelocity(tr, fc);
 	}
 
 	if (InputHandler::instance()->isKeyDown(SDLK_s)) {
 		// DISPARAR
 	}
+
 	//// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa
 	//if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
 	//	game->getStateMachine()->pushState(new PauseState(game, myObj->getComponent<Health>()->checkLifes()));
 	//}
+
+	// Desacelerar
+	tr->setVelocity(deAccelerate(tr->getVelocity()));
+
+	// Aplicar cálculos
+	tr->setPosition(tr->getPosition() + tr->getVelocity());
+
+	// Cambiar de lado si se sale la nave
+	showAtOppositeSide(tr);
 }
 
+void FighterSystem::setFighterVelocity(Transform* tr, FighterCtrl* fc) {
+	//if (lastSoundTime >= 500) { sound->play(); startTime = sdlutils().currRealTime(); }
+
+	// Calcular el vector velocidad
+	Vector2D vel = tr->getVelocity() + Vector2D(0, -1).rotate(fc->getRot()) * fc->getThrust();
+
+	// Si sobrepasa el limite de velocidad, restringirlo
+	if (vel.magnitude() > fc->getSpeedLimit()) vel = vel.normalize() * fc->getSpeedLimit();
+
+	// Setear la velocidad
+	tr->setVelocity(vel);
+}
+
+Vector2D FighterSystem::deAccelerate(Vector2D vel) {
+	Vector2D newVel = vel;
+	if (vel.magnitude() >= 0.05) {
+		newVel = vel * 0.995;
+
+		if (newVel.magnitude() <= 0.05) newVel = Vector2D();
+	}
+	
+	return newVel;
+}
+
+void FighterSystem::showAtOppositeSide(Transform* tr) {
+	// Si se ha salido por la derecha
+	if (tr->getPosition().getX() > WIN_WIDTH)
+		tr->setPosition(Vector2D(0 - tr->getWidth(), tr->getPosition().getY()));
+
+	// Si se ha salido por la izquierda
+	else if (tr->getPosition().getX() < 0 - tr->getWidth())
+		tr->setPosition(Vector2D(WIN_WIDTH, tr->getPosition().getY()));
+
+	// Si se ha salido por arriba
+	else if (tr->getPosition().getY() < 0 - tr->getHeight())
+		tr->setPosition(Vector2D(tr->getPosition().getX(), WIN_HEIGHT));
+
+	// Si se ha salido por abajo
+	else if (tr->getPosition().getY() > WIN_HEIGHT)
+		tr->setPosition(Vector2D(tr->getPosition().getX(), 0 - tr->getHeight()));
+}
 
 void FighterSystem::onCollision_FighterAsteroid() {
 	Transform* plTr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));

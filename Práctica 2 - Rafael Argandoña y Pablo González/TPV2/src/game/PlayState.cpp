@@ -3,6 +3,10 @@
 #include "GameOverState.h"
 #include "PauseState.h"
 #include "../sdlutils/SDLUtils.h"
+#include "../systems/RenderSystem.h"
+#include "../systems/FighterSystem.h"
+#include "../systems/BulletSystem.h"
+#include "../systems/AsteroidsSystem.h"
 
 // Constructora
 PlayState::PlayState(Game* g) : GameState(g) {
@@ -14,6 +18,12 @@ PlayState::PlayState(Game* g) : GameState(g) {
 
 	// Reproducimos la música de fondo	
 	sdlutils().musics().at(GALAXY).play();
+
+	// Sistemas
+	mng->addSystem<FighterSystem>();
+	mng->addSystem<AsteroidsSystem>();
+	mng->addSystem<BulletSystem>();
+	mng->addSystem<RenderSystem>();
 
 	//// Añadimos al jugador con todos sus componentes
 	//auto player = mng->addEntity();

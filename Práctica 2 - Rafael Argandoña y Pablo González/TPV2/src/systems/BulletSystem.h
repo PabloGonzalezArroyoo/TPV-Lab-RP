@@ -5,6 +5,8 @@
 
 class BulletSystem : public System {
 public:
+	constexpr static sysId_type id = _sys_BULLET;
+
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	void receive(const Message& m) override;
 
@@ -27,6 +29,8 @@ private:
 	// Para gestionar el mensaje de que ha habido un choque entre una bala y un
 	// asteroide. Desactivar la bala “b”.
 	void onCollision_BulletAsteroid(Entity* b);
+
+	bool disableOnExit(Transform* tr);
 
 	// Para gestionar el mensaje de que ha acabado la ronda. Desactivar todas las
 	// balas, y desactivar el sistema.
