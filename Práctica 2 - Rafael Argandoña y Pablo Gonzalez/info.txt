@@ -1,9 +1,0 @@
--- COMPONENTES DEL GRUPO --
-Pablo González Arroyo y Rafael Argandoña Blácido
-
--- FUNCIONALIDADES OPCIONALES --
-Los assets se cargan a partir del JSON
-
--- COSAS QUE NO FUNCIONAN CORRECTAMENTE --
-1. El sonido de "THRUST" suena muy saturado y no sabemos el porqué. De hecho, hemos creado un contador para evitar que se reproduzca muchas veces seguidas pero sigue ocurriendo lo mismo. Incluso, hemos probado a cambiar el sonido por otro, y no pasa en ninguno de los otros...
-2. Otro fallo que tampoco entendemos es que en los dos ordenadores que tenemos el input se detecta raro. Siendo el mismo método con la misma lógica, mientras que en el ordenador de Rafael funciona perfecto, en el ordenador de Pablo se registra de forma que debe presionar el botón varias veces hasta que se detecta el input.
