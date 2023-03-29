@@ -14,10 +14,16 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 	// Añadir la nave (sin funcionalidad, solo imagen y posición)
 	Entity* ship = mng->addEntity();
 	mng->setHandler(_hdlr_FIGHTER, ship);
-	mng->addComponent<Transform>(ship, Vector2D(WIN_WIDTH/2 - PLAYER_WIDTH/2, WIN_HEIGHT/2 - PLAYER_HEIGHT/2), PLAYER_WIDTH, PLAYER_HEIGHT);
+	mng->addComponent<Transform>(ship, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
 
 	// Sistemas
 	mng->addSystem<RenderSystem>();
+
+	Message m;
+	m.id = _m_INIT_STATE;
+	m._state_data.st = MAINMENU_STATE;
+	m._state_data.g = g;
+	mng->send(m);
 }
 
 // Manejo del input en el mainMenu

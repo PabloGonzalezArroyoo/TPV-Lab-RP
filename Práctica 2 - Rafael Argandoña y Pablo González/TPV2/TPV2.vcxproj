@@ -62,6 +62,7 @@
     <ClInclude Include="src\systems\GameCtrlSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\utils\Collisions.h" />
+    <ClInclude Include="src\utils\Constants.h" />
     <ClInclude Include="src\utils\mpl.h" />
     <ClInclude Include="src\utils\Singleton.h" />
     <ClInclude Include="src\utils\Vector2D.h" />

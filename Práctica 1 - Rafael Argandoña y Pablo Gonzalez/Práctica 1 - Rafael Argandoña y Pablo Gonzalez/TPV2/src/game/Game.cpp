@@ -41,10 +41,9 @@ void Game::run() {
 	startTime = SDL_GetTicks();
 	SDL_Delay(1500);
 	while (!exit) {
-		InputHandler::instance()->refresh();
-
 		frameTime = SDL_GetTicks() - startTime;		// Actualizamos cuanto tiempo ha pasado desde el ultimo frame
 		if (frameTime >= 5 && !exit) {				// Comprobamos si el tiempo de frame es mayor al ratio
+			InputHandler::instance()->refresh();
 			update();								// Actualizamos el estado del juego
 			refresh();
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame

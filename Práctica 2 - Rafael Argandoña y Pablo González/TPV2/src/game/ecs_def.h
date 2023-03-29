@@ -2,6 +2,11 @@
 #include "../utils/Constants.h"
 using namespace std;
 
+// Los distintos estados del juego
+enum STATE {
+	MAINMENU_STATE, PLAY_STATE, PAUSE_STATE, GAMEOVER_STATE, WIN_STATE
+};
+
 // COMPONENTES
 using cmpId_type = unsigned int;
 
@@ -53,11 +58,15 @@ constexpr hdlrId_type maxHandlerId = _LAST_HDLR_ID;
 
 // MESSAGES
 class Entity;
+class Game;
+
 using msgId_type = unsigned int;
 enum msgId : msgId_type {
-	_m_PLAYER_DIED, //
+	_m_PLAYER_DAMAGED,
+	_m_ROUND_OVER,
 	_m_ASTEROID_COLLIDED,
-	_m_CREATE_BULLET
+	_m_CREATE_BULLET,
+	_m_INIT_STATE
 };
 
 struct Message {
@@ -70,9 +79,11 @@ struct Message {
 	struct {
 		Entity* e;
 	} asteroid_collided_data;
-	// _m_CREATE_BULLET
+	// _m_PLAYER_DAMAGED
 	struct {
-	} create_bullet_data;
+		STATE st;
+		Game* g;
+	} _state_data;
 };
 
 
@@ -98,6 +109,3 @@ enum WINNER {
 	NONE_WIN, ASTEROIDS_WIN, FIGHTER_WIN
 };
 
-enum STATE {
-	MAINMENU_STATE, PLAY_STATE, PAUSE_STATE, GAMEOVER_STATE, WIN_STATE
-};

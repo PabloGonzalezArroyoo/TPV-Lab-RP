@@ -2,7 +2,9 @@
 #include "../ecs/Manager.h"
 
 void RenderSystem::receive(const Message& m) {
-
+	if (m.id == _m_INIT_STATE) {
+		state = m._state_data.st;
+	}
 }
 
 void RenderSystem::initSystem() {
@@ -15,7 +17,7 @@ void RenderSystem::update() {
 	renderGroup(_grp_GENERAL, FIGHTER);
 	renderGroup(_grp_BULLETS, FIRETXT);
 	renderAsteroids();
-	renderGroup(_grp_UI, HEART);
+	if (state == PLAY_STATE || state == PAUSE_STATE) renderUI();
 	// renderText();
 
 	//SDL_RenderPresent(sdlutils().renderer());
@@ -58,6 +60,21 @@ void RenderSystem::renderAsteroids() {
 
 void RenderSystem::renderTexts() const {
 	// TODO
+}
+
+void RenderSystem::renderUI() const{
+	Health* h = mngr->getComponent<Health>(mngr->getHandler(_hdlr_FIGHTER));
+	Texture* text = &sdlutils().images().at(HEART);
+	SDL_Rect rect;
+	rect.x = UPPER_LEFT_CORNER_X;
+	rect.y = UPPER_LEFT_CORNER_Y;
+	rect.w = text->width() / 4;
+	rect.h = text->height() / 4;
+
+	for (int i = 0; i < h->getLifes(); i++) {
+		rect.x = UPPER_LEFT_CORNER_X + i * (rect.w + 5);
+		text->render(rect);
+	}
 }
 
 void RenderSystem::renderGroup(grpId_type group, string key) const {

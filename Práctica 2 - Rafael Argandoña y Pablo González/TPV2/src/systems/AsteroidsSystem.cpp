@@ -2,8 +2,13 @@
 #include "../ecs/Manager.h"
 
 void AsteroidsSystem::receive(const Message& m) {
-	if (m.id == _m_ASTEROID_COLLIDED) {
-		onCollision_AsteroidBullet(m.asteroid_collided_data.e);
+	switch (m.id) {
+		case _m_ASTEROID_COLLIDED:
+			onCollision_AsteroidBullet(m.asteroid_collided_data.e);
+			break;
+		case _m_ROUND_OVER:
+			onRoundOver();
+			break;
 	}
 }
 
@@ -72,6 +77,7 @@ void AsteroidsSystem::onCollision_AsteroidBullet(Entity* a) {
 
 void AsteroidsSystem::onRoundOver() {
 	mngr->removeEntities(_grp_ASTEROIDS);
+	onRoundStart();
 }
 
 void AsteroidsSystem::onRoundStart() {

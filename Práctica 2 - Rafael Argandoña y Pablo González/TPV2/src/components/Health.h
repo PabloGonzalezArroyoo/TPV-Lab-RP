@@ -4,11 +4,12 @@
 
 struct Health : public Component {
 private:
-	Texture* txt;
 	int lifes;
 
 public:
 	constexpr static cmpId_type id = _HEALTH;
 
-	Health(Texture* _t, int l = MAX_LIFES) : Component(), txt(_t), lifes(l) { }
+	Health(int l = MAX_LIFES) : Component(), lifes(l) { }
+	int getLifes() { return lifes; };
+	void setLives(int _l) { lifes = _l; }
 };

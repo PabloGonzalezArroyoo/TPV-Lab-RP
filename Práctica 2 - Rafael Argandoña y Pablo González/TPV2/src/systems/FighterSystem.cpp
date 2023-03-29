@@ -2,21 +2,14 @@
 #include "../ecs/Manager.h"
 
 void FighterSystem::receive(const Message& m) {
-
+	switch (m.id) {
+		case _m_ROUND_OVER:
+			onRoundOver();
+			break;
+	}
 }
 
 void FighterSystem::initSystem() {
-	Entity* f = mngr->addEntity();
-
-	mngr->addComponent<Transform>(f, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
-	mngr->addComponent<FighterCtrl>(f);
-	mngr->addComponent<DeAcceleration>(f);
-	mngr->addComponent<ShowAtOppositeSide>(f);
-	mngr->addComponent<Gun>(f);
-	mngr->addComponent<Health>(f, &sdlutils().images().at(HEART));
-
-	mngr->setHandler(_hdlr_FIGHTER, f);
-
 	onRoundStart();
 }
 
@@ -55,10 +48,10 @@ void FighterSystem::update() {
 		mngr->send(m);
 	}
 
-	//// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa
-	//if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
-	//	game->getStateMachine()->pushState(new PauseState(game, myObj->getComponent<Health>()->checkLifes()));
-	//}
+	// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa
+	if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
+		// MENSAJE DE PAUSA
+	}
 
 	// Desacelerar
 	tr->setVelocity(deAccelerate(tr->getVelocity()));
@@ -121,7 +114,22 @@ void FighterSystem::onCollision_FighterAsteroid() {
 }
 
 void FighterSystem::onRoundOver() {
+	mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER))->setPosition(PLAYER_INITIAL_POS);
+	mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER))->setRotation(0);
+	mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER))->setVelocity(Vector2D());
+	mngr->getComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER))->setRot(0);
 }
 
 void FighterSystem::onRoundStart() {
+	Entity* f = mngr->addEntity();
+
+	mngr->addComponent<Transform>(f, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
+	mngr->addComponent<FighterCtrl>(f);
+	mngr->addComponent<DeAcceleration>(f);
+	mngr->addComponent<ShowAtOppositeSide>(f);
+	mngr->addComponent<Gun>(f);
+	mngr->addComponent<Health>(f);
+
+	mngr->setHandler(_hdlr_FIGHTER, f);
+
 }

@@ -1,4 +1,5 @@
 #include "PauseState.h"
+#include "../systems/RenderSystem.h"
 #include "Game.h"
 
 // Constructora
@@ -6,22 +7,26 @@ PauseState::PauseState(Game* g, int plLifes) : GameState(g) {
 	// Añadir el manager
 	mng = new Manager();
 
-	//// Añadir la nave como imagen y con vidas para el renderizado de las mismas
-	//Entity* ship = mng->addEntity();
-	//ship->addComponent<Transform>(PLAYER_INITIAL_POS, Vector2D(), PLAYER_WIDTH, PLAYER_HEIGHT);
-	//ship->addComponent<Image>(&sdlutils().images().at(FIGHTER));
-	//ship->addComponent<Health>(&sdlutils().images().at(HEART), plLifes);
+	// Añadir la nave (sin funcionalidad, solo imagen y posición)
+	Entity* ship = mng->addEntity();
+	mng->setHandler(_hdlr_FIGHTER, ship);
+	mng->addComponent<Transform>(ship, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
+	mng->addComponent<Health>(ship, plLifes);
 
-	//// Añadir texto de pause
-	//Entity* text = mng->addEntity();
-	//auto txt = &sdlutils().msgs().at(PAUSE_MESSAGE);
-	//text->addComponent<Transform>(Vector2D(WIN_WIDTH / 2 - txt->width() / 2, WIN_HEIGHT * 2 / 3 - txt->height() / 2),
-	//	Vector2D(), txt->width(), txt->height());
-	//text->addComponent<Image>(txt);
+	// Sistemas
+	mng->addSystem<RenderSystem>();
+
+	Message m;
+	m.id = _m_INIT_STATE;
+	m._state_data.st = PAUSE_STATE;
+	m._state_data.g = g;
+	mng->send(m);
 }
 
 // Manejo del input en el pasueState
 void PauseState::update() {
+	GameState::update();
+
 	// Si el jugador presiona espacio, continuar
 	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
 		sdlutils().soundEffects().at(SELECT).play();

@@ -1,8 +1,11 @@
 #pragma once
 #include "../ecs/System.h"
+#include "../components/Health.h"
 
 class GameCtrlSystem : public System {
 public:
+	constexpr static sysId_type id = _sys_GAME_CTRL;
+
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	void receive(const Message& m) override;
 
@@ -27,4 +30,5 @@ private:
 
 	WINNER winner;
 	STATE state; // El estado actual del juego (en lugar del componente State)
+	Game* game;
 };

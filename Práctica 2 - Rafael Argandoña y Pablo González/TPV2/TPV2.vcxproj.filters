@@ -195,6 +195,9 @@
     <ClInclude Include="src\game\PlayState.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\Constants.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">

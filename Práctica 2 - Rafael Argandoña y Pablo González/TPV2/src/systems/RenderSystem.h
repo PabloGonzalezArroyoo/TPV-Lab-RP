@@ -4,6 +4,7 @@
 #include "../sdlutils/Texture.h"
 #include "../components/Transform.h"
 #include "../components/FramedImage.h"
+#include "../components/Health.h"
 
 class RenderSystem : public System {
 public:
@@ -32,6 +33,7 @@ private:
 	void renderGroup(grpId_type group, string key) const;
 	void renderAsteroids();
 	void renderTexts() const;
+	void renderUI() const;
 
 	float startTime;
 	STATE state;

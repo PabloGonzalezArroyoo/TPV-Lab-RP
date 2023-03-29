@@ -1,6 +1,5 @@
 #include "CollisionsSystem.h"
 #include "../ecs/Manager.h"
-#include "../components/Generations.h"
 
 void CollisionsSystem::receive(const Message& m) {
 
@@ -37,9 +36,9 @@ void CollisionsSystem::checkCollisions() {
 	}
 
 	if (plCollided) {
-		// MANDAR MENSAJE DE Q MATARON A UN INOCENTE
 		Message m;
-		
+		m.id = _m_PLAYER_DAMAGED;
+		mngr->send(m);
 	}
 }
 

@@ -12,6 +12,7 @@ public:
 	virtual void initSystem() { }
 	virtual void update() { }
 	virtual void receive(const Message& m) { }
+
 protected:
 	Manager* mngr;
 };
