@@ -30,11 +30,16 @@ void CollisionsSystem::checkCollisions() {
 			if (!plCollided && collisionAsteroidsBullets(astTr)) {
 				Message m;
 				m.id = _m_ASTEROID_COLLIDED;
-				m.asteroid_collided_data.n = mngr->getComponent<Generations>(asts[i])->getGenerations();
 				m.asteroid_collided_data.e = asts[i];
 				mngr->send(m);
 			}
 		}
+	}
+
+	if (plCollided) {
+		// MANDAR MENSAJE DE Q MATARON A UN INOCENTE
+		Message m;
+		
 	}
 }
 
@@ -62,6 +67,8 @@ bool CollisionsSystem::collisionAsteroidsBullets(Transform* astTr) {
 			collision = Collisions::collidesWithRotation(
 				blltTr->getPosition(), blltTr->getWidth(), blltTr->getHeight(), blltTr->getRotation(),
 				astTr->getPosition(), astTr->getWidth(), astTr->getHeight(), astTr->getRotation());
+			if (collision) 
+				mngr->setAlive(bllts[i], false);
 		}
 	}
 	return collision;

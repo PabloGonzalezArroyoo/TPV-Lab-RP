@@ -29,7 +29,7 @@ public:
 	virtual ~GameState() { }
 
 	// Métodos esenciales
-	virtual void update() { mng->update(); }
+	virtual void update() { mng->update(); mng->refresh(); }
 	virtual void render() { }
 	virtual void refresh() { }
 };

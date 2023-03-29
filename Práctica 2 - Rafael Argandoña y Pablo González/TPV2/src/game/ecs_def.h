@@ -69,7 +69,6 @@ struct Message {
 	// _m_ASTEROIDS_COLLIDED
 	struct {
 		Entity* e;
-		unsigned int n;
 	} asteroid_collided_data;
 	// _m_CREATE_BULLET
 	struct {

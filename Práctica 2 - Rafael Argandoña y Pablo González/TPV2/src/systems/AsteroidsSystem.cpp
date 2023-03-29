@@ -3,7 +3,7 @@
 
 void AsteroidsSystem::receive(const Message& m) {
 	if (m.id == _m_ASTEROID_COLLIDED) {
-		createSon(mngr->getComponent<Transform>(m.asteroid_collided_data.e), m.asteroid_collided_data.n);
+		onCollision_AsteroidBullet(m.asteroid_collided_data.e);
 	}
 }
 
