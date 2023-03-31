@@ -30,7 +30,9 @@
   ],
 
   "musics": [
-    { "id": "galaxy", "file": "resources/music/galaxy.mp3" }
+    { "id": "galaxy", "file": "resources/music/galaxy.mp3" },
+    { "id": "victory", "file": "resources/music/victory.mp3"},
+    { "id": "gameover", "file": "resources/music/gameover.mp3"}
   ]
 
 }

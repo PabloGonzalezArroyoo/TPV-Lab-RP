@@ -13,11 +13,16 @@ GameOverState::GameOverState(Game* g) : GameState(g) {
 	mng->addSystem<RenderSystem>();
 	mng->addSystem<SoundSystem>();
 	
-	Message m;
-	m.id = _m_INIT_STATE;
-	m._state_data.st = GAMEOVER_STATE;
-	m._state_data.g = g;
-	mng->send(m);
+	Message m1;
+	m1.id = _m_INIT_STATE;
+	m1._state_data.st = GAMEOVER_STATE;
+	m1._state_data.g = g;
+	mng->send(m1);
+
+	Message m2;
+	m2.id = _m_PLAY_MUSIC;
+	m2._music_data.music = &sdlutils().musics().at(GAMEOVER);
+	mng->send(m2);
 }
 
 // Comprobamos si el jugador presiona SPACE para volver al menu principal

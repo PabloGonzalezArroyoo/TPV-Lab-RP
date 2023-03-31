@@ -31,6 +31,8 @@ const string SELECT = "select";
 const string THRUST = "thrust";
 // Musica
 const string GALAXY = "galaxy";
+const string VICTORY = "victory";
+const string GAMEOVER = "gameover";
 // Messages
 const string MM_MESSAGE = "MM_MSG";
 const string PAUSE_MESSAGE = "PAUSE_MSG";

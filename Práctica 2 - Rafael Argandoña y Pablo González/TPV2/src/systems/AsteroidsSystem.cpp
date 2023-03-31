@@ -43,7 +43,17 @@ void AsteroidsSystem::update() {
 		}
 
 		tr->setPosition(tr->getPosition() + tr->getVelocity());
-		if (disableOnExit(tr)) mngr->setAlive(entities[i], false);
+		if (disableOnExit(tr)) {
+			mngr->setAlive(entities[i], false);
+			numOfAsteroids_--;
+		}
+	}
+
+	if (numOfAsteroids_ <= 0) {
+		// HA GANADO EL JUGADOR (whatsapp)
+		Message m;
+		m.id = _m_PLAYER_WINS;
+		mngr->send(m);
 	}
 }
 
@@ -73,22 +83,16 @@ void AsteroidsSystem::onCollision_AsteroidBullet(Entity* a) {
 		createSon(mngr->getComponent<Transform>(a), gen-1);
 	}
 	numOfAsteroids_--;
-
-	if (numOfAsteroids_ <= 0) {
-		// HA GANADO EL JUGADOR (whatsapp)
-		Message m;
-		m.id = _m_PLAYER_WINS;
-		mngr->send(m);
-	}
 }
 
 void AsteroidsSystem::onRoundOver() {
 	mngr->removeEntities(_grp_ASTEROIDS);
+	numOfAsteroids_ = 0;
 	onRoundStart();
 }
 
 void AsteroidsSystem::onRoundStart() {
-	createAsteroids(10);
+	createAsteroids(1);
 }
 
 void AsteroidsSystem::createAsteroids(int n) {
