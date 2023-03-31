@@ -1,9 +1,12 @@
 #pragma once
 #include "../ecs/System.h"
-#include "../components/Generations.h"
-#include "../components/DisableOnExit.h"
-#include "../components/FramedImage.h"
+
+#include "../components/FighterCtrl.h"
 #include "../components/Follow.h"
+#include "../components/FramedImage.h"
+#include "../components/Generations.h"
+#include "../components/Health.h"
+#include "../components/Transform.h"
 
 class AsteroidsSystem : public System {
 public:

@@ -14,12 +14,15 @@ PauseState::PauseState(Game* g, int plLifes) : GameState(g) {
 	mng->addComponent<Health>(ship, plLifes);
 
 	// Sistemas
+	mng->addSystem<GameCtrlSystem>();
 	mng->addSystem<RenderSystem>();
+	mng->addSystem<SoundSystem>();
 
 	Message m;
 	m.id = _m_INIT_STATE;
 	m._state_data.st = PAUSE_STATE;
 	m._state_data.g = g;
+	m._state_data.l = plLifes;
 	mng->send(m);
 }
 
@@ -29,11 +32,14 @@ void PauseState::update() {
 
 	// Si el jugador presiona espacio, continuar
 	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
-		sdlutils().soundEffects().at(SELECT).play();
-		game->getStateMachine()->popState();
+		Message m;
+		m.id = _m_SPACEBAR_PRESSED;
+		mng->send(m);
 	}
 	// Si el jugador presiona escape, salir
 	else if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
-		game->changeControl();
+		Message m;
+		m.id = _m_ESC_PRESSED;
+		mng->send(m);
 	}
 }

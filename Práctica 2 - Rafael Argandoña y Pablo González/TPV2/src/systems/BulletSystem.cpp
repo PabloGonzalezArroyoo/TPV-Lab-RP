@@ -33,7 +33,6 @@ void BulletSystem::shoot(Transform* tr) {
 	//Creamos la bala
 	Entity* b = mngr->addEntity(_grp_BULLETS);
 	mngr->addComponent<Transform>(b, bulletPos(tr), BULLET_WIDTH, BULLET_HEIGTH, bulletVel(tr), tr->getRotation());
-	mngr->addComponent<DisableOnExit>(b);
 }
 
 // Calcula la posición de la bala

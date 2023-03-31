@@ -27,18 +27,28 @@ void CollisionsSystem::checkCollisions() {
 			plCollided = collisionAsteroidsFighter(pl, astTr);
 			
 			if (!plCollided && collisionAsteroidsBullets(astTr)) {
-				Message m;
-				m.id = _m_ASTEROID_COLLIDED;
-				m.asteroid_collided_data.e = asts[i];
-				mngr->send(m);
+				Message m1;
+				m1.id = _m_PLAY_SOUND;
+				m1._sound_data.sound = &sdlutils().soundEffects().at(EXPLOSION);
+				mngr->send(m1);
+				
+				Message m2;
+				m2.id = _m_ASTEROID_COLLIDED;
+				m2.asteroid_collided_data.e = asts[i];
+				mngr->send(m2);
 			}
 		}
 	}
 
 	if (plCollided) {
-		Message m;
-		m.id = _m_PLAYER_DAMAGED;
-		mngr->send(m);
+		Message m1;
+		m1.id = _m_PLAY_SOUND;
+		m1._sound_data.sound = &sdlutils().soundEffects().at(EXPLOSION);
+		mngr->send(m1);
+
+		Message m2;
+		m2.id = _m_PLAYER_DAMAGED;
+		mngr->send(m2);
 	}
 }
 

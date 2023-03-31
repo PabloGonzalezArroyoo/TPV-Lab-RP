@@ -1,8 +1,8 @@
 #pragma once
 #include "../sdlutils/SDLUtils.h"
 #include "../game/ecs_def.h"
-class Manager;
 
+class Manager;
 class System {
 public:
 	virtual ~System() { }

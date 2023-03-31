@@ -73,6 +73,13 @@ void AsteroidsSystem::onCollision_AsteroidBullet(Entity* a) {
 		createSon(mngr->getComponent<Transform>(a), gen-1);
 	}
 	numOfAsteroids_--;
+
+	if (numOfAsteroids_ <= 0) {
+		// HA GANADO EL JUGADOR (whatsapp)
+		Message m;
+		m.id = _m_PLAYER_WINS;
+		mngr->send(m);
+	}
 }
 
 void AsteroidsSystem::onRoundOver() {
@@ -109,9 +116,6 @@ void AsteroidsSystem::createAsteroids(int n) {
 		else {
 			mngr->addComponent<FramedImage>(ast, &sdlutils().images().at(ASTEROID_A), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);
 		}
-
-		// Añadir el componente de desactivar al salir de la pantalla
-		mngr->addComponent<DisableOnExit>(ast);
 	}
 }
 
@@ -172,7 +176,6 @@ void AsteroidsSystem::createSon(Transform* father, int newGen) {
 		int dimensions = ASTEROIDS_DIMENSIONS + 5.0f * newGen;
 		mngr->addComponent<Transform>(ast, pos, dimensions, dimensions, vel);
 		mngr->addComponent<Generations>(ast, newGen);
-		mngr->addComponent<DisableOnExit>(ast);
 
 		if (sdlutils().rand().nextInt(0, 10) < 3) {
 			mngr->addComponent<FramedImage>(ast, &sdlutils().images().at(ASTEROID_B), ASTEROIDS_FRAME_WIDTH, ASTEROIDS_FRAME_HEIGHT, ASTEROIDS_ROWS, ASTEROIDS_COLS);

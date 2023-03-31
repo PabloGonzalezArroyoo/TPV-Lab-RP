@@ -8,7 +8,5 @@ public:
 	// Constructora y destructora
 	PlayState(Game* g);
 
-	// Métodos de reacción ante eventos sobre el jugador
-	void OnPlayerDamage(Entity* pl);
-	void OnPlayerDies();
+	virtual void update();
 };

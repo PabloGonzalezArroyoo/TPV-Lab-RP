@@ -59,6 +59,8 @@ constexpr hdlrId_type maxHandlerId = _LAST_HDLR_ID;
 // MESSAGES
 class Entity;
 class Game;
+class SoundEffect;
+class Music;
 
 using msgId_type = unsigned int;
 enum msgId : msgId_type {
@@ -66,7 +68,14 @@ enum msgId : msgId_type {
 	_m_ROUND_OVER,
 	_m_ASTEROID_COLLIDED,
 	_m_CREATE_BULLET,
-	_m_INIT_STATE
+	_m_PLAYER_WINS,
+	_m_INIT_STATE,
+	_m_SPACEBAR_PRESSED,
+	_m_ESC_PRESSED,
+
+	_m_PLAY_SOUND,
+	_m_PLAY_MUSIC,
+	_m_STOP_MUSIC
 };
 
 struct Message {
@@ -83,7 +92,14 @@ struct Message {
 	struct {
 		STATE st;
 		Game* g;
+		int l;
 	} _state_data;
+	struct {
+		SoundEffect* sound;
+	} _sound_data;
+	struct {
+		Music* music;
+	} _music_data;
 };
 
 
@@ -98,6 +114,7 @@ enum sysId : sysId_type {
 	_sys_FIGHTER,
 	_sys_COLLISIONS,
 	_sys_RENDER,
+	_sys_SOUND,
 
 	//DO NOT REMOVE THIS
 	_LAST_SYS_ID

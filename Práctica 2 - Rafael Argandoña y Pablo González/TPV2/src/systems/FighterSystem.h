@@ -1,11 +1,13 @@
 #pragma once
 #include "../ecs/System.h"
-#include "../components/Transform.h"
+
 #include "../components/FighterCtrl.h"
+#include "../components/Follow.h"
+#include "../components/FramedImage.h"
+#include "../components/Generations.h"
 #include "../components/Health.h"
-#include "../components/ShowAtOppositeSide.h"
-#include "../components/Gun.h"
-#include "../components/DeAcceleration.h"
+#include "../components/Transform.h"
+
 #include "../sdlutils/InputHandler.h"
 
 class FighterSystem : public System {
@@ -45,4 +47,5 @@ private:
 	void showAtOppositeSide(Transform* tr);
 
 	float cooldown, startTime;
+	float lastSoundTime, soundTime;
 };

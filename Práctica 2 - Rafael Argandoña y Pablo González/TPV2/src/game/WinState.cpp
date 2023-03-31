@@ -1,10 +1,8 @@
-#include "MainMenuState.h"
-#include "Game.h"
+#include "WinState.h"
 
-// Constructora
-MainMenuState::MainMenuState(Game* g) : GameState(g) {
-	// Fondo verde
-	SDL_SetRenderDrawColor(sdlutils().renderer(), 0, 123, 17, 1);
+WinState::WinState(Game* g) : GameState(g) {
+	// Fondo amarillo
+	SDL_SetRenderDrawColor(sdlutils().renderer(), 0, 239, 255, 1);
 
 	// Creamos el manager del estado
 	mng = new Manager();
@@ -16,14 +14,12 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 
 	Message m;
 	m.id = _m_INIT_STATE;
-	m._state_data.st = MAINMENU_STATE;
+	m._state_data.st = WIN_STATE;
 	m._state_data.g = g;
 	mng->send(m);
 }
 
-// Manejo del input en el mainMenu
-void MainMenuState::update() {
-	GameState::update();
+void WinState::update() {
 	// Si se presiona espacio, reproducir sonido y cargar estado
 	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
 		Message m;

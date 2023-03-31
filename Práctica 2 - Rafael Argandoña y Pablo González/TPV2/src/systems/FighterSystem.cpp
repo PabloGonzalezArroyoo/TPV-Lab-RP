@@ -10,11 +10,16 @@ void FighterSystem::receive(const Message& m) {
 }
 
 void FighterSystem::initSystem() {
+	cooldown = 0; lastSoundTime = 0;
+	startTime = soundTime = sdlutils().currRealTime();
+
 	onRoundStart();
 }
 
 void FighterSystem::update() {
 	cooldown = sdlutils().currRealTime() - startTime;
+	lastSoundTime = sdlutils().currRealTime() - soundTime;
+
 	Transform* tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
 	auto fc = mngr->getComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER));
 
@@ -43,14 +48,14 @@ void FighterSystem::update() {
 	if (InputHandler::instance()->isKeyDown(SDLK_s) && cooldown >= 250) {
 		startTime = sdlutils().currRealTime();
 
-		Message m;
-		m.id = _m_CREATE_BULLET;
-		mngr->send(m);
-	}
+		Message m1;
+		m1.id = _m_PLAY_SOUND;
+		m1._sound_data.sound = &sdlutils().soundEffects().at(FIRESFX);
+		mngr->send(m1);
 
-	// Si se ha pulsado la tecla ESCAPE lanzamos el estado de pausa
-	if (InputHandler::instance()->isKeyJustDown(SDLK_ESCAPE)) {
-		// MENSAJE DE PAUSA
+		Message m2;
+		m2.id = _m_CREATE_BULLET;
+		mngr->send(m2);
 	}
 
 	// Desacelerar
@@ -64,7 +69,14 @@ void FighterSystem::update() {
 }
 
 void FighterSystem::setFighterVelocity(Transform* tr, FighterCtrl* fc) {
-	//if (lastSoundTime >= 500) { sound->play(); startTime = sdlutils().currRealTime(); }
+	if (lastSoundTime >= 500) {
+		Message m;
+		m.id = _m_PLAY_SOUND;
+		m._sound_data.sound = &sdlutils().soundEffects().at(THRUST);
+		mngr->send(m);
+
+		soundTime = sdlutils().currRealTime(); 
+	}
 
 	// Calcular el vector velocidad
 	Vector2D vel = tr->getVelocity() + Vector2D(0, -1).rotate(fc->getRot()) * fc->getThrust();
@@ -121,15 +133,6 @@ void FighterSystem::onRoundOver() {
 }
 
 void FighterSystem::onRoundStart() {
-	Entity* f = mngr->addEntity();
-
-	mngr->addComponent<Transform>(f, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
-	mngr->addComponent<FighterCtrl>(f);
-	mngr->addComponent<DeAcceleration>(f);
-	mngr->addComponent<ShowAtOppositeSide>(f);
-	mngr->addComponent<Gun>(f);
-	mngr->addComponent<Health>(f);
-
-	mngr->setHandler(_hdlr_FIGHTER, f);
-
+	Entity* player = mngr->getHandler(_hdlr_FIGHTER);
+	mngr->addComponent<FighterCtrl>(player);
 }
