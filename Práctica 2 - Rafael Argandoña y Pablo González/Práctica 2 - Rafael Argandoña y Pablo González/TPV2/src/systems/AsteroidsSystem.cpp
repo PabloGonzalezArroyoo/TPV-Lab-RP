@@ -65,6 +65,8 @@ void AsteroidsSystem::update() {
 
 	// Comprobar si se ha ganado
 	if (numOfAsteroids_ <= 0) {
+		SDL_Delay(1000);
+
 		Message m;
 		m.id = _m_PLAYER_WINS;
 		mngr->send(m, true);

@@ -44,8 +44,9 @@ void CollisionsSystem::checkCollisions() {
 	if (plCollided) {
 		Message m1;
 		m1.id = _m_PLAY_SOUND;
-		m1._sound_data.sound = &sdlutils().soundEffects().at(EXPLOSION);
+		m1._sound_data.sound = &sdlutils().soundEffects().at(OOF);
 		mngr->send(m1);
+		SDL_Delay(1000);
 
 		Message m2;
 		m2.id = _m_PLAYER_DAMAGED;
