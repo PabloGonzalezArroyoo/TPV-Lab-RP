@@ -26,9 +26,6 @@ Game::Game() {
 
 // Destructora
 Game::~Game() {
-	// Borrar Texturas
-	for (int i = 0; i < NUM_TEXTURES; i++) delete(textures[i]);
-
 	// Eliminar máquina de estados
 	delete(gsm);
 
@@ -47,16 +44,10 @@ void Game::run() {
 			update();								// Actualizamos el estado del juego
 			refresh();
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
-			render();
 		}
 	}
 
 	if (exit) cout << "\nSaliste del juego... bye!" << endl;
-}
-
-// Renderizado
-void Game::render() {
-	//gsm->currentState()->render();							// Renderizamos el estado actual
 }
 
 // Actualizar entidades
@@ -71,9 +62,4 @@ void Game::update() {
 
 void Game::refresh() {
 	gsm->currentState()->refresh();
-}
-
-// Devuelve la textura correspondiente
-Texture* Game::getTexture(int texture) {
-	return textures[texture];
 }

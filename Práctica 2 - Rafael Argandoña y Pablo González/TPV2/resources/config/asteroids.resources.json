@@ -2,7 +2,8 @@
   "fonts": [
     { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 20 },
     { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 20 },
-    { "id": "CHIMERA", "file": "resources/fonts/NES-Chimera.ttf", "size": 20 }
+    { "id": "CHIMERA20", "file": "resources/fonts/NES-Chimera.ttf", "size": 20 },
+    { "id": "CHIMERA30", "file": "resources/fonts/NES-Chimera.ttf", "size": 30 }
   ],
 
   "images": [
@@ -15,10 +16,14 @@
   ],
 
   "messages": [
-    { "id": "MM_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA", "color": "0x000a57ff" },
-    { "id": "WIN_MSG", "text":  "GG CONGRATS FR FR :)", "font": "CHIMERA", "color":  "0x000000ff"},
-    { "id": "PAUSE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA", "color": "0x000000ff", "bg": "0xffffffff" },
-    { "id": "GAMEOVER_MSG", "text": "GAME OVER", "font": "CHIMERA", "color": "0x000a57ff" }
+    { "id": "MM_STATE", "text": "MAIN MENU", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "START_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA20", "color": "0x000a57ff" },
+    { "id": "WIN_STATE", "text": "VICTORY!", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "WIN_MSG", "text":  "GG CONGRATS FR FR :)", "font": "CHIMERA20", "color":  "0x000000ff"},
+    { "id": "PAUSE_STATE", "text": "PAUSE", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "CONTINUE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA20", "color": "0x000000ff", "bg": "0xffffffff" },
+    { "id": "GAMEOVER_STATE", "text": "GAME OVER!", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "GAMEOVER_MSG", "text": "YOU LOSE, LOSER!", "font": "CHIMERA20", "color": "0x000a57ff" }
   ],
 
   "sounds": [

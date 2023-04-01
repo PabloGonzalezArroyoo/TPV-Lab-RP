@@ -17,7 +17,6 @@
 #include<windows.h>
 #endif
 
-const int NUM_TEXTURES = 3;
 using namespace std;
 typedef unsigned int uint;
 
@@ -26,12 +25,9 @@ private:
 	// Punteros SDL
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-	Font* myFont;
+
 	// Variables de flujo
 	bool exit;
-
-	// Texturas
-	Texture* textures[NUM_TEXTURES];
 
 	// Máquina de estados
 	GameStateMachine* gsm;
@@ -43,12 +39,10 @@ public:
 
 	// Métodos esenciales
 	void run();
-	void render();
 	void update();
 	void refresh();
 
 	// Getters
-	Texture* getTexture(int texture);
 	GameStateMachine* getStateMachine() { return gsm; };
 
 	// Cambio de flujo para acabar el juego

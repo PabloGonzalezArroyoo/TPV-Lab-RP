@@ -24,7 +24,6 @@ public:
 	// Métodos esenciales
 	void refresh();
 	void update();
-	void render();
 
 	// ----- METODOS QUE AÑADEN -----
 	// Añade un componente y devuelve un puntero a este

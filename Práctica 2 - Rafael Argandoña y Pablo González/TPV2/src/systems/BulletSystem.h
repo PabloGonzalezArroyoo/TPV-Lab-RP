@@ -15,9 +15,6 @@ public:
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	void receive(const Message& m) override;
 
-	// Inicializar el sistema, etc.
-	void initSystem() override;
-
 	// Si el juego está parado no hacer nada, en otro caso mover las balas y
 	// desactivar las que salen de la ventana como en la práctica 1.
 	void update() override;
@@ -28,6 +25,7 @@ private:
 	// vel.angle(Vector2D(0.0f,-1.0f))
 	void shoot(Transform* tr);
 
+	// Calcular posición y velocidad
 	Vector2D bulletPos(Transform* pl);
 	Vector2D bulletVel(Transform* pl);
 
@@ -35,12 +33,10 @@ private:
 	// asteroide. Desactivar la bala “b”.
 	void onCollision_BulletAsteroid(Entity* b);
 
+	// Deshabilitar si se salen de la pantalla
 	bool disableOnExit(Transform* tr);
 
 	// Para gestionar el mensaje de que ha acabado la ronda. Desactivar todas las
 	// balas, y desactivar el sistema.
 	void onRoundOver();
-
-	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
-	void onRoundStart();
 };

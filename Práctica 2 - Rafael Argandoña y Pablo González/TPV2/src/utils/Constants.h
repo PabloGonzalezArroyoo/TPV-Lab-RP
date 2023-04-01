@@ -34,10 +34,14 @@ const string GALAXY = "galaxy";
 const string VICTORY = "victory";
 const string GAMEOVER = "gameover";
 // Messages
-const string MM_MESSAGE = "MM_MSG";
-const string PAUSE_MESSAGE = "PAUSE_MSG";
+const string MM_ST = "MM_STATE";
+const string START_MESSAGE = "START_MSG";
+const string PAUSE_ST = "PAUSE_STATE";
+const string GAMEOVER_ST = "GAMEOVER_STATE";
 const string GAME_OVER_MESSAGE = "GAMEOVER_MSG";
+const string WIN_ST = "WIN_STATE";
 const string WIN_MESSAGE = "WIN_MSG";
+const string CONTINUE_MESSAGE = "CONTINUE_MSG";
 
 // PLAYER
 const int MAX_LIFES = 3;     

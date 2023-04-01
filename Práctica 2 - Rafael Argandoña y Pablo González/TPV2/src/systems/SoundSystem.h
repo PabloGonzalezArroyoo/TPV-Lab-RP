@@ -8,16 +8,13 @@ public:
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	virtual void receive(const Message& m) override;
 
-	// Inicializar el sistema, etc.
-	virtual void initSystem() override;
-
 private:
+	// Metodos que reproducen o paran sonidos
 	void reproduceSFX(SoundEffect* s);
-
-	void reproduceMusic(Music* m);
-
+	void reproduceMusic(Music* m, bool loop);
 	void stopMusic(Music* m);
 
+	// Variables de tiempo
 	float frameTime, startTime;
 };
 

@@ -13,11 +13,12 @@ PauseState::PauseState(Game* g, int plLifes) : GameState(g) {
 	mng->addComponent<Transform>(ship, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
 	mng->addComponent<Health>(ship, plLifes);
 
-	// Sistemas
+	// Añadimos sistemas
 	mng->addSystem<GameCtrlSystem>();
 	mng->addSystem<RenderSystem>();
 	mng->addSystem<SoundSystem>();
 
+	// Mensaje de inicio de estado
 	Message m;
 	m.id = _m_INIT_STATE;
 	m._state_data.st = PAUSE_STATE;

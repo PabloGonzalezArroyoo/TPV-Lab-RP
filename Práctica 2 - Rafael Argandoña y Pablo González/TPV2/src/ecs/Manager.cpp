@@ -11,6 +11,11 @@ Manager::~Manager() {
 	for (int i = 0; i < maxGroupId; i++) {
 		for (auto g : entsByGroup[i]) delete g;
 	}
+
+	for (int i = 0; i < maxSystemId; i++) {
+		delete sys[i];
+		sys[i] = nullptr;
+	}
 }
 
 Entity* Manager::addEntity(grpId_type gId) {
@@ -37,8 +42,4 @@ void Manager::update() {
 	for (System* s : sys) {
 		if (s != nullptr) s->update();
 	}
-}
-
-void Manager::render() {
-	// Render de los sistemas
 }

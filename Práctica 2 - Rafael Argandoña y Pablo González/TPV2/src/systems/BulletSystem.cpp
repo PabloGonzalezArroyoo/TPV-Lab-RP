@@ -1,34 +1,49 @@
 #include "BulletSystem.h"
 #include "../ecs/Manager.h"
 
+// Recivir mensajes
 void BulletSystem::receive(const Message& m) {
-	if (m.id == _m_CREATE_BULLET) {
-		shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)));
+	switch (m.id) {
+		// Creación de una bala
+		case _m_CREATE_BULLET:
+			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)));
+			break;
+
+		// Acabar la ronda
+		case _m_ROUND_OVER:
+			onRoundOver();
+			break;
 	}
 }
 
-void BulletSystem::initSystem() {
-}
-
+// Mover las balas y comprobar si se salen
 void BulletSystem::update() {
+	// Cogemos el grupo de balas
 	vector<Entity*> entities = mngr->getEntities(_grp_BULLETS);
 	Transform* tr = nullptr;
+
+	// Recorremos el grupo de balas
 	for (int i = 0; i < entities.size(); i++) {
+		// Pillamos el transform de esa bala
 		tr = mngr->getComponent<Transform>(entities[i]);
+		// Movemos la bala
 		tr->setPosition(tr->getPosition() + tr->getVelocity());
+		// Si queda fuera de los limites de la pantalla la desactivamos
 		if (disableOnExit(tr)) mngr->setAlive(entities[i], false);
 	}
 }
 
+// Comprueba si se salen de la pantalla
 bool BulletSystem::disableOnExit(Transform* tr) {
 	// Coger la posición
 	Vector2D position = tr->getPosition();
 
-	// Si se sale por algún lateral de la pantalla, desactivarlo
+	// Si se sale por algún lateral de la pantalla
 	return position.getX() < 0 - tr->getWidth() || position.getX() > WIN_WIDTH
 		|| position.getY() < 0 - tr->getHeight() || position.getY() > WIN_HEIGHT;
 }
 
+// Instancia una bala
 void BulletSystem::shoot(Transform* tr) {
 	//Creamos la bala
 	Entity* b = mngr->addEntity(_grp_BULLETS);
@@ -57,13 +72,14 @@ Vector2D BulletSystem::bulletVel(Transform* pl) {
 	return bVel;
 }
 
+// Desactiva la bala si colisiona con un asteroide
 void BulletSystem::onCollision_BulletAsteroid(Entity* b) {
+	// Desactiva la bala
 	mngr->setAlive(b, false);
 }
 
+// Al acabar una ronda
 void BulletSystem::onRoundOver() {
+	// Elimina todas las balas presentes en escena
 	mngr->removeEntities(_grp_BULLETS);
-}
-
-void BulletSystem::onRoundStart() {
 }

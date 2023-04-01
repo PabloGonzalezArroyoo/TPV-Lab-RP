@@ -25,10 +25,12 @@ public:
 	GameState() : game(nullptr), mng(nullptr) { }
 	GameState(Game* g) : game(g), mng(nullptr) { }
 
-	virtual ~GameState() { }
+	// Destructora
+	virtual ~GameState() { 
+		delete mng;
+	}
 
 	// Métodos esenciales
 	virtual void update() { mng->update(); }
-	virtual void render() { }
-	virtual void refresh() { mng->refresh(); }
+	virtual void refresh() { mng->refresh(); mng->flushMessages(); }
 };

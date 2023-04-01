@@ -1,8 +1,6 @@
 #pragma once
 #include "../ecs/System.h"
 #include "../game/ecs_def.h"
-#include "../sdlutils/Texture.h"
-
 
 #include "../components/FighterCtrl.h"
 #include "../components/Follow.h"
@@ -10,6 +8,7 @@
 #include "../components/Generations.h"
 #include "../components/Health.h"
 #include "../components/Transform.h"
+#include "../components/TextComponent.h"
 
 class RenderSystem : public System {
 public:
@@ -21,25 +20,22 @@ public:
 	// Inicializar el sistema, etc.
 	virtual void initSystem() override;
 
-	// - Dibujar asteroides, balas y caza (sólo si el juego no está parado).
-	// - Dibujar las vidas (siempre).
-	// - Dibujar los mensajes correspondientes: si el juego está parado, etc (como en
-	// la práctica 1)
+	// Dibujar los objetos que toquen segun el estado
 	virtual void update() override;
 
 private:
-	// Para gestionar los mensajes correspondientes y actualizar los atributos
-	// winner_ y state_. 
-	void onRoundStart();
-	void onRoundOver();
-	void onGameStart();
-	void onGameOver();
+	// Creamos los textos necesarios segun el estado en el que nos encontremos
+	void createTexts();
+	// Inicializa un objeto texto con su textura y posicion
+	void initializeText(string texture, int position);
 
+	// Métodos de renderizado
 	void renderGroup(grpId_type group, string key) const;
 	void renderAsteroids();
 	void renderTexts() const;
 	void renderUI() const;
 
+	// Variables de tiempo y estado
 	float startTime;
 	STATE state;
 };

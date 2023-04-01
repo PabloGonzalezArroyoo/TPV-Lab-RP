@@ -9,11 +9,12 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 	// Creamos el manager del estado
 	mng = new Manager();
 
-	// Sistemas
+	// Añadimos sistemas
 	mng->addSystem<GameCtrlSystem>();
 	mng->addSystem<RenderSystem>();
 	mng->addSystem<SoundSystem>();
 
+	// Mensaje de inicio de estado
 	Message m;
 	m.id = _m_INIT_STATE;
 	m._state_data.st = MAINMENU_STATE;
@@ -24,6 +25,7 @@ MainMenuState::MainMenuState(Game* g) : GameState(g) {
 // Manejo del input en el mainMenu
 void MainMenuState::update() {
 	GameState::update();
+
 	// Si se presiona espacio, reproducir sonido y cargar estado
 	if (InputHandler::instance()->isKeyJustDown(SDLK_SPACE)) {
 		Message m;

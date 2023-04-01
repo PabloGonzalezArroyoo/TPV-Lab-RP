@@ -14,9 +14,6 @@ class CollisionsSystem : public System {
 public:
 	constexpr static sysId_type id = _sys_COLLISIONS;
 
-	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
-	void receive(const Message& m) override;
-
 	// Inicializar el sistema, etc.
 	void initSystem() override;
 
@@ -25,15 +22,10 @@ public:
 	void update() override;
 
 private:
-	// Para gestionar el mensaje de que ha acabado una ronda. Desactivar el sistema.
-	void onRoundOver();
-
-	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
-	void onRoundStart();
-
 	void checkCollisions();
 
 	bool collisionAsteroidsFighter(Entity* player, Transform* astTr);
 
 	bool collisionAsteroidsBullets(Transform* astTr);
+	
 };

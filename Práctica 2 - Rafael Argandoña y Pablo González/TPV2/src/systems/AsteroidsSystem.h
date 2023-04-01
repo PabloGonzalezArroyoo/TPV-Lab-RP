@@ -37,17 +37,23 @@ private:
 	// añadir los asteroides iniciales (como en la práctica 1).
 	void onRoundStart();
 
+	// Crea un numero dado de asteroides
 	void createAsteroids(int n);
+	// Devuelve una posicion aleatoria para instanciar un asteroide
 	Vector2D randomPos();
+	// Devuelve una velocidad aleatoria con la que instanciar un asteroide
 	Vector2D randomVel(Vector2D posAst);
+	// Crea un asteroide hijo a partir de uno con generación mayor o igual a 2
 	void createSon(Transform* father, int newGen);
 
+	// Comprueba si un asteroide esta fuera de la ventana
 	bool disableOnExit(Transform* tr);
+	// Mueve los asteroides que sigan al jugador hacia su posicion
 	void setFollowVelocity(Transform* myTr, Transform* plTr, float randomSpeed);
 
 	// El número actual de asteroides en el juego (recuerda que no puede superar un
 	// límite)
 	int numOfAsteroids_;
-
+	//Variables para aumentar el frame de los asteroides cada x milisegundos
 	float frameTime, startTime;
 };

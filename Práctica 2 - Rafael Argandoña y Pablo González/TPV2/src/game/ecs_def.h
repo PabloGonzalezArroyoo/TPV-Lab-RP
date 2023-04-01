@@ -14,14 +14,10 @@ enum cmpId : cmpId_type {
 	_TRANSFORM,
 	_FIGHTERCTRL,
 	_HEALTH,
-	_DEACCELERATION,
-	_GUN,
-	_SHOWATOPPOSITESIDE,
 	_FRAMED_IMAGE,
 	_GENERATIONS,
 	_FOLLOW,
-	_DISABLE_ON_EXIT,
-	_BUTTON,
+	_TEXT,
 
 	//DO NOT REMOVE THIS
 	_LAST_CMP_ID
@@ -37,7 +33,7 @@ enum grpId : grpId_type {
 	_grp_ASTEROIDS,
 	_grp_BULLETS,
 	_grp_UI,
-
+	_grp_TEXTS,
 	//DO NOT REMOVE THIS
 	_LAST_GRP_ID
 };
@@ -99,6 +95,7 @@ struct Message {
 	} _sound_data;
 	struct {
 		Music* music;
+		int loop;
 	} _music_data;
 };
 
@@ -108,13 +105,13 @@ struct Message {
 using sysId_type = unsigned int;
 
 enum sysId : sysId_type {
-	_sys_GAME_CTRL,
 	_sys_ASTEROIDS,
 	_sys_BULLET,
 	_sys_FIGHTER,
 	_sys_COLLISIONS,
 	_sys_RENDER,
 	_sys_SOUND,
+	_sys_GAME_CTRL,
 
 	//DO NOT REMOVE THIS
 	_LAST_SYS_ID

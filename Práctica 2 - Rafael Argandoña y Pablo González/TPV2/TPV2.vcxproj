@@ -24,6 +24,7 @@
     <ClInclude Include="src\components\FramedImage.h" />
     <ClInclude Include="src\components\Generations.h" />
     <ClInclude Include="src\components\Health.h" />
+    <ClInclude Include="src\components\TextComponent.h" />
     <ClInclude Include="src\components\Transform.h" />
     <ClInclude Include="src\ecs\Component.h" />
     <ClInclude Include="src\ecs\Entity.h" />
