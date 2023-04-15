@@ -1,0 +1,43 @@
+{
+  "fonts": [
+    { "id": "ARIAL", "file": "resources/fonts/ARIAL.ttf", "size": 20 },
+    { "id": "CAPTURE", "file": "resources/fonts/Capture_it.ttf", "size": 20 },
+    { "id": "CHIMERA20", "file": "resources/fonts/NES-Chimera.ttf", "size": 20 },
+    { "id": "CHIMERA30", "file": "resources/fonts/NES-Chimera.ttf", "size": 30 }
+  ],
+
+  "images": [
+    { "id": "asteroidA", "file": "resources/images/asteroid.png" },
+    { "id": "asteroidB", "file": "resources/images/asteroid_gold.png" },
+    { "id": "fighter", "file": "resources/images/fighter.png" },
+    { "id": "fighter2", "file": "resources/images/fighter2.png" },
+    { "id": "fire", "file": "resources/images/fire.png" },
+    { "id": "heart", "file": "resources/images/heart.png" }
+  ],
+
+  "messages": [
+    { "id": "MM_STATE", "text": "MAIN MENU", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "START_MSG", "text": "PRESS SPACE TO START", "font": "CHIMERA20", "color": "0x000a57ff" },
+    { "id": "WIN_STATE", "text": "VICTORY!", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "WIN_MSG", "text":  "GG CONGRATS FR FR :)", "font": "CHIMERA20", "color":  "0x000000ff"},
+    { "id": "PAUSE_STATE", "text": "PAUSE", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "CONTINUE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA20", "color": "0x000000ff", "bg": "0xffffffff" },
+    { "id": "GAMEOVER_STATE", "text": "GAME OVER!", "font": "CHIMERA30", "color": "0x000000ff" },
+    { "id": "GAMEOVER_MSG", "text": "YOU LOSE, LOSER!", "font": "CHIMERA20", "color": "0x000a57ff" }
+  ],
+
+  "sounds": [
+    { "id": "explosion", "file": "resources/sound/explosion.wav" },
+    { "id": "fire", "file": "resources/sound/fire.wav" },
+    { "id": "oof", "file": "resources/sound/oof.wav" },
+    { "id": "select", "file": "resources/sound/select.wav" },
+    { "id": "thrust", "file": "resources/sound/thrust.wav" }
+  ],
+
+  "musics": [
+    { "id": "galaxy", "file": "resources/music/galaxy.mp3" },
+    { "id": "victory", "file": "resources/music/victory.mp3"},
+    { "id": "gameover", "file": "resources/music/gameover.mp3"}
+  ]
+
+}
