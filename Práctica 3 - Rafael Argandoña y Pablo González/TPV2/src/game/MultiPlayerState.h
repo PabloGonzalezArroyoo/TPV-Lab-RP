@@ -1,0 +1,12 @@
+#pragma once
+#include "GameState.h"
+
+class MultiPlayerState : public GameState {
+private:
+
+public:
+	MultiPlayerState();
+
+	// Sobrecarga del método update
+	virtual void update();
+};
