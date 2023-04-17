@@ -195,6 +195,9 @@
     <ClInclude Include="src\components\TextComponent.h">
       <Filter>Header Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\systems\NetworkSystem.h">
+      <Filter>Header Files\systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -270,6 +273,9 @@
       <Filter>Source Files\game</Filter>
     </ClCompile>
     <ClCompile Include="src\systems\SoundSystem.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\systems\NetworkSystem.cpp">
       <Filter>Source Files\systems</Filter>
     </ClCompile>
   </ItemGroup>

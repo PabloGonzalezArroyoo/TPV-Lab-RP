@@ -106,6 +106,8 @@ void SDLUtils::initSDLExtensions() {
 	assert(mixInit_ret != 0);
 	SoundEffect::setNumberofChannels(8); // we start with 8 channels
 
+	int sldnet_ret = SDLNet_Init();
+	assert(sldnet_ret >= 0);
 }
 
 void SDLUtils::loadReasources(std::string filename) {
@@ -280,5 +282,6 @@ void SDLUtils::closeSDLExtensions() {
 	Mix_Quit(); // quit SDL_mixer
 	IMG_Quit(); // quit SDL_image
 	TTF_Quit(); // quit SDL_ttf
+	SDLNet_Quit(); // quit SDL_Net
 }
 

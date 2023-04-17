@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <string>
 #include <unordered_map>
-
+#include <SDL_net.h>
 #include "../utils/Singleton.h"
 #include "RandomNumberGenerator.h"
 #include "Font.h"
