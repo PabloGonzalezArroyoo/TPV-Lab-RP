@@ -199,7 +199,7 @@
       <Filter>Header Files\systems</Filter>
     </ClInclude>
     <ClInclude Include="src\game\MultiPlayerState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -282,7 +282,7 @@
       <Filter>Source Files\systems</Filter>
     </ClCompile>
     <ClCompile Include="src\game\MultiPlayerState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

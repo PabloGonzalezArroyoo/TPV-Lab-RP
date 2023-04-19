@@ -38,4 +38,10 @@ void MainMenuState::update() {
 		m.id = _m_ESC_PRESSED;
 		mng->send(m);
 	}
+
+	else if (InputHandler::instance()->isKeyJustDown(SDLK_m)) {
+		Message m;
+		m.id = _m_M_PRESSED;
+		mng->send(m);
+	}
 }

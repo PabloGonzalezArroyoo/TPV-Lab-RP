@@ -5,13 +5,15 @@
 class NetworkSystem : public System{
 private:
 	bool host;
-	UDPsocket sock;
-	UDPpacket* pack;
+
+	IPaddress ip;
+	TCPsocket masterSocket;
+	TCPsocket sock;
 	SDLNet_SocketSet sockSet;
 	Uint16 port;
 
 	bool connected;
-	IPaddress otherAddr;
+	char buffer[256];
 
 	string name;
 	string hostName;
@@ -22,10 +24,13 @@ private:
 
 
 public:
+	static constexpr sysId id = _sys_NETWORK_;
+
 	NetworkSystem();
+	~NetworkSystem();
 
 	void receive(const Message& m) override;
-	void update() override;
+	void initSystem() override;
 
 	bool connect();
 	void disconnect();

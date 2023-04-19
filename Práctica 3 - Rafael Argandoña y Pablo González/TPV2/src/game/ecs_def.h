@@ -67,6 +67,7 @@ enum msgId : msgId_type {
 	_m_PLAYER_WINS,
 	_m_INIT_STATE,
 	_m_SPACEBAR_PRESSED,
+	_m_M_PRESSED,
 	_m_ESC_PRESSED,
 
 	_m_PLAY_SOUND,
@@ -111,6 +112,7 @@ enum sysId : sysId_type {
 	_sys_COLLISIONS,
 	_sys_RENDER,
 	_sys_SOUND,
+	_sys_NETWORK_,
 	_sys_GAME_CTRL,
 
 	//DO NOT REMOVE THIS

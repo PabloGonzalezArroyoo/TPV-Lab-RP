@@ -6,6 +6,7 @@
 #include "../game/GameOverState.h"
 #include "../game/MainMenuState.h"
 #include "../game/WinState.h"
+#include "../game/MultiPlayerState.h"
 
 // Recibir mensajes
 void GameCtrlSystem::receive(const Message& m) {
@@ -40,6 +41,9 @@ void GameCtrlSystem::receive(const Message& m) {
 				game->getStateMachine()->pushState(new PauseState(game, mngr->getComponent<Health>(mngr->getHandler(_hdlr_FIGHTER))->getLifes()));
 			else game->changeControl();
 			break;
+
+		case _m_M_PRESSED:
+			game->getStateMachine()->changeState(new MultiPlayerState()); break;
 
 		// Al ganar
 		case _m_PLAYER_WINS:
