@@ -76,45 +76,18 @@ bool NetworkSystem::initHost() {
 }
 
 bool NetworkSystem::initClient() {
-	//Uint16 p;
-	//string host_;
-
-	//cout << "Introduzca el host y el puerto: " << endl;
-	//if (!(cin >> host_ >> p)) { cout << "Host/Puerto no valido" << endl; return false; }
-	//if (!SDLNet_ResolveHost(&otherAddr, host_.c_str(), p) < 0) {
-	//	SDLNetUtils::print_SDLNet_error(); return false;
-	//}
-
-	//host = false;
-	//initConnection(0);
-
-	////Lanzar mensaje de Peticion de conexion
-
-	//pack->address = otherAddr;
-	////SDLNetUtils::serializedSend();
-
-	//if (SDLNet_CheckSockets(sockSet, 3000) > 0) {
-	//	if (SDLNet_SocketReady(sock)) {
-	//		/*SDLNetUtils::deserializedReceive();
-	//		if (MI SOLICITUD SE ACEPTO) {
-	//			DESERIALIZO EL MENSAJE
-	//			host = false;
-	//			connected = true;
-	//		}*/
-
-	//	}
-	//}
-
-	//if (!connected) {
-	//	cout << "No se pudo conectar con el otro jugador" << endl;
-	//	return false;
-	//}
-
-	//return true;
 	int result = 0;
 	//buffer[256];
 
-	if (SDLNet_ResolveHost(&ip, hostName.c_str(), port) < 0) {
+	cout << "Introduce el host: " << endl;
+	if (!(cin >> hostName)) {
+		cerr << "Invalid host" << std::endl;
+		return false;
+	}
+	auto h = hostName.c_str();
+	auto a = SDLNet_ResolveHost(&ip, h, port);
+	cout << a << endl;
+	if (a < 0) {
 		cerr << "ERROR DE CONEXION AL HOST" << endl;
 		return false;
 	}
@@ -122,6 +95,7 @@ bool NetworkSystem::initClient() {
 	sock = SDLNet_TCP_Open(&ip);
 	if (!sock) {
 		cerr << "NO SE HA CONSEGUIDO ESTABLECER LA CONEXION" << endl;
+		return false;
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
