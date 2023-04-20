@@ -71,6 +71,7 @@ bool NetworkSystem::initHost() {
 	hostName = name;
 	host = true;
 	connected = false;
+	initConnection(port);
 	cout << "TODO BIEN, TODO CORRECTO" << endl;
 	return true;
 }
