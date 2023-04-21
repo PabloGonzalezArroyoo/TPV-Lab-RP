@@ -64,6 +64,10 @@ bool NetworkSystem::initHost() {
 		}
 	}
 
+	auto n = name.c_str();
+	cout << n << endl;
+	SDLNet_TCP_Send(sock, n, name.length());
+
 	hostName = name;
 	host = true;
 	connected = false;
@@ -105,7 +109,7 @@ bool NetworkSystem::initClient() {
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
-	/*result = SDLNet_TCP_Recv(sock, buffer, 1);
+	result = SDLNet_TCP_Recv(sock, buffer, 1);
 	if (result < 0) {
 		SDLNetUtils::print_SDLNet_error();
 		return false;
@@ -122,7 +126,7 @@ bool NetworkSystem::initClient() {
 			cout << "CONEXION NO ACEPTADA" << endl;
 			connected = false;
 		}
-	}*/
+	}
 }
 
 bool NetworkSystem::initConnection(const Uint16& port_) {
