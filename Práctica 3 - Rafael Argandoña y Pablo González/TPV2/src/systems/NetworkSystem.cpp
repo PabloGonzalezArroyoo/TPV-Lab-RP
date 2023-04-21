@@ -159,5 +159,6 @@ void NetworkSystem::convertInfo(string& str) {
 }
 
 void NetworkSystem::revertInfo(string& str) {
-
+	buffer[255] = 0;
+	str = (string)buffer;
 }
