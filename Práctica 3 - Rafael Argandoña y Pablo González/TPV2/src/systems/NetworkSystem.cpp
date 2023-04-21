@@ -67,7 +67,18 @@ bool NetworkSystem::initHost() {
 
 	auto n = name.c_str();
 	cout << n << endl;
-	SDLNet_TCP_Send(sock, n, name.length() + 1);
+
+	RequestConection rc;
+	rc.id = _nw_REQUEST_CONNECTION;
+	int i = 0;
+	for (; i < name.size() && i < 10; i++) {
+		rc.name[i] = name[i];
+	}
+	rc.name[i] = 0;
+
+	SDLNetUtils::serializedSend(rc, sock);
+
+	//SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	SDLNet_TCP_Recv(sock, buffer, 255);
 	name = (string)buffer;
@@ -82,7 +93,6 @@ bool NetworkSystem::initHost() {
 
 bool NetworkSystem::initClient() {
 	int result = 0;
-	//buffer[256];
 
 	cout << "\nIntroduce el host:\n>";
 	cin >> hostName;

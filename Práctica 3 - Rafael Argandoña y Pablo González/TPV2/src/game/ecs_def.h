@@ -77,10 +77,6 @@ enum msgId : msgId_type {
 	_m_PLAY_SOUND,
 	_m_PLAY_MUSIC,
 	_m_STOP_MUSIC,
-	_m_REQUEST_CONNECTION,
-	_m_OTHER_PLAYER_VEL,
-	_m_OTHER_PLAYER_ROT,
-	_m_OTHER_PLAYER_SHOT,
 };
 
 //En el mismo manager
@@ -107,24 +103,6 @@ struct Message {
 		Music* music;
 		int loop;
 	} _music_data;
-
-	// MENSAJES DE PETICION DE CONEXION
-	struct {
-		string name;
-	} request_connection_data;
-	// MENSAJE DE VELOCIDAD DE LA NAVE DEL OTRO PLAYER
-	struct {
-		Vector2D v;
-	} other_player_velocity;
-	// MENSAJE DE ROTACION DE LA NAVE DEL OTRO PLAYER
-	struct {
-		float r;
-	} other_player_rotation;
-	// PARAMETROS BALA DE OTRO PLAYER
-	struct {
-		Vector2D p;
-		float rot;
-	} other_player_shot;
 };
 
 // SYSTEMS

@@ -37,6 +37,7 @@
     <ClInclude Include="src\game\GameStateMachine.h" />
     <ClInclude Include="src\game\MainMenuState.h" />
     <ClInclude Include="src\game\MultiPlayerState.h" />
+    <ClInclude Include="src\game\NetworkMessages.h" />
     <ClInclude Include="src\game\PauseState.h" />
     <ClInclude Include="src\game\PlayState.h" />
     <ClInclude Include="src\game\WinState.h" />

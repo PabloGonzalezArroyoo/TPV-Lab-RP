@@ -1,6 +1,6 @@
 #pragma once
 #include "../ecs/System.h"
-#include "../sdlutils/SDLNetUtils.h"
+#include "../game/NetworkMessages.h"
 
 class NetworkSystem : public System{
 private:
