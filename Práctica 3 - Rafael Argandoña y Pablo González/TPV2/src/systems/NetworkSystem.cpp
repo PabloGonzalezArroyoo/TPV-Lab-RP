@@ -84,16 +84,10 @@ bool NetworkSystem::initClient() {
 	int result = 0;
 	//buffer[256];
 
-	cout << "\nIntroduce el host:\n>" << endl;
-	if (!(cin >> hostName)) {
-		cerr << "Invalid host" << std::endl;
-		return false;
-	}
-	cout << "\nIntroduce el puerto:\n>" << endl; 
-	if (!(cin >> port)) {
-		cerr << "Invalid port" << std::endl;
-		return false;
-	}
+	cout << "\nIntroduce el host:\n>";
+	cin >> hostName;
+	cout << "\nIntroduce el puerto:\n>"; 
+	cin >> port;
 
 	auto h = hostName.c_str();
 	auto a = SDLNet_ResolveHost(&ip, h, port);
@@ -114,7 +108,7 @@ bool NetworkSystem::initClient() {
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
-	result = SDLNet_TCP_Recv(sock, buffer, 4);
+	result = SDLNet_TCP_Recv(sock, buffer, 255);
 	if (result < 0) {
 		SDLNetUtils::print_SDLNet_error();
 		return false;
@@ -124,19 +118,8 @@ bool NetworkSystem::initClient() {
 		hostName = buffer;
 		cout << "EL SERVIDOR ACEPTO LA CONEXION. HOSTNAME: " << hostName << endl;
 	}
-	/*else {
-		cout << buffer[0] << buffer[1] << buffer[2] << buffer[3] << endl;
-		if (buffer[0] == 0) {
-			cout << "CONECTAO" << endl;
-			connected = true;
-		}
-		else {
-			cout << "CONEXION NO ACEPTADA" << endl;
-			connected = false;
-		}
-	}*/
 
-	cout << name.c_str() << endl;
+	cout << "TU NOMBRE ES: " << name.c_str() << endl;
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 }
 

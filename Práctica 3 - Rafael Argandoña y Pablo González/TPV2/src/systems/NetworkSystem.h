@@ -13,7 +13,7 @@ private:
 	Uint16 port;
 
 	bool connected;
-	char buffer[4];
+	char buffer[256];
 
 	string name;
 	string hostName;
