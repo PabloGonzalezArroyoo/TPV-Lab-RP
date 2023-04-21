@@ -43,22 +43,11 @@ bool NetworkSystem::connect() {
 }
 
 bool NetworkSystem::initHost() {
-	/*Uint16 p;
-	cout << "Introduzca el numero de puerto a usar: ";
-
-	if (!(cin >> p)) { cerr << "Puerto no valido" << endl; return false; }
-	if (!initConnection(p)) return false;
-
-	hostName = name;
-	host = true;
-	connected = false;
-	return true;*/
-	
 	if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
 		cerr << "PUERTO NO VALIDO" << endl;
 		return false;
 	}
-
+	cout << "El puerto disponible es: "  << ip.port << endl;
 	masterSocket = SDLNet_TCP_Open(&ip);
 	if (!masterSocket) {
 		cerr << "NO HAY MASTER SOCKET" << endl;
@@ -68,10 +57,16 @@ bool NetworkSystem::initHost() {
 	sockSet = SDLNet_AllocSocketSet(1);
 	SDLNet_TCP_AddSocket(sockSet, masterSocket);
 
+	if (SDLNet_CheckSockets(sockSet, SDL_MAX_UINT32) > 0) {
+		if (SDLNet_SocketReady(masterSocket)) {
+			sock = SDLNet_TCP_Accept(masterSocket);
+			cout << "SE CONECTO ALGUIEN" << endl;
+		}
+	}
+
 	hostName = name;
 	host = true;
 	connected = false;
-	initConnection(port);
 	cout << "TODO BIEN, TODO CORRECTO" << endl;
 	return true;
 }
@@ -85,10 +80,16 @@ bool NetworkSystem::initClient() {
 		cerr << "Invalid host" << std::endl;
 		return false;
 	}
+	cout << "Introduce el puerto: " << endl; 
+	if (!(cin >> port)) {
+		cerr << "Invalid port" << std::endl;
+		return false;
+	}
+
 	auto h = hostName.c_str();
 	auto a = SDLNet_ResolveHost(&ip, h, port);
-	ip.port = 1;
-	cout << a << endl;
+	ip.port = port;
+
 	if (a < 0) {
 		cerr << "ERROR DE CONEXION AL HOST" << endl;
 		return false;
@@ -99,9 +100,12 @@ bool NetworkSystem::initClient() {
 		cerr << "NO SE HA CONSEGUIDO ESTABLECER LA CONEXION" << endl;
 		return false;
 	}
+	else {
+		cout << "Me conecte al host " << ip.host << " en el puerto " << port << endl;
+	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
-	result = SDLNet_TCP_Recv(sock, buffer, 1);
+	/*result = SDLNet_TCP_Recv(sock, buffer, 1);
 	if (result < 0) {
 		SDLNetUtils::print_SDLNet_error();
 		return false;
@@ -118,7 +122,7 @@ bool NetworkSystem::initClient() {
 			cout << "CONEXION NO ACEPTADA" << endl;
 			connected = false;
 		}
-	}
+	}*/
 }
 
 bool NetworkSystem::initConnection(const Uint16& port_) {
