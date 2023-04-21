@@ -1,5 +1,4 @@
 #pragma once
-#include "../sdlutils/SDLUtils.h"
 #include "../ecs/Component.h"
 
 struct Health : public Component {

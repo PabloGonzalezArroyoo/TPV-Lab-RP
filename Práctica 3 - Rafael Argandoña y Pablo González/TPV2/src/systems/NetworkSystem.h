@@ -35,6 +35,9 @@ public:
 	bool connect();
 	void disconnect();
 
+	void convertInfo(string& str);
+	void revertInfo(string& str);
+
 	inline bool isConnected() { return connected; }
 	inline bool isHost() { return host; }
 	inline Uint16 getPort() { return port; }

@@ -1,7 +1,5 @@
 #include "Game.h"
-#include "PlayState.h"
 #include "MainMenuState.h"
-#include "../sdlutils/SDLUtils.h"
 
 // Constructora
 Game::Game() {

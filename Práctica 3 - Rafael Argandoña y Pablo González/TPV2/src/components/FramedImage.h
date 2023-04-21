@@ -1,5 +1,4 @@
 #pragma once
-#include "../sdlutils/SDLUtils.h"
 
 struct FramedImage : public Component {
 private:

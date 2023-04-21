@@ -1,7 +1,6 @@
 #pragma once
 #include "Transform.h"
 #include "../ecs/Manager.h"
-#include "../sdlutils/SDLUtils.h"
 
 struct Follow : public Component {
 private:

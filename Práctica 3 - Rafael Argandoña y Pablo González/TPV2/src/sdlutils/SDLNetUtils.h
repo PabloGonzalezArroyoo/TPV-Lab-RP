@@ -529,42 +529,42 @@ private:
 	// if there is a risk that the different sides use different representations,
 	// then better transmit the sign separate
 	//
-//	template<typename UnsignedT, typename SignedT>
-//	inline static Uint8* serialize_sint(SignedT &v, Uint8 *buf) {
-//		static_assert( sizeof(UnsignedT) == sizeof(SignedT), "Signed and unsigned types do not match" );
-//		Uint8 sign;
-//		UnsignedT abs_v;
-//
-//		if (v >= 0) {
-//			abs_v = v;
-//			sign = 0;
-//		} else {
-//			abs_v = -v;
-//			sign = 1;
-//		}
-//
-//		UnsignedT abs_nv = sdlnet_hton(abs_v);
-//		*reinterpret_cast<Uint8*>(buf) = sign;
-//		*reinterpret_cast<UnsignedT*>(buf + 1) = abs_nv;
-//
-//		return buf + sizeof(UnsignedT) + 1;
-//	}
-//
-//	template<typename UnsignedT, typename SignedT>
-//	inline static Uint8* deserialize_sint(SignedT &v, Uint8 *buf) {
-//		static_assert( sizeof(UnsignedT) == sizeof(SignedT), "Signed and unsigned types do not match" );
-//		Uint8 sign = *reinterpret_cast<Uint8*>(buf);
-//		UnsignedT abs_nv = *reinterpret_cast<UnsignedT*>(buf + 1);
-//		UnsignedT abs_v = sdlnet_ntoh(abs_nv);
-//
-//		if (sign == 0) {
-//			v = abs_v;
-//		} else {
-//			v = -static_cast<SignedT>(abs_v);
-//		}
-//
-//		return buf + sizeof(UnsignedT) + 1;
-//	}
+	/*template<typename UnsignedT, typename SignedT>
+	inline static Uint8* serialize_sint(SignedT &v, Uint8 *buf) {
+		static_assert( sizeof(UnsignedT) == sizeof(SignedT), "Signed and unsigned types do not match" );
+		Uint8 sign;
+		UnsignedT abs_v;
+
+		if (v >= 0) {
+			abs_v = v;
+			sign = 0;
+		} else {
+			abs_v = -v;
+			sign = 1;
+		}
+
+		UnsignedT abs_nv = sdlnet_hton(abs_v);
+		*reinterpret_cast<Uint8*>(buf) = sign;
+		*reinterpret_cast<UnsignedT*>(buf + 1) = abs_nv;
+
+		return buf + sizeof(UnsignedT) + 1;
+	}
+
+	template<typename UnsignedT, typename SignedT>
+	inline static Uint8* deserialize_sint(SignedT &v, Uint8 *buf) {
+		static_assert( sizeof(UnsignedT) == sizeof(SignedT), "Signed and unsigned types do not match" );
+		Uint8 sign = *reinterpret_cast<Uint8*>(buf);
+		UnsignedT abs_nv = *reinterpret_cast<UnsignedT*>(buf + 1);
+		UnsignedT abs_v = sdlnet_ntoh(abs_nv);
+
+		if (sign == 0) {
+			v = abs_v;
+		} else {
+			v = -static_cast<SignedT>(abs_v);
+		}
+
+		return buf + sizeof(UnsignedT) + 1;
+	}*/
 
 	// serializing array of bytes
 	inline static Uint8* serialize_arraybyte(Uint8 *v, std::size_t N,

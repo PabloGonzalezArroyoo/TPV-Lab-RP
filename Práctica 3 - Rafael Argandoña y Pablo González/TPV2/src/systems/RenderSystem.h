@@ -1,7 +1,5 @@
 #pragma once
 #include "../ecs/System.h"
-#include "../game/ecs_def.h"
-#include "../sdlutils/Texture.h"
 #include "../components/FighterCtrl.h"
 #include "../components/Follow.h"
 #include "../components/FramedImage.h"

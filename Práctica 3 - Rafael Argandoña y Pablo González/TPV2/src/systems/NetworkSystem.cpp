@@ -76,9 +76,9 @@ bool NetworkSystem::initHost() {
 	}
 	rc.name[i] = 0;
 
-	SDLNetUtils::serializedSend(rc, sock);
+	//SDLNetUtils::serializedSend(rc, sock);
 
-	//SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
+	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	SDLNet_TCP_Recv(sock, buffer, 255);
 	name = (string)buffer;
@@ -148,4 +148,16 @@ void NetworkSystem::disconnect() {
 		SDLNet_FreeSocketSet(sockSet);
 		SDLNet_TCP_Close(masterSocket);
 	}
+}
+
+void NetworkSystem::convertInfo(string& str) {
+	int i = 0u;
+	for (; i < str.size() && i < 255; i++) {
+		buffer[i] = str[i];
+	}
+	buffer[i] = 0;
+}
+
+void NetworkSystem::revertInfo(string& str) {
+
 }

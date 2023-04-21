@@ -1,6 +1,5 @@
 #pragma once
 #include "../sdlutils/SDLNetUtils.h"
-using namespace std;
 
 enum nwId : Uint8 {
 	_nw_REQUEST_CONNECTION,
@@ -11,7 +10,7 @@ enum nwId : Uint8 {
 
 struct NetworkMessage {
 	Uint8 id;
-
+	
 	_IMPL_SERIALIAZION_(id);
 };
 

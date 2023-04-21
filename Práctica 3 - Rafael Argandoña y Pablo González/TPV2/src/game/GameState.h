@@ -8,6 +8,7 @@
 #include "../systems/CollisionsSystem.h"
 #include "../systems/RenderSystem.h"
 #include "../systems/SoundSystem.h"
+#include "../systems/NetworkSystem.h"
 
 #include "../utils/Collisions.h"
 #include <list>
