@@ -13,7 +13,7 @@ private:
 	Uint16 port;
 
 	bool connected;
-	char buffer[256];
+	char buffer[4];
 
 	string name;
 	string hostName;
@@ -38,4 +38,12 @@ public:
 	inline bool isConnected() { return connected; }
 	inline bool isHost() { return host; }
 	inline Uint16 getPort() { return port; }
+	inline string getMyName() { 
+		if (host) return hostName;
+		else return name;
+	}
+	inline string getOtherName() {
+		if (host) return name;
+		else return hostName;
+	}
 };

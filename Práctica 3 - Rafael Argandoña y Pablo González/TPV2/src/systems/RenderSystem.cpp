@@ -15,12 +15,20 @@ void RenderSystem::receive(const Message& m) {
 // Inicializamos el sistema (solo empezamos el contador)
 void RenderSystem::initSystem() {
 	startTime = sdlutils().currRealTime();
+	nw = mngr->getSystem<NetworkSystem>();
+	if (nw) {
+		state = MULTI_PLAYER;
+		namesTxts[0] = new Texture(sdlutils().renderer(), nw->getMyName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
+		namesTxts[1] = new Texture(sdlutils().renderer(), nw->getOtherName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
+	}
 }
 
 void RenderSystem::update() {
 	// Pintamos los grupos general y el de las balas
 	renderGroup(_grp_GENERAL, FIGHTER);
 	renderGroup(_grp_BULLETS, FIRETXT);
+	renderGroup(_grp_MULTIPLAYER, FIGHTER);
+	renderGroup(_grp_MULTIPLAYER_BULLETS, FIRETXT);
 	// Pintamos los asteroides
 	renderAsteroids();
 	// Si estamos en el estado de juego o de pausa pintamos las vidas del jugador
@@ -138,5 +146,19 @@ void RenderSystem::renderGroup(grpId_type group, string key) const {
 		tr = mngr->getComponent<Transform>(entities[i]);
 		Texture* txt = &sdlutils().images().at(key);
 		txt->render(tr->getRect(), tr->getRotation());
+	}
+
+	if (group == _grp_GENERAL && state == MULTI_PLAYER) {
+		SDL_Rect r;
+		r.w = namesTxts[0]->width(); r.h = namesTxts[0]->height();
+		r.x = tr->getPosition().getX() + tr->getWidth()/2 - r.w / 2; r.y = tr->getPosition().getY() + tr->getHeight();
+ 		namesTxts[0]->render(r);
+	}
+
+	if (group == _grp_MULTIPLAYER && state == MULTI_PLAYER) {
+		SDL_Rect r;
+		r.w = namesTxts[1]->width(); r.h = namesTxts[1]->height();
+		r.x = tr->getPosition().getX() + tr->getWidth() / 2 - r.w / 2; r.y = tr->getPosition().getY() + tr->getHeight();
+		namesTxts[1]->render(r);
 	}
 }

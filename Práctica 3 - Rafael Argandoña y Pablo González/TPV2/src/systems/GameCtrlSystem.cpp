@@ -10,6 +10,8 @@
 
 // Recibir mensajes
 void GameCtrlSystem::receive(const Message& m) {
+
+	Message mes;
 	switch (m.id) {
 		// Inicializar estado -> guardar estado, game y componente si es el estado de pausa
 		case _m_INIT_STATE: 
@@ -25,10 +27,9 @@ void GameCtrlSystem::receive(const Message& m) {
 
 		// Al pulsar espacio, reproducir sonido y lanzar X estado según en el que me encuentre
 		case _m_SPACEBAR_PRESSED:
-			Message m;
-			m.id = _m_PLAY_SOUND;
-			m._sound_data.sound = &sdlutils().soundEffects().at(SELECT);
-			mngr->send(m);
+			mes.id = _m_PLAY_SOUND;
+			mes._sound_data.sound = &sdlutils().soundEffects().at(SELECT);
+			mngr->send(mes);
 
 			if (state == MAINMENU_STATE) game->getStateMachine()->pushState(new PlayState(game));
 			else if (state == GAMEOVER_STATE || state == WIN_STATE) game->getStateMachine()->pushState(new MainMenuState(game));
@@ -68,7 +69,7 @@ void GameCtrlSystem::initSystem() {
 	else {
 		// Crea la nave y le añade los componentes basicos
 		Entity * good = mngr->addEntity();
-		Entity* bad = mngr->addEntity();
+		Entity* bad = mngr->addEntity(_grp_MULTIPLAYER);
 
 		Vector2D host = Vector2D(0, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2);
 		Vector2D client = Vector2D(WIN_WIDTH - PLAYER_WIDTH, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2);

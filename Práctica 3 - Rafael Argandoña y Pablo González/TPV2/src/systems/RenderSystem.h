@@ -1,7 +1,7 @@
 #pragma once
 #include "../ecs/System.h"
 #include "../game/ecs_def.h"
-
+#include "../sdlutils/Texture.h"
 #include "../components/FighterCtrl.h"
 #include "../components/Follow.h"
 #include "../components/FramedImage.h"
@@ -9,6 +9,7 @@
 #include "../components/Health.h"
 #include "../components/Transform.h"
 #include "../components/TextComponent.h"
+#include "../systems/NetworkSystem.h"
 
 class RenderSystem : public System {
 public:
@@ -36,6 +37,8 @@ private:
 	void renderUI() const;
 
 	// Variables de tiempo y estado
+	NetworkSystem* nw;
+	Texture* namesTxts[2];
 	float startTime;
 	STATE state;
 };

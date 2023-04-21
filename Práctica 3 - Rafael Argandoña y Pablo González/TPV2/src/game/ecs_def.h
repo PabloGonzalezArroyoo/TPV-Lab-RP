@@ -4,7 +4,7 @@ using namespace std;
 
 // Los distintos estados del juego
 enum STATE {
-	MAINMENU_STATE, PLAY_STATE, PAUSE_STATE, GAMEOVER_STATE, WIN_STATE
+	MAINMENU_STATE, PLAY_STATE, MULTI_PLAYER, PAUSE_STATE, GAMEOVER_STATE, WIN_STATE
 };
 
 // COMPONENTES
@@ -30,10 +30,14 @@ using grpId_type = unsigned int;
 
 enum grpId : grpId_type {
 	_grp_GENERAL,
+	_grp_MULTIPLAYER,
 	_grp_ASTEROIDS,
 	_grp_BULLETS,
+	_grp_MULTIPLAYER_BULLETS,
 	_grp_UI,
 	_grp_TEXTS,
+
+
 	//DO NOT REMOVE THIS
 	_LAST_GRP_ID
 };
@@ -60,7 +64,7 @@ class SoundEffect;
 class Music;
 
 using msgId_type = unsigned int;
-enum msgId : msgId_type {
+enum msgId : msgId_type {	
 	_m_PLAYER_DAMAGED,
 	_m_ROUND_OVER,
 	_m_ASTEROID_COLLIDED,
@@ -70,12 +74,16 @@ enum msgId : msgId_type {
 	_m_SPACEBAR_PRESSED,
 	_m_M_PRESSED,
 	_m_ESC_PRESSED,
-
 	_m_PLAY_SOUND,
 	_m_PLAY_MUSIC,
-	_m_STOP_MUSIC
+	_m_STOP_MUSIC,
+	_m_REQUEST_CONNECTION,
+	_m_OTHER_PLAYER_VEL,
+	_m_OTHER_PLAYER_ROT,
+	_m_OTHER_PLAYER_SHOT,
 };
 
+//En el mismo manager
 struct Message {
 	msgId_type id;
 	// _m_PLAYER_DIED
@@ -99,11 +107,27 @@ struct Message {
 		Music* music;
 		int loop;
 	} _music_data;
+
+	// MENSAJES DE PETICION DE CONEXION
+	struct {
+		string name;
+	} request_connection_data;
+	// MENSAJE DE VELOCIDAD DE LA NAVE DEL OTRO PLAYER
+	struct {
+		Vector2D v;
+	} other_player_velocity;
+	// MENSAJE DE ROTACION DE LA NAVE DEL OTRO PLAYER
+	struct {
+		float r;
+	} other_player_rotation;
+	// PARAMETROS BALA DE OTRO PLAYER
+	struct {
+		Vector2D p;
+		float rot;
+	} other_player_shot;
 };
 
-
 // SYSTEMS
-
 using sysId_type = unsigned int;
 
 enum sysId : sysId_type {
