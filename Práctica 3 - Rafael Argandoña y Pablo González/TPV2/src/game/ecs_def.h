@@ -45,6 +45,7 @@ using hdlrId_type = unsigned int;
 
 enum hdlrId : hdlrId_type {
 	_hdlr_FIGHTER,
+	_hdlr_GHOST_FIGHTER,
 
 	//DO NOT REMOVE THIS
 	_LAST_HDLR_ID

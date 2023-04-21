@@ -53,14 +53,45 @@ void GameCtrlSystem::receive(const Message& m) {
 }
 
 void GameCtrlSystem::initSystem() {
-	// Crea la nave y le añade los componentes basicos
-	Entity* f = mngr->addEntity();
+	auto network = mngr->getSystem<NetworkSystem>();
 
-	mngr->addComponent<Transform>(f, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
-	mngr->addComponent<Health>(f);
+	if (!network) {
+		// Crea la nave y le añade los componentes basicos
+		Entity* f = mngr->addEntity();
 
-	// Setea el handler de la nave
-	mngr->setHandler(_hdlr_FIGHTER, f);
+		mngr->addComponent<Transform>(f, PLAYER_INITIAL_POS, PLAYER_WIDTH, PLAYER_HEIGHT);
+		mngr->addComponent<Health>(f);
+
+		// Setea el handler de la nave
+		mngr->setHandler(_hdlr_FIGHTER, f);
+	}
+	else {
+		// Crea la nave y le añade los componentes basicos
+		Entity * good = mngr->addEntity();
+		Entity* bad = mngr->addEntity();
+
+		Vector2D host = Vector2D(0, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2);
+		Vector2D client = Vector2D(WIN_WIDTH - PLAYER_WIDTH, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2);
+
+		if (network->isHost()) {
+			mngr->addComponent<Transform>(good, host, PLAYER_WIDTH, PLAYER_HEIGHT);
+			mngr->addComponent<Transform>(bad, client, PLAYER_WIDTH, PLAYER_HEIGHT);
+		}
+		else {
+			mngr->addComponent<Transform>(bad, host, PLAYER_WIDTH, PLAYER_HEIGHT);
+			mngr->addComponent<Transform>(good, client, PLAYER_WIDTH, PLAYER_HEIGHT);
+		}
+
+
+		// Crea la nave y le añade los componentes basicos
+		mngr->addComponent<Health>(good);
+		mngr->addComponent<Health>(bad);
+
+		// Setea el handler de la nave
+		mngr->setHandler(_hdlr_FIGHTER, good);
+		mngr->setHandler(_hdlr_GHOST_FIGHTER, bad);
+	}
+
 }
 
 // Al desaparecer todos los asteroides

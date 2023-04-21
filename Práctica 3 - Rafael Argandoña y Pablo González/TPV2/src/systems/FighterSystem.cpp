@@ -1,5 +1,6 @@
 #include "FighterSystem.h"
 #include "../ecs/Manager.h"
+#include "NetworkSystem.h"
 
 // Recibir mensajes
 void FighterSystem::receive(const Message& m) {
