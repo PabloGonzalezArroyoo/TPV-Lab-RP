@@ -109,7 +109,7 @@ bool NetworkSystem::initClient() {
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
-	result = SDLNet_TCP_Recv(sock, buffer, 1);
+	result = SDLNet_TCP_Recv(sock, buffer, 4);
 	if (result < 0) {
 		SDLNetUtils::print_SDLNet_error();
 		return false;
@@ -118,6 +118,7 @@ bool NetworkSystem::initClient() {
 	else if (result == 0) cout << "EL SERVIDOR CERRO LA CONEXION" << endl;
 
 	else {
+		cout << buffer[0] << buffer[1] << buffer[2] << buffer[3] << endl;
 		if (buffer[0] == 0) {
 			cout << "CONECTAO" << endl;
 			connected = true;
