@@ -10,12 +10,8 @@ private:
 public:
 	constexpr static cmpId_type id = _FIGHTERCTRL;
 
-	// Inicializar componente
-	inline virtual void initComponent() {
-		thrust = 0.2;
-		r = 0;
-		speedLimit = 1.5;
-	}
+	// Constructora
+	inline FighterCtrl(float rot) : Component(), thrust(0.2), r(rot), speedLimit(1.5) { }
 
 	// Getters y setters
 	int getRot() { return r; }

@@ -74,12 +74,12 @@ void GameCtrlSystem::initSystem() {
 		Vector2D client = Vector2D(WIN_WIDTH - PLAYER_WIDTH, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2);
 
 		if (network->isHost()) {
-			mngr->addComponent<Transform>(good, host, PLAYER_WIDTH, PLAYER_HEIGHT);
-			mngr->addComponent<Transform>(bad, client, PLAYER_WIDTH, PLAYER_HEIGHT);
+			mngr->addComponent<Transform>(good, host, PLAYER_WIDTH, PLAYER_HEIGHT, Vector2D(), 90);
+			mngr->addComponent<Transform>(bad, client, PLAYER_WIDTH, PLAYER_HEIGHT, Vector2D(), -90);
 		}
 		else {
-			mngr->addComponent<Transform>(bad, host, PLAYER_WIDTH, PLAYER_HEIGHT);
-			mngr->addComponent<Transform>(good, client, PLAYER_WIDTH, PLAYER_HEIGHT);
+			mngr->addComponent<Transform>(bad, host, PLAYER_WIDTH, PLAYER_HEIGHT, Vector2D(), 90);
+			mngr->addComponent<Transform>(good, client, PLAYER_WIDTH, PLAYER_HEIGHT, Vector2D(), -90);
 		}
 
 

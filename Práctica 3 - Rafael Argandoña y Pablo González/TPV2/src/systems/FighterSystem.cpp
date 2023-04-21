@@ -138,5 +138,5 @@ void FighterSystem::onRoundOver() {
 void FighterSystem::onRoundStart() {
 	// Añadimos el componente FighterCtrl a la nave
 	Entity* player = mngr->getHandler(_hdlr_FIGHTER);
-	mngr->addComponent<FighterCtrl>(player);
+	mngr->addComponent<FighterCtrl>(player, mngr->getComponent<Transform>(player)->getRotation());
 }
