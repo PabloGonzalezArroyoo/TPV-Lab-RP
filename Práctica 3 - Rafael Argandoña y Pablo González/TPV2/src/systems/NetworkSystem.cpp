@@ -19,23 +19,23 @@ bool NetworkSystem::connect() {
 	string choice;
 	bool done = false, correct = false;
 
-	cout << "Cual es tu nombre?: ";
+	cout << "Cual es tu nombre?\n>";
 	cin >> name;
 
 	do {
-		cout << "Escoge tu rol\n  - CLIENTE\n  - HOST\n  - SALIR\n>";
+		cout << "\nEscoge tu rol\n  - CLIENTE\n  - HOST\n  - SALIR\n>";
 		cin >> choice;
 
-		if (choice == "HOST" || choice == "host") {
+		if (choice == "HOST" || choice == "host" || choice == "h" || choice == "H") {
 			hostName = name;
 			done = initHost();
 			correct = true;
 		}// Todo host
-		else if (choice == "CLIENTE" || choice == "cliente") {
+		else if (choice == "CLIENTE" || choice == "cliente" || choice == "c" || choice == "C") {
 			done = initClient();
 			correct = true;
 		}// Todo cliente
-		else if (choice == "SALIR " || choice == "salir") {
+		else if (choice == "SALIR " || choice == "salir" || choice == "s" || choice == "S") {
 			correct = true;
 		}// Salir
 	} while (!correct);
@@ -84,12 +84,12 @@ bool NetworkSystem::initClient() {
 	int result = 0;
 	//buffer[256];
 
-	cout << "Introduce el host: " << endl;
+	cout << "\nIntroduce el host:\n>" << endl;
 	if (!(cin >> hostName)) {
 		cerr << "Invalid host" << std::endl;
 		return false;
 	}
-	cout << "Introduce el puerto: " << endl; 
+	cout << "\nIntroduce el puerto:\n>" << endl; 
 	if (!(cin >> port)) {
 		cerr << "Invalid port" << std::endl;
 		return false;
@@ -110,7 +110,7 @@ bool NetworkSystem::initClient() {
 		return false;
 	}
 	else {
-		cout << "Me conecte al host " << ip.host << " en el puerto " << port << endl;
+		cout << "!Me conecte al host " << ip.host << " en el puerto " << port << endl;
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
@@ -120,6 +120,10 @@ bool NetworkSystem::initClient() {
 		return false;
 	}
 	else if (result == 0) cout << "EL SERVIDOR CERRO LA CONEXION" << endl;
+	else {
+		hostName = buffer;
+		cout << "EL SERVIDOR ACEPTO LA CONEXION. HOSTNAME: " << hostName << endl;
+	}
 	/*else {
 		cout << buffer[0] << buffer[1] << buffer[2] << buffer[3] << endl;
 		if (buffer[0] == 0) {
@@ -132,9 +136,8 @@ bool NetworkSystem::initClient() {
 		}
 	}*/
 
-	hostName = buffer;
-	cout << name << endl;
-	SDLNet_TCP_Send(sock, name.c_str(), name.length());
+	cout << name.c_str() << endl;
+	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 }
 
 bool NetworkSystem::initConnection(const Uint16& port_) {
