@@ -67,9 +67,9 @@ bool NetworkSystem::initHost() {
 
 	auto n = name.c_str();
 	cout << n << endl;
-	SDLNet_TCP_Send(sock, n, name.length());
+	SDLNet_TCP_Send(sock, n, name.length() + 1);
 
-	SDLNet_TCP_Recv(sock, buffer, 4);
+	SDLNet_TCP_Recv(sock, buffer, 255);
 	name = (string)buffer;
 
 	cout << name << endl;
