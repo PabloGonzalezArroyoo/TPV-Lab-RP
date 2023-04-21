@@ -27,6 +27,7 @@ bool NetworkSystem::connect() {
 		cin >> choice;
 
 		if (choice == "HOST" || choice == "host") {
+			hostName = name;
 			done = initHost();
 			correct = true;
 		}// Todo host
@@ -68,7 +69,11 @@ bool NetworkSystem::initHost() {
 	cout << n << endl;
 	SDLNet_TCP_Send(sock, n, name.length());
 
-	hostName = name;
+	SDLNet_TCP_Recv(sock, buffer, 4);
+	name = (string)buffer;
+
+	cout << name << endl;
+
 	host = true;
 	connected = false;
 	cout << "TODO BIEN, TODO CORRECTO" << endl;

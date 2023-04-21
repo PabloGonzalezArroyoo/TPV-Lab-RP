@@ -15,7 +15,7 @@ const int UPPER_LEFT_CORNER_Y = 10;
 // Fuentes
 const string ARIAL = "ARIAL";
 const string CAPTURE = "CAPTURE";
-const string CHIMERA = "CHIMERA";
+const string CHIMERA = "CHIMERA20";
 // Texturas
 const string ASTEROID_A = "asteroidA";
 const string ASTEROID_B = "asteroidB";
