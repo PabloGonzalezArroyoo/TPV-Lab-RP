@@ -87,6 +87,7 @@ bool NetworkSystem::initClient() {
 	}
 	auto h = hostName.c_str();
 	auto a = SDLNet_ResolveHost(&ip, h, port);
+	ip.port = 1;
 	cout << a << endl;
 	if (a < 0) {
 		cerr << "ERROR DE CONEXION AL HOST" << endl;
