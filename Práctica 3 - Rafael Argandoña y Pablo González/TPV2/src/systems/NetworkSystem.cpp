@@ -119,10 +119,8 @@ bool NetworkSystem::initClient() {
 		SDLNetUtils::print_SDLNet_error();
 		return false;
 	}
-
 	else if (result == 0) cout << "EL SERVIDOR CERRO LA CONEXION" << endl;
-
-	else {
+	/*else {
 		cout << buffer[0] << buffer[1] << buffer[2] << buffer[3] << endl;
 		if (buffer[0] == 0) {
 			cout << "CONECTAO" << endl;
@@ -132,11 +130,14 @@ bool NetworkSystem::initClient() {
 			cout << "CONEXION NO ACEPTADA" << endl;
 			connected = false;
 		}
-	}
+	}*/
+
+	hostName = buffer;
+	cout << name << endl;
+	SDLNet_TCP_Send(sock, name.c_str(), name.length());
 }
 
 bool NetworkSystem::initConnection(const Uint16& port_) {
-
 	if (host) {
 		if (SDLNet_SocketReady(masterSocket)) {
 			sock = SDLNet_TCP_Accept(masterSocket);
