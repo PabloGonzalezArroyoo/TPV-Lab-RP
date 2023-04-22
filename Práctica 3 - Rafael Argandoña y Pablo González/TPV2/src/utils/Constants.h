@@ -22,6 +22,7 @@ const string ASTEROID_B = "asteroidB";
 const string FIGHTER = "fighter";
 const string FIGHTER2 = "fighter2";
 const string FIRETXT = "fire";
+const string FIRETXT2 = "fire2";
 const string HEART = "heart";
 // Sonidos
 const string EXPLOSION = "explosion";

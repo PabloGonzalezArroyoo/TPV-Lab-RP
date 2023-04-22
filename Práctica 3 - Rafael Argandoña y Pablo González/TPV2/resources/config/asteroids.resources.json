@@ -12,6 +12,7 @@
     { "id": "fighter", "file": "resources/images/fighter.png" },
     { "id": "fighter2", "file": "resources/images/fighter2.png" },
     { "id": "fire", "file": "resources/images/fire.png" },
+    { "id": "fire2", "file": "resources/images/fire2.png" },
     { "id": "heart", "file": "resources/images/heart.png" }
   ],
 
