@@ -107,8 +107,6 @@ bool NetworkSystem::initHost() {
 	}
 	rc.name[i] = 0;
 
-	//SDLNetUtils::serializedSend(rc, sock);
-
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	SDLNet_TCP_Recv(sock, buffer, 255);

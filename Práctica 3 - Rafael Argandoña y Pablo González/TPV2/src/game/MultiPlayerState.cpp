@@ -8,6 +8,7 @@ MultiPlayerState::MultiPlayerState() {
 	// Añadimos sistemas
 	mng->addSystem<GameCtrlSystem>();
 	mng->addSystem<FighterSystem>();
+	mng->addSystem<GhostFighterSystem>();
 	mng->addSystem<BulletSystem>();
 	mng->addSystem<CollisionsSystem>();
 	mng->addSystem<RenderSystem>();

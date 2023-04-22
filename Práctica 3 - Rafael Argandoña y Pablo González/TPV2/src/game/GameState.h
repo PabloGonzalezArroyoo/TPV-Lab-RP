@@ -9,6 +9,7 @@
 #include "../systems/RenderSystem.h"
 #include "../systems/SoundSystem.h"
 #include "../systems/NetworkSystem.h"
+#include "../systems/GhostFighterSystem.h"
 
 #include "../utils/Collisions.h"
 #include <list>
