@@ -6,9 +6,6 @@ private:
 	void applyVelocity(Vector2D v);
 	void applyRotation(int r);
 
-	Transform* tr;
-	FighterCtrl* fc;
-
 public:
 	static constexpr sysId id = _sys_GHOST_FIGHTER;
 

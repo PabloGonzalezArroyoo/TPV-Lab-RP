@@ -18,9 +18,7 @@ void FighterSystem::initSystem() {
 	startTime = soundTime = sdlutils().currRealTime();
 	// Pillamos los componentes
 	tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
-	fc = mngr->getComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER));
-	// Inicia la ronda
-	onRoundStart();
+	fc = mngr->addComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER), tr->getRotation());
 }
 
 void FighterSystem::update() {
@@ -144,7 +142,4 @@ void FighterSystem::onRoundOver() {
 
 // Al empezar la ronda
 void FighterSystem::onRoundStart() {
-	// Añadimos el componente FighterCtrl a la nave
-	Entity* player = mngr->getHandler(_hdlr_FIGHTER);
-	mngr->addComponent<FighterCtrl>(player, mngr->getComponent<Transform>(player)->getRotation());
 }
