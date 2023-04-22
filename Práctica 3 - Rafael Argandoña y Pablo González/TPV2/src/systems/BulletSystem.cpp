@@ -21,8 +21,13 @@ void BulletSystem::receive(const Message& m) {
 
 // Mover las balas y comprobar si se salen
 void BulletSystem::update() {
+	moveBullets(_grp_BULLETS);
+	moveBullets(_grp_MULTIPLAYER_BULLETS);
+}
+
+void BulletSystem::moveBullets(grpId group) {
 	// Cogemos el grupo de balas
-	vector<Entity*> entities = mngr->getEntities(_grp_BULLETS);
+	vector<Entity*> entities = mngr->getEntities(group);
 	Transform* tr = nullptr;
 
 	// Recorremos el grupo de balas

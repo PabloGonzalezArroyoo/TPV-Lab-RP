@@ -23,7 +23,7 @@ void RenderSystem::update() {
 	renderGroup(_grp_GENERAL, FIGHTER);
 	renderGroup(_grp_BULLETS, FIRETXT);
 	renderGroup(_grp_MULTIPLAYER, FIGHTER);
-	renderGroup(_grp_MULTIPLAYER_BULLETS, FIRETXT);
+	renderGroup(_grp_MULTIPLAYER_BULLETS, FIRETXT2);
 	// Pintamos los asteroides
 	renderAsteroids();
 	// Si estamos en el estado de juego o de pausa pintamos las vidas del jugador
