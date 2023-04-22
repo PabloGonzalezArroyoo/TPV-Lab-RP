@@ -1,8 +1,18 @@
 #include "CollisionsSystem.h"
 #include "../ecs/Manager.h"
 
+void CollisionsSystem::receive(const Message& m) {
+	switch (m.id)
+	{
+		case _m_INIT_STATE:
+			st = m._state_data.st;
+		break;
+	}
+}
+
 void CollisionsSystem::update() {
-	checkCollisions();
+	if (st != MULTI_PLAYER) checkCollisions();
+	// else otras colisiones
 }
 
 // Comprueba las colisiones entre asteroide y player/bullet

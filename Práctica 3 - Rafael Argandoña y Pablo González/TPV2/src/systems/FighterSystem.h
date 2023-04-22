@@ -28,7 +28,7 @@ public:
 	// sólo una bala cada 0.25sec.
 	void update() override;
 
-private:
+protected:
 
 	// Para gestionar el mensaje de que ha acabado una ronda. Desactivar el sistema.
 	void onRoundOver();
@@ -36,7 +36,7 @@ private:
 	// Para gestionar el mensaje de que ha empezado una ronda. Activar el sistema.
 	void onRoundStart();
 
-	void setFighterVelocity(Transform* tr, FighterCtrl* fc);
+	void setFighterVelocity();
 
 	Vector2D deAccelerate(Vector2D vel);
 
@@ -44,4 +44,6 @@ private:
 
 	float cooldown, startTime;
 	float lastSoundTime, soundTime;
+	Transform* tr;
+	FighterCtrl* fc;
 };

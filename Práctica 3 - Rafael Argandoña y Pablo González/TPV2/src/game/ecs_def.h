@@ -64,7 +64,7 @@ class SoundEffect;
 class Music;
 
 using msgId_type = unsigned int;
-enum msgId : msgId_type {	
+enum msgId : msgId_type {
 	_m_PLAYER_DAMAGED,
 	_m_ROUND_OVER,
 	_m_ASTEROID_COLLIDED,
@@ -77,12 +77,24 @@ enum msgId : msgId_type {
 	_m_PLAY_SOUND,
 	_m_PLAY_MUSIC,
 	_m_STOP_MUSIC,
+	_m_I_ROTATED,
+	_m_I_MOVED,
+
+	_m_GHOST_MOVED,
+	_m_GHOST_ROTATED,
+	_m_GHOST_SHOT,
+	_m_GHOST_DMG,
+	_m_GHOST_HIT,
+	_m_PAUSE_REQUEST
 };
 
 //En el mismo manager
 struct Message {
 	msgId_type id;
 	// _m_PLAYER_DIED
+	struct {
+		grpId layer;
+	} bullet_data;
 	struct {
 		Entity* e;
 	} player_died_data;
@@ -103,6 +115,13 @@ struct Message {
 		Music* music;
 		int loop;
 	} _music_data;
+	struct {
+		int sign;
+	} my_data;
+	struct {
+		int sign;
+		bool shot;
+	} ghost_data;
 };
 
 // SYSTEMS
@@ -112,6 +131,7 @@ enum sysId : sysId_type {
 	_sys_ASTEROIDS,
 	_sys_BULLET,
 	_sys_FIGHTER,
+	_sys_GHOST_FIGHTER,
 	_sys_COLLISIONS,
 	_sys_RENDER,
 	_sys_SOUND,

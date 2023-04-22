@@ -15,12 +15,7 @@ void RenderSystem::receive(const Message& m) {
 // Inicializamos el sistema (solo empezamos el contador)
 void RenderSystem::initSystem() {
 	startTime = sdlutils().currRealTime();
-	nw = mngr->getSystem<NetworkSystem>();
-	if (nw) {
-		state = MULTI_PLAYER;
-		namesTxts[0] = new Texture(sdlutils().renderer(), nw->getMyName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
-		namesTxts[1] = new Texture(sdlutils().renderer(), nw->getOtherName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
-	}
+	nw = nullptr;
 }
 
 void RenderSystem::update() {
@@ -65,6 +60,13 @@ void RenderSystem::createTexts(){
 			initializeText(GAME_OVER_MESSAGE, 2);
 			initializeText(CONTINUE_MESSAGE, 4);
 		break;
+
+		//Multijugador
+		case MULTI_PLAYER:
+			nw = mngr->getSystem<NetworkSystem>();
+			namesTxts[0] = new Texture(sdlutils().renderer(), nw->getMyName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
+			namesTxts[1] = new Texture(sdlutils().renderer(), nw->getOtherName(), sdlutils().fonts().at(CHIMERA), SDL_Color());
+			break;
 	}
 }
 

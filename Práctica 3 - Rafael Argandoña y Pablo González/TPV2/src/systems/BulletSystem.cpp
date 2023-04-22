@@ -6,7 +6,10 @@ void BulletSystem::receive(const Message& m) {
 	switch (m.id) {
 		// Creación de una bala
 		case _m_CREATE_BULLET:
-			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)));
+			hdlrId myId;
+			if (m.bullet_data.layer == _grp_BULLETS) myId = _hdlr_FIGHTER;
+			else myId = _hdlr_GHOST_FIGHTER;
+			shoot(mngr->getComponent<Transform>(mngr->getHandler(myId)), m.bullet_data.layer);
 			break;
 
 		// Acabar la ronda
@@ -44,10 +47,15 @@ bool BulletSystem::disableOnExit(Transform* tr) {
 }
 
 // Instancia una bala
-void BulletSystem::shoot(Transform* tr) {
+void BulletSystem::shoot(Transform* tr, grpId group) {
 	//Creamos la bala
-	Entity* b = mngr->addEntity(_grp_BULLETS);
+	Entity* b = mngr->addEntity(group);
 	mngr->addComponent<Transform>(b, bulletPos(tr), BULLET_WIDTH, BULLET_HEIGTH, bulletVel(tr), tr->getRotation());
+
+	Message m1;
+	m1.id = _m_PLAY_SOUND;
+	m1._sound_data.sound = &sdlutils().soundEffects().at(FIRESFX);
+	mngr->send(m1);
 }
 
 // Calcula la posición de la bala

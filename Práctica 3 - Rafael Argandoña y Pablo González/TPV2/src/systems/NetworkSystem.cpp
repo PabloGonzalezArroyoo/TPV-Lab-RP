@@ -1,4 +1,5 @@
 #include "NetworkSystem.h"
+#include "../ecs/Manager.h"
 
 NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip() { }
 
@@ -8,11 +9,41 @@ NetworkSystem::~NetworkSystem() {
 }
 
 void NetworkSystem::receive(const Message& m) {
+	// RECIBE TODOS LOS MENSAJES QUE IMPORTEN AL OTRO PORTATIL (MOV, ROT, DISPARO)
+	string inf;
 
+	switch (m.id)
+	{
+		case _m_CREATE_BULLET:
+			inf = "b";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+		break;
+
+		case _m_I_MOVED:
+			inf = "m";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			break;
+
+		case _m_I_ROTATED:
+			if (m.my_data.sign == 0) inf = "r 0";
+			else inf = "r 1";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+		break;
+	}
 }
 
 void NetworkSystem::initSystem() {
 	connect();
+}
+
+void NetworkSystem::update() {
+	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
+		if (sock != nullptr && SDLNet_SocketReady(sock)) {
+			if (SDLNet_TCP_Recv(sock, buffer, 255) > 0) {
+				decode(revertInfo(), ' ');
+			}
+		}
+	}
 }
 
 bool NetworkSystem::connect() {
@@ -86,7 +117,7 @@ bool NetworkSystem::initHost() {
 	cout << name << endl;
 
 	host = true;
-	connected = false;
+	connected = true;
 	cout << "TODO BIEN, TODO CORRECTO" << endl;
 	return true;
 }
@@ -114,7 +145,7 @@ bool NetworkSystem::initClient() {
 		return false;
 	}
 	else {
-		cout << "!Me conecte al host " << ip.host << " en el puerto " << port << endl;
+		cout << "> Me conecte al host " << ip.host << " en el puerto " << port << endl;
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
@@ -131,22 +162,17 @@ bool NetworkSystem::initClient() {
 
 	cout << "TU NOMBRE ES: " << name.c_str() << endl;
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
-}
 
-bool NetworkSystem::initConnection(const Uint16& port_) {
-	if (host) {
-		if (SDLNet_SocketReady(masterSocket)) {
-			sock = SDLNet_TCP_Accept(masterSocket);
-			SDLNet_TCP_AddSocket(sockSet, sock);
-		}
-	}
-	return true;
+	connected = true;
 }
 
 void NetworkSystem::disconnect() {
 	if (connected) {
-		SDLNet_FreeSocketSet(sockSet);
-		SDLNet_TCP_Close(masterSocket);
+		if (host) {
+			SDLNet_FreeSocketSet(sockSet);
+			SDLNet_TCP_Close(masterSocket);
+		}
+		SDLNet_TCP_Close(sock);
 	}
 }
 
@@ -158,7 +184,61 @@ void NetworkSystem::convertInfo(string& str) {
 	buffer[i] = 0;
 }
 
-void NetworkSystem::revertInfo(string& str) {
+string NetworkSystem::revertInfo() {
 	buffer[255] = 0;
-	str = (string)buffer;
+	return (string)buffer;
+}
+
+void NetworkSystem::decode(string str, char separator) {
+	if (str[0] == 'm') {
+		/*float x = 0, y = 0;
+		string fx = "", fy = "";
+		bool found = false;
+		int i = 1;
+
+		while (!found && i < str.size()) {
+			if (str[i] == separator) found = true;
+			else fx += str[i];
+			i++;
+		}
+		int j = i; found = false;
+		while (!found && j < str.size()) {
+			if (str[j] == separator) found = true;
+			else fy += str[j];
+			j++;
+		}
+
+		x = stof(fx);
+		y = stof(fy);*/
+		// ENVIAR MENSAJE DE GHOST_MOVE
+		Message mes;
+		mes.id = _m_GHOST_MOVED;
+		mngr->send(mes);
+	}
+
+	else if (str[0] == 'r') {
+		// MANDAR MENSAJE DE GHOST_ROT con signo (0 negativa, 1 positiva)
+		int rot = str[2] - '0';
+		Message mes;
+		mes.id = _m_GHOST_ROTATED;
+		if (rot == 0) mes.ghost_data.sign = -2;
+		else mes.ghost_data.sign = 2;
+		mngr->send(mes);
+	}
+
+	else if (str[0] == 'b') {
+		// MANDAR MENSAJE DE GHOST_SHOT
+		Message mes;
+		mes.id = _m_CREATE_BULLET;
+		mes.bullet_data.layer = _grp_MULTIPLAYER_BULLETS;
+		mngr->send(mes);
+	}
+}
+
+void NetworkSystem::sendMessages() {
+
+}
+
+void NetworkSystem::recInfo(string str) {
+
 }

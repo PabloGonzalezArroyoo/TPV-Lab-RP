@@ -20,8 +20,13 @@ private:
 
 	bool initHost();
 	bool initClient();
-	bool initConnection(const Uint16& port);
 
+	void convertInfo(string& str);
+	string revertInfo();
+	void decode(string, char separator);
+
+	void sendMessages();
+	void recInfo(string str);
 
 public:
 	static constexpr sysId id = _sys_NETWORK_;
@@ -31,12 +36,10 @@ public:
 
 	void receive(const Message& m) override;
 	void initSystem() override;
+	void update() override;
 
 	bool connect();
 	void disconnect();
-
-	void convertInfo(string& str);
-	void revertInfo(string& str);
 
 	inline bool isConnected() { return connected; }
 	inline bool isHost() { return host; }

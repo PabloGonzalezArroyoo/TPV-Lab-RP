@@ -12,4 +12,10 @@ MultiPlayerState::MultiPlayerState() {
 	mng->addSystem<CollisionsSystem>();
 	mng->addSystem<RenderSystem>();
 	mng->addSystem<SoundSystem>();
+
+	// Mensaje de inicio de estado
+	Message m;
+	m.id = _m_INIT_STATE;
+	m._state_data.st = MULTI_PLAYER;
+	mng->send(m);
 }

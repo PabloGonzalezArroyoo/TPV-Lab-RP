@@ -16,6 +16,9 @@ void FighterSystem::initSystem() {
 	// Inicializa las variables para el cooldown de disparo y el de sonido de movimiento
 	cooldown = 0; lastSoundTime = 0;
 	startTime = soundTime = sdlutils().currRealTime();
+	// Pillamos los componentes
+	tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
+	fc = mngr->getComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER));
 	// Inicia la ronda
 	onRoundStart();
 }
@@ -25,38 +28,41 @@ void FighterSystem::update() {
 	cooldown = sdlutils().currRealTime() - startTime;
 	lastSoundTime = sdlutils().currRealTime() - soundTime;
 
-	// Pillamos los componentes
-	Transform* tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
-	auto fc = mngr->getComponent<FighterCtrl>(mngr->getHandler(_hdlr_FIGHTER));
-
 	// Si ha pulsado la flecha izquierda rotamos la nave hacia la izquierda
 	if (InputHandler::instance()->isKeyDown(SDLK_LEFT)) {
 		int r = (fc->getRot() - 2) % 360;
 		fc->setRot(r); tr->setRotation(r);
+		// MANDAR NUEVA ROTACION AL ONLINE SYSTEM, Q LA PASA AL OTRO PORTATIL
+		Message mes;
+		mes.id = _m_I_ROTATED;
+		mes.my_data.sign = 0;
+		mngr->send(mes);
 	}
 	// Si ha pulsado la flecha derecha rotamos la nave hacia la derecha
 	else if (InputHandler::instance()->isKeyDown(SDLK_RIGHT)) {
 		int r = (fc->getRot() + 2) % 360;
 		fc->setRot(r); tr->setRotation(r);
+		// MANDAR NUEVA ROTACION AL ONLINE SYSTEM, Q LA PASA AL OTRO PORTATIL
+		Message mes;
+		mes.id = _m_I_ROTATED;
+		mes.my_data.sign = 1;
+		mngr->send(mes);
 	}
 
 	// Si se ha pulsado hacia arriba
-	if (InputHandler::instance()->isKeyDown(SDLK_UP)) setFighterVelocity(tr, fc);
+	if (InputHandler::instance()->isKeyDown(SDLK_UP)) setFighterVelocity();
 
 	// Aumentamos el cooldown de disparo
 	cooldown = sdlutils().currRealTime() - startTime;
 
-	// Si se ha pulsado el espacio
+	// Si se ha pulsado la tecla s
 	if (InputHandler::instance()->isKeyDown(SDLK_s) && cooldown >= 250) {
 		startTime = sdlutils().currRealTime();
 
-		Message m1;
-		m1.id = _m_PLAY_SOUND;
-		m1._sound_data.sound = &sdlutils().soundEffects().at(FIRESFX);
-		mngr->send(m1);
-
+		// QUE ESTE MENSAJE LO RECIBA EL ONLINE TAMBIEN
 		Message m2;
 		m2.id = _m_CREATE_BULLET;
+		m2.bullet_data.layer = _grp_BULLETS;
 		mngr->send(m2);
 	}
 
@@ -71,7 +77,7 @@ void FighterSystem::update() {
 }
 
 // Movimiento de la nave
-void FighterSystem::setFighterVelocity(Transform* tr, FighterCtrl* fc) {
+void FighterSystem::setFighterVelocity() {
 	// Reproducir sonido
 	if (lastSoundTime >= 500) {
 		Message m;
@@ -90,6 +96,8 @@ void FighterSystem::setFighterVelocity(Transform* tr, FighterCtrl* fc) {
 
 	// Setear la velocidad
 	tr->setVelocity(vel);
+
+	// SE MANDA UN MENSAJE AL ONLINE SYSTEM PARA Q ESE MANDE LA INFORMACION DEL NUEVO VECTOR VEL AL OTRO PORTATIL
 }
 
 // Deacelerar la nave

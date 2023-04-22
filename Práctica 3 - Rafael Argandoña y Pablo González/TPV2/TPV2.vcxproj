@@ -60,6 +60,7 @@
     <ClInclude Include="src\systems\CollisionsSystem.h" />
     <ClInclude Include="src\systems\FighterSystem.h" />
     <ClInclude Include="src\systems\GameCtrlSystem.h" />
+    <ClInclude Include="src\systems\GhostFighterSystem.h" />
     <ClInclude Include="src\systems\NetworkSystem.h" />
     <ClInclude Include="src\systems\RenderSystem.h" />
     <ClInclude Include="src\systems\SoundSystem.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="src\systems\CollisionsSystem.cpp" />
     <ClCompile Include="src\systems\FighterSystem.cpp" />
     <ClCompile Include="src\systems\GameCtrlSystem.cpp" />
+    <ClCompile Include="src\systems\GhostFighterSystem.cpp" />
     <ClCompile Include="src\systems\NetworkSystem.cpp" />
     <ClCompile Include="src\systems\RenderSystem.cpp" />
     <ClCompile Include="src\systems\SoundSystem.cpp" />

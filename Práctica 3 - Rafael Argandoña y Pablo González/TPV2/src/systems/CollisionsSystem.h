@@ -17,6 +17,8 @@ public:
 	// Comprobar colisiones como en la práctica 1 y enviar mensajes correspondientes.
 	void update() override;
 
+	void receive(const Message& m) override;
+
 private:
 	void checkCollisions();
 
@@ -24,4 +26,5 @@ private:
 
 	bool collisionAsteroidsBullets(Transform* astTr);
 	
+	STATE st;
 };
