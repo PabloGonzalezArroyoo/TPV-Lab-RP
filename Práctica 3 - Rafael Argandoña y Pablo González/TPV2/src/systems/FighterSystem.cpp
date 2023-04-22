@@ -48,7 +48,12 @@ void FighterSystem::update() {
 	}
 
 	// Si se ha pulsado hacia arriba
-	if (InputHandler::instance()->isKeyDown(SDLK_UP)) setFighterVelocity();
+	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
+		setFighterVelocity();
+		Message mes;
+		mes.id = _m_I_MOVED;
+		mngr->send(mes);
+	}
 
 	// Aumentamos el cooldown de disparo
 	cooldown = sdlutils().currRealTime() - startTime;

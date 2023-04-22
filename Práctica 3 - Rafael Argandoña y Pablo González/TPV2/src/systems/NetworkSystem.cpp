@@ -86,7 +86,7 @@ bool NetworkSystem::initHost() {
 		return false;
 	}
 
-	sockSet = SDLNet_AllocSocketSet(1);
+	sockSet = SDLNet_AllocSocketSet(2);
 	SDLNet_TCP_AddSocket(sockSet, masterSocket);
 
 	if (SDLNet_CheckSockets(sockSet, SDL_MAX_UINT32) > 0) {
@@ -95,7 +95,7 @@ bool NetworkSystem::initHost() {
 			cout << "SE CONECTO ALGUIEN" << endl;
 		}
 	}
-
+	SDLNet_TCP_AddSocket(sockSet, sock);
 	auto n = name.c_str();
 	cout << n << endl;
 
@@ -144,6 +144,8 @@ bool NetworkSystem::initClient() {
 	}
 	else {
 		cout << "> Me conecte al host " << ip.host << " en el puerto " << port << endl;
+		sockSet = SDLNet_AllocSocketSet(1);
+		SDLNet_TCP_AddSocket(sockSet, sock);
 	}
 
 	// ESPERAMOS POR CONFIRMACION DE CONEXION
@@ -157,6 +159,7 @@ bool NetworkSystem::initClient() {
 		hostName = buffer;
 		cout << "EL SERVIDOR ACEPTO LA CONEXION. HOSTNAME: " << hostName << endl;
 	}
+
 
 	cout << "TU NOMBRE ES: " << name.c_str() << endl;
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
@@ -189,25 +192,6 @@ string NetworkSystem::revertInfo() {
 
 void NetworkSystem::decode(string str, char separator) {
 	if (str[0] == 'm') {
-		/*float x = 0, y = 0;
-		string fx = "", fy = "";
-		bool found = false;
-		int i = 1;
-
-		while (!found && i < str.size()) {
-			if (str[i] == separator) found = true;
-			else fx += str[i];
-			i++;
-		}
-		int j = i; found = false;
-		while (!found && j < str.size()) {
-			if (str[j] == separator) found = true;
-			else fy += str[j];
-			j++;
-		}
-
-		x = stof(fx);
-		y = stof(fy);*/
 		// ENVIAR MENSAJE DE GHOST_MOVE
 		Message mes;
 		mes.id = _m_GHOST_MOVED;
@@ -231,6 +215,8 @@ void NetworkSystem::decode(string str, char separator) {
 		mes.bullet_data.layer = _grp_MULTIPLAYER_BULLETS;
 		mngr->send(mes);
 	}
+
+	cout << str << endl;
 }
 
 void NetworkSystem::sendMessages() {
