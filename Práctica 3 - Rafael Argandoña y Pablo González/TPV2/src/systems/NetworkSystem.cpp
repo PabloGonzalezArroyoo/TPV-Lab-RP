@@ -211,8 +211,7 @@ void NetworkSystem::decode(string str, char separator) {
 	else if (str[0] == 'b') {
 		// MANDAR MENSAJE DE GHOST_SHOT
 		Message mes;
-		mes.id = _m_CREATE_BULLET;
-		mes.bullet_data.layer = _grp_MULTIPLAYER_BULLETS;
+		mes.id = _m_GHOST_SHOT;
 		mngr->send(mes);
 	}
 

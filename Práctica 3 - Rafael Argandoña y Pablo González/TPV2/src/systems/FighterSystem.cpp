@@ -65,7 +65,6 @@ void FighterSystem::update() {
 		// QUE ESTE MENSAJE LO RECIBA EL ONLINE TAMBIEN
 		Message m2;
 		m2.id = _m_CREATE_BULLET;
-		m2.bullet_data.layer = _grp_BULLETS;
 		mngr->send(m2);
 	}
 

@@ -6,12 +6,12 @@ void BulletSystem::receive(const Message& m) {
 	switch (m.id) {
 		// Creación de una bala
 		case _m_CREATE_BULLET:
-			hdlrId myId;
-			if (m.bullet_data.layer == _grp_BULLETS) myId = _hdlr_FIGHTER;
-			else myId = _hdlr_GHOST_FIGHTER;
-			shoot(mngr->getComponent<Transform>(mngr->getHandler(myId)), m.bullet_data.layer);
+			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)), _grp_BULLETS);
 			break;
 
+		case _m_GHOST_SHOT:
+			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER)), _grp_MULTIPLAYER_BULLETS);
+			break;
 		// Acabar la ronda
 		case _m_ROUND_OVER:
 			onRoundOver();

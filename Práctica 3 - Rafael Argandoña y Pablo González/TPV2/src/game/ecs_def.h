@@ -92,9 +92,9 @@ enum msgId : msgId_type {
 struct Message {
 	msgId_type id;
 	// _m_PLAYER_DIED
-	struct {
+	/*struct {
 		grpId layer;
-	} bullet_data;
+	} bullet_data;*/
 	struct {
 		Entity* e;
 	} player_died_data;

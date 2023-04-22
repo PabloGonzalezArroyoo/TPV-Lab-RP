@@ -23,6 +23,7 @@ void GhostFighterSystem::receive(const Message& m) {
 	switch (m.id) {
 	case _m_GHOST_MOVED:
 		setFighterVelocity();
+		cout << tr->getVelocity().getX() << " " << tr->getVelocity().getY() << endl;
 		break;
 	case _m_GHOST_ROTATED:
 		applyRotation(m.ghost_data.sign);
