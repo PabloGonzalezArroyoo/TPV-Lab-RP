@@ -20,6 +20,7 @@ private:
 
 	bool initHost();
 	bool initClient();
+	void showHostMessage();
 
 	void convertInfo(string& str);
 	string revertInfo();

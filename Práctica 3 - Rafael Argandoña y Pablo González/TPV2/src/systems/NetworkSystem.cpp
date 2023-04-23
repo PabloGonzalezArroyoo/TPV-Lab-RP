@@ -81,6 +81,9 @@ bool NetworkSystem::initHost() {
 	}
 	cout << "El puerto disponible es: "  << ip.port << endl;
 	masterSocket = SDLNet_TCP_Open(&ip);
+
+	showHostMessage();
+
 	if (!masterSocket) {
 		cerr << "NO HAY MASTER SOCKET" << endl;
 		return false;
@@ -92,31 +95,23 @@ bool NetworkSystem::initHost() {
 	if (SDLNet_CheckSockets(sockSet, SDL_MAX_UINT32) > 0) {
 		if (SDLNet_SocketReady(masterSocket)) {
 			sock = SDLNet_TCP_Accept(masterSocket);
-			cout << "SE CONECTO ALGUIEN" << endl;
+			//cout << "SE CONECTO ALGUIEN" << endl;
 		}
 	}
 	SDLNet_TCP_AddSocket(sockSet, sock);
 	auto n = name.c_str();
 	cout << n << endl;
 
-	RequestConection rc;
-	rc.id = _nw_REQUEST_CONNECTION;
-	int i = 0;
-	for (; i < name.size() && i < 10; i++) {
-		rc.name[i] = name[i];
-	}
-	rc.name[i] = 0;
-
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	SDLNet_TCP_Recv(sock, buffer, 255);
 	name = (string)buffer;
 
-	cout << name << endl;
+	cout << "Se conecto un usuario:" << name << endl;
 
 	host = true;
 	connected = true;
-	cout << "TODO BIEN, TODO CORRECTO" << endl;
+	//cout << "TODO BIEN, TODO CORRECTO" << endl;
 	return true;
 }
 
@@ -165,6 +160,18 @@ bool NetworkSystem::initClient() {
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	connected = true;
+}
+
+void NetworkSystem::showHostMessage() {
+
+	SDL_RenderClear(sdlutils().renderer());
+	Texture* txt = &sdlutils().msgs().at("WAITING_MSG");
+	SDL_Rect r;
+	r.x = WIN_WIDTH / 2 - txt->width() / 2;
+	r.y = WIN_HEIGHT / 2 - txt->height() / 2;
+	r.w = txt->width(); r.h = txt->height();
+	txt->render(r);
+	SDL_RenderPresent(sdlutils().renderer());
 }
 
 void NetworkSystem::disconnect() {

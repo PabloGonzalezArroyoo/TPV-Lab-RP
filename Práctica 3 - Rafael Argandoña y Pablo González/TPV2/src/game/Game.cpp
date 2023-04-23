@@ -71,7 +71,7 @@ void Game::run() {
 			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 		}
 
-		std::cout << deltaTime << " " << SDL_GetTicks() << " " << timeOffset << std::endl;
+		//std::cout << deltaTime << " " << SDL_GetTicks() << " " << timeOffset << std::endl;
 
 		if (ih().closeWindowEvent()) {
 			exit = true;
