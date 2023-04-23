@@ -1,7 +1,8 @@
 #include "NetworkSystem.h"
 #include "../ecs/Manager.h"
 
-NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip() { }
+NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip(), 
+	timeOffset(2.0), deltaTime(0.0) { }
 
 NetworkSystem::~NetworkSystem() {
 	SDLNet_TCP_Close(sock);
@@ -24,6 +25,8 @@ void NetworkSystem::receive(const Message& m) {
 			tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
 			gtr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER));
 		break;
+
+		
 	}
 }
 
@@ -32,6 +35,7 @@ void NetworkSystem::initSystem() {
 }
 
 void NetworkSystem::update() {
+
 	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
 		if (sock != nullptr && SDLNet_SocketReady(sock)) {
 			if (SDLNet_TCP_Recv(sock, buffer, 255) > 0) {
@@ -40,9 +44,17 @@ void NetworkSystem::update() {
 		}
 	}
 
-	// MANDO MI POSICION;
-	sendTransform();
+	LAST = NOW;
+	NOW = SDL_GetPerformanceCounter();
 
+	deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
+	timeOffset -= deltaTime;
+
+	// MANDO MI POSICION;
+	if (timeOffset <= 0) {
+		sendTransform();
+		timeOffset += 5;
+	}
 }
 
 void NetworkSystem::sendTransform() {

@@ -46,5 +46,6 @@ public:
 	GameStateMachine* getStateMachine() { return gsm; };
 
 	// Cambio de flujo para acabar el juego
-	void changeControl() { exit = true; };
+	inline void changeControl() { exit = true; };
+	inline double getDeltaTime() { return deltaTime; }
 };

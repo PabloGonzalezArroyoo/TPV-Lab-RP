@@ -48,7 +48,7 @@ void FighterSystem::update() {
 	cooldown = sdlutils().currRealTime() - startTime;
 
 	// Si se ha pulsado la tecla s
-	if (InputHandler::instance()->isKeyDown(SDLK_s) && cooldown >= 250) {
+	if (InputHandler::instance()->isKeyDown(SDLK_s) && cooldown >= 500) {
 		startTime = sdlutils().currRealTime();
 
 		// QUE ESTE MENSAJE LO RECIBA EL ONLINE TAMBIEN
