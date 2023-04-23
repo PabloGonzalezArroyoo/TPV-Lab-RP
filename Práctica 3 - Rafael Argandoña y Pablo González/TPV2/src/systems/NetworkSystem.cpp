@@ -19,16 +19,6 @@ void NetworkSystem::receive(const Message& m) {
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 		break;
 
-		case _m_I_MOVED:
-			inf = "m";
-			//SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
-			break;
-
-		case _m_I_ROTATED:
-			if (m.my_data.sign == 0) inf = "r 0";
-			else inf = "r 1";
-			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
-
 		case _m_INIT_STATE:
 			tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
 			gtr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER));
@@ -41,9 +31,6 @@ void NetworkSystem::initSystem() {
 }
 
 void NetworkSystem::update() {
-	// MANDO MI POSICION;
-	sendTransform();
-
 	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
 		if (sock != nullptr && SDLNet_SocketReady(sock)) {
 			if (SDLNet_TCP_Recv(sock, buffer, 255) > 0) {
@@ -51,15 +38,19 @@ void NetworkSystem::update() {
 			}
 		}
 	}
+
+	// MANDO MI POSICION;
+	sendTransform();
+
 }
 
 void NetworkSystem::sendTransform() {
 	string info = "m ";
-	info += tr->getPosition().getX();
+	info += to_string(tr->getPosition().getX());
 	info += " ";
-	info += tr->getPosition().getY();
+	info += to_string(tr->getPosition().getY());
 	info += " ";
-	info += tr->getRotation();
+	info += to_string(tr->getRotation());
 
 	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
 }
@@ -242,10 +233,6 @@ string NetworkSystem::revertInfo() {
 
 void NetworkSystem::decode(string str, char separator) {
 	if (str[0] == 'm') {
-		// ENVIAR MENSAJE DE GHOST_MOVE
-		/*Message mes;
-		mes.id = _m_GHOST_MOVED;
-		mngr->send(mes);*/
 		decodeTransform(str);
 	}
 
@@ -265,8 +252,6 @@ void NetworkSystem::decode(string str, char separator) {
 		mes.id = _m_GHOST_SHOT;
 		mngr->send(mes);
 	}
-
-	cout << str << endl;
 }
 
 void NetworkSystem::sendMessages() {

@@ -30,11 +30,6 @@ void FighterSystem::update() {
 	if (InputHandler::instance()->isKeyDown(SDLK_LEFT)) {
 		int r = (fc->getRot() - 2) % 360;
 		fc->setRot(r); tr->setRotation(r);
-		// MANDAR NUEVA ROTACION AL ONLINE SYSTEM, Q LA PASA AL OTRO PORTATIL
-		Message mes;
-		mes.id = _m_I_ROTATED;
-		mes.my_data.sign = 0;
-		mngr->send(mes);
 	}
 	// Si ha pulsado la flecha derecha rotamos la nave hacia la derecha
 	else if (InputHandler::instance()->isKeyDown(SDLK_RIGHT)) {
@@ -42,17 +37,11 @@ void FighterSystem::update() {
 		fc->setRot(r); tr->setRotation(r);
 		// MANDAR NUEVA ROTACION AL ONLINE SYSTEM, Q LA PASA AL OTRO PORTATIL
 		Message mes;
-		mes.id = _m_I_ROTATED;
-		mes.my_data.sign = 1;
-		mngr->send(mes);
 	}
 
 	// Si se ha pulsado hacia arriba
 	if (InputHandler::instance()->isKeyDown(SDLK_UP)) {
 		setFighterVelocity();
-		Message mes;
-		mes.id = _m_I_MOVED;
-		mngr->send(mes);
 	}
 
 	// Aumentamos el cooldown de disparo

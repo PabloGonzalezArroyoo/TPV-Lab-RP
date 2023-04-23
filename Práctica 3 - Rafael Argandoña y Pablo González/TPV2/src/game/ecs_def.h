@@ -77,8 +77,6 @@ enum msgId : msgId_type {
 	_m_PLAY_SOUND,
 	_m_PLAY_MUSIC,
 	_m_STOP_MUSIC,
-	_m_I_ROTATED,
-	_m_I_MOVED,
 
 	_m_GHOST_MOVED,
 	_m_GHOST_ROTATED,

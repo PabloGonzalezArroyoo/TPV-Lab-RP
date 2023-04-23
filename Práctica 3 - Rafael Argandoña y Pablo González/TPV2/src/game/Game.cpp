@@ -60,7 +60,6 @@ void Game::run() {
 		
 		LAST = NOW;
 		NOW = SDL_GetPerformanceCounter();
-		int i = 0;
 
 		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
 		timeOffset -= deltaTime;
@@ -70,8 +69,6 @@ void Game::run() {
 			refresh();
 			//startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 			timeOffset += 5;
-			cout << i << endl;
-			i++;
 		}
 
 		//std::cout << deltaTime << " " << SDL_GetTicks() << " " << timeOffset << std::endl;
