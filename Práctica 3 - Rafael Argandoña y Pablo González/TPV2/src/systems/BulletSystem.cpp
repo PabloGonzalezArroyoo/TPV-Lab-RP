@@ -3,10 +3,13 @@
 
 // Recivir mensajes
 void BulletSystem::receive(const Message& m) {
+	Message mes;
 	switch (m.id) {
 		// Creación de una bala
 		case _m_CREATE_BULLET:
 			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER)), _grp_BULLETS);
+			mes.id = _m_CREATED_BULLET;
+			mngr->send(mes);
 			break;
 
 		case _m_GHOST_SHOT:

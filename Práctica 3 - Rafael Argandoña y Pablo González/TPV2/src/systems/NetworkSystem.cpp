@@ -14,7 +14,7 @@ void NetworkSystem::receive(const Message& m) {
 
 	switch (m.id)
 	{
-		case _m_CREATE_BULLET:
+		case _m_CREATED_BULLET:
 			inf = "b";
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 		break;

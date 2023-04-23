@@ -69,6 +69,7 @@ enum msgId : msgId_type {
 	_m_ROUND_OVER,
 	_m_ASTEROID_COLLIDED,
 	_m_CREATE_BULLET,
+	_m_CREATED_BULLET,
 	_m_PLAYER_WINS,
 	_m_INIT_STATE,
 	_m_SPACEBAR_PRESSED,
