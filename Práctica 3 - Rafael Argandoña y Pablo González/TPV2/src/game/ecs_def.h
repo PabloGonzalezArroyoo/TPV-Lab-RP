@@ -79,12 +79,8 @@ enum msgId : msgId_type {
 	_m_PLAY_MUSIC,
 	_m_STOP_MUSIC,
 
-	_m_GHOST_MOVED,
-	_m_GHOST_ROTATED,
 	_m_GHOST_SHOT,
-	_m_GHOST_DMG,
-	_m_GHOST_HIT,
-	_m_PAUSE_REQUEST
+	_m_DISCONNETION
 };
 
 //En el mismo manager

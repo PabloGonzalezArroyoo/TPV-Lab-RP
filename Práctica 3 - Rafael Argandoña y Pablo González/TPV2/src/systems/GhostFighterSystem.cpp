@@ -19,18 +19,6 @@ void GhostFighterSystem::initSystem() {
 	mngr->setHandler(_hdlr_GHOST_FIGHTER, f);
 }
 
-void GhostFighterSystem::receive(const Message& m) {
-	switch (m.id) {
-	case _m_GHOST_MOVED:
-		setFighterVelocity();
-		//cout << tr->getVelocity().getX() << " " << tr->getVelocity().getY() << endl;
-		break;
-	case _m_GHOST_ROTATED:
-		applyRotation(m.ghost_data.sign);
-		break;
-	}
-}
-
 void GhostFighterSystem::update() {	
 	tr->setVelocity(deAccelerate(tr->getVelocity()));
 

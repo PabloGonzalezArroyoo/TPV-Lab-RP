@@ -43,11 +43,28 @@ void NetworkSystem::initSystem() {
 }
 
 void NetworkSystem::update() {
-
 	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
-		if (sock != nullptr && SDLNet_SocketReady(sock)) {
-			if (SDLNet_TCP_Recv(sock, buffer, 255) > 0) {
-				decode(revertInfo(), ' ');
+		try {
+			if (sock != nullptr && SDLNet_SocketReady(sock)) {
+				int result = SDLNet_TCP_Recv(sock, buffer, 255);
+				if (result > 0) {
+					decode(revertInfo(), ' ');
+				}
+				else if (result < 0) {
+					string err;
+					if (host) err = "CONEXIÓN PERDIDA CON EL CLIENTE";
+					else err = "CONEXIÓN PERDIDA CON EL HOST";
+					throw(err);
+				}
+			}
+		}
+		catch (string e) {
+			cout << e << endl;
+			if (host) disconnect();
+			else {
+				Message mes;
+				mes.id = _m_DISCONNETION;
+				mngr->send(mes, true);
 			}
 		}
 	}
@@ -69,6 +86,7 @@ void NetworkSystem::sendMessage() {
 		info += " ";
 		info += "s";
 	}
+	prevNBullets = newNBullets;
 
 	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
 }

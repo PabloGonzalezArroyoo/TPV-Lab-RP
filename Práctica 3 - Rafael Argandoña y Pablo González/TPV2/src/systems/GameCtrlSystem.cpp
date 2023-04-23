@@ -46,12 +46,17 @@ void GameCtrlSystem::receive(const Message& m) {
 			break;
 
 		case _m_M_PRESSED:
-			game->getStateMachine()->changeState(new MultiPlayerState(game)); break;
+			game->getStateMachine()->changeState(new MultiPlayerState(game));
+			break;
 
 		// Al ganar
 		case _m_PLAYER_WINS:
 			if (state != MULTI_PLAYER) onAsteroidsExtinction();
 			else onMultiplayerWin();
+			break;
+
+		case _m_DISCONNETION:
+			game->getStateMachine()->changeState(new MainMenuState(game));
 			break;
 	}
 }
