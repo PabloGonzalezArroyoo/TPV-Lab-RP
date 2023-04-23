@@ -13,11 +13,10 @@ class RenderSystem : public System {
 public:
 	constexpr static sysId_type id = _sys_RENDER;
 
-	//~RenderSystem();
-
+	~RenderSystem();
 	// Reaccionar a los mensajes recibidos (llamando a métodos correspondientes).
 	virtual void receive(const Message& m) override;
-
+	
 	// Inicializar el sistema, etc.
 	virtual void initSystem() override;
 
