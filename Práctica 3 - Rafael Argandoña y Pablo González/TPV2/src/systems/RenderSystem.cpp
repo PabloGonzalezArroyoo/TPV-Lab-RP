@@ -38,6 +38,12 @@ void RenderSystem::update() {
 	renderTexts();
 }
 
+// Metodo que actualiza el nombre del cliente
+void RenderSystem::changeClientText(string newName) {
+	delete namesTxts[1];
+	namesTxts[1] = new Texture(sdlutils().renderer(), newName, sdlutils().fonts().at(CHIMERA), SDL_Color());
+}
+
 // Crear textos según el estado en el que se encuentra el sistema
 void RenderSystem::createTexts(){
 	switch (state) {

@@ -23,6 +23,8 @@ public:
 	// Dibujar los objetos que toquen segun el estado
 	virtual void update() override;
 
+	void changeClientText(string newName);
+
 private:
 	// Creamos los textos necesarios segun el estado en el que nos encontremos
 	void createTexts();

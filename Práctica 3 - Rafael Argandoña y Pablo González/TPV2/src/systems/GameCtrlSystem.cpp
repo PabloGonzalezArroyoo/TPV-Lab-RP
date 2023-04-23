@@ -55,7 +55,7 @@ void GameCtrlSystem::receive(const Message& m) {
 			else onMultiplayerWin();
 			break;
 
-		case _m_DISCONNETION:
+		case _m_DISCONNECTION:
 			game->getStateMachine()->changeState(new MainMenuState(game));
 			break;
 	}

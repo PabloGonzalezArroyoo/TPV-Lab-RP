@@ -1,5 +1,6 @@
 #include "NetworkSystem.h"
 #include "../ecs/Manager.h"
+#include "../systems/RenderSystem.h"
 
 NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip(), prevNBullets(0) { }
 
@@ -43,8 +44,9 @@ void NetworkSystem::initSystem() {
 }
 
 void NetworkSystem::update() {
-	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
-		try {
+	try {
+		if (SDLNet_CheckSockets(sockSet, 0) > 0) {
+			
 			if (sock != nullptr && SDLNet_SocketReady(sock)) {
 				int result = SDLNet_TCP_Recv(sock, buffer, 255);
 				if (result > 0) {
@@ -58,16 +60,23 @@ void NetworkSystem::update() {
 				}
 			}
 		}
-		catch (string e) {
-			cout << e << endl;
-			if (host) disconnect();
-			else {
-				Message mes;
-				mes.id = _m_DISCONNECTION;
-				mngr->send(mes, true);
-			}
+	}
+
+	catch (string e) {
+		cout << e << endl;
+		if (host) {
+			disconnect();
+			name = hostName;
+			initHost();
+			mngr->getSystem<RenderSystem>()->changeClientText(name);
+		}
+		else {
+			Message mes;
+			mes.id = _m_DISCONNECTION;
+			mngr->send(mes, true);
 		}
 	}
+	
 
 	sendMessage();
 }
