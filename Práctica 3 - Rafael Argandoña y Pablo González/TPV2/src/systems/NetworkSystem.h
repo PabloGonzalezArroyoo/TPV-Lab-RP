@@ -13,9 +13,6 @@ private:
 	SDLNet_SocketSet sockSet;
 	Uint16 port;
 
-	double timeOffset, deltaTime;
-	Uint64 NOW = SDL_GetPerformanceCounter();
-	Uint64 LAST = 0;
 	bool connected;
 	char buffer[256];
 

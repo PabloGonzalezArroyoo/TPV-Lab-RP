@@ -1,8 +1,7 @@
 #include "NetworkSystem.h"
 #include "../ecs/Manager.h"
 
-NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip(), 
-	timeOffset(2.0), deltaTime(0.0) { }
+NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip() { }
 
 NetworkSystem::~NetworkSystem() {
 	SDLNet_TCP_Close(sock);
@@ -44,17 +43,7 @@ void NetworkSystem::update() {
 		}
 	}
 
-	LAST = NOW;
-	NOW = SDL_GetPerformanceCounter();
-
-	deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-	timeOffset -= deltaTime;
-
-	// MANDO MI POSICION;
-	if (timeOffset <= 0) {
-		sendTransform();
-		timeOffset += 5;
-	}
+	sendTransform();
 }
 
 void NetworkSystem::sendTransform() {
