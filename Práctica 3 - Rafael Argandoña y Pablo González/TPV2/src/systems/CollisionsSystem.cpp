@@ -112,7 +112,7 @@ void CollisionsSystem::checkMultiplayerCollisions() {
 		pl2->getPosition(), pl2->getWidth(), pl2->getHeight(), pl2->getRotation());
 
 	// CHOCARON LOS PLAYERS
-	if (collPxP) {
+	if (!collPxP) {
 		bool c1 = collisionPlayerBullets(pl1, _grp_MULTIPLAYER_BULLETS);
 		bool c2 = collisionPlayerBullets(pl2, _grp_BULLETS);
 		// Si el jugador de este portatil colisiono

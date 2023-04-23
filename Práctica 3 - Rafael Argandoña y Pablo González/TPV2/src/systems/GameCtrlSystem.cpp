@@ -23,7 +23,8 @@ void GameCtrlSystem::receive(const Message& m) {
 		
 		// Daño del jugador
 		case _m_PLAYER_DAMAGED:
-			onCollision_FighterAsteroid();
+			if (state != MULTI_PLAYER) onCollision_FighterAsteroid();
+			else onMultiplayerLose();
 			break;
 
 		// Al pulsar espacio, reproducir sonido y lanzar X estado según en el que me encuentre
@@ -49,7 +50,8 @@ void GameCtrlSystem::receive(const Message& m) {
 
 		// Al ganar
 		case _m_PLAYER_WINS:
-			onAsteroidsExtinction();
+			if (state != MULTI_PLAYER) onAsteroidsExtinction();
+			else onMultiplayerWin();
 			break;
 	}
 }
@@ -106,4 +108,13 @@ void GameCtrlSystem::onCollision_FighterAsteroid() {
 		
 		game->getStateMachine()->changeState(new GameOverState(game));
 	}
+}
+
+void GameCtrlSystem::onMultiplayerWin() {
+	// Lanzar estado de victoria
+	game->getStateMachine()->changeState(new WinState(game));
+}
+
+void GameCtrlSystem::onMultiplayerLose() {
+	game->getStateMachine()->changeState(new GameOverState(game));
 }

@@ -29,6 +29,9 @@ private:
 	// ha acabado la ronda y además que ha acabado el juego (y quien es el ganador)
 	void onAsteroidsExtinction();
 
+	void onMultiplayerWin();
+	void onMultiplayerLose();
+
 	WINNER winner;
 	STATE state; // El estado actual del juego (en lugar del componente State)
 	Game* game;
