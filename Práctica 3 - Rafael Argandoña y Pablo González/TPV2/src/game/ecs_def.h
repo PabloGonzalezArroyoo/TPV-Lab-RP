@@ -80,6 +80,7 @@ enum msgId : msgId_type {
 	_m_STOP_MUSIC,
 
 	_m_GHOST_SHOT,
+	_m_GHOST_MOVED,
 	_m_DISCONNECTION
 };
 
@@ -87,9 +88,6 @@ enum msgId : msgId_type {
 struct Message {
 	msgId_type id;
 	// _m_PLAYER_DIED
-	/*struct {
-		grpId layer;
-	} bullet_data;*/
 	struct {
 		Entity* e;
 	} player_died_data;
@@ -97,25 +95,26 @@ struct Message {
 	struct {
 		Entity* e;
 	} asteroid_collided_data;
-	// _m_PLAYER_DAMAGED
+	// _m_INIT_STATE
 	struct {
 		STATE st;
 		Game* g;
 		int l;
 	} _state_data;
+	// _m_PLAY_SOUND
 	struct {
 		SoundEffect* sound;
 	} _sound_data;
+	// _M_PLAY_MUSIC
 	struct {
 		Music* music;
 		int loop;
 	} _music_data;
+	// _m_GHOST_MOVED
 	struct {
-		int sign;
-	} my_data;
-	struct {
-		int sign;
-		bool shot;
+		float x;
+		float y;
+		float rot;
 	} ghost_data;
 };
 

@@ -45,6 +45,7 @@ void GameCtrlSystem::receive(const Message& m) {
 			else game->changeControl();
 			break;
 
+		// Si se pulsa m en el mainMenu, nos movemos al modo multijugador
 		case _m_M_PRESSED:
 			game->getStateMachine()->changeState(new MultiPlayerState(game));
 			break;
@@ -55,6 +56,7 @@ void GameCtrlSystem::receive(const Message& m) {
 			else onMultiplayerWin();
 			break;
 
+		// Si nos desconectamos siendo clientes
 		case _m_DISCONNECTION:
 			game->getStateMachine()->changeState(new MainMenuState(game));
 			break;
@@ -65,6 +67,7 @@ void GameCtrlSystem::initSystem() {
 	// Crea la nave y le añade los componentes basicos
 	Entity* f = mngr->addEntity();
 
+	// Si estamos en modo multijugador nos colocamos en otra posicion (dependiendo de si somos host o no)
 	auto network = mngr->getSystem<NetworkSystem>();
 	if (network) {
 		
@@ -115,11 +118,24 @@ void GameCtrlSystem::onCollision_FighterAsteroid() {
 	}
 }
 
+// Si ganamos en el modo multijugador
 void GameCtrlSystem::onMultiplayerWin() {
+	// Paramos la musica
+	Message m;
+	m.id = _m_STOP_MUSIC;
+	m._music_data.music = &sdlutils().musics().at(MULTI_MUSIC);
+	mngr->send(m);
 	// Lanzar estado de victoria
 	game->getStateMachine()->changeState(new WinState(game));
 }
 
+// Si perdemos en el modo multijugador
 void GameCtrlSystem::onMultiplayerLose() {
+	// Paramos la musica
+	Message m;
+	m.id = _m_STOP_MUSIC;
+	m._music_data.music = &sdlutils().musics().at(MULTI_MUSIC);
+	mngr->send(m);
+	// Lanzar estado de derrota
 	game->getStateMachine()->changeState(new GameOverState(game));
 }

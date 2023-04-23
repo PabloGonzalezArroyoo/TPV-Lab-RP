@@ -23,6 +23,7 @@ public:
 	// Dibujar los objetos que toquen segun el estado
 	virtual void update() override;
 
+	// Cambia el texto del cliente
 	void changeClientText(string newName);
 
 private:

@@ -34,6 +34,7 @@ const string THRUST = "thrust";
 const string GALAXY = "galaxy";
 const string VICTORY = "victory";
 const string GAMEOVER = "gameover";
+const string MULTI_MUSIC = "multi";
 // Messages
 const string MM_ST = "MM_STATE";
 const string START_MESSAGE = "START_MSG";
@@ -43,6 +44,8 @@ const string GAME_OVER_MESSAGE = "GAMEOVER_MSG";
 const string WIN_ST = "WIN_STATE";
 const string WIN_MESSAGE = "WIN_MSG";
 const string CONTINUE_MESSAGE = "CONTINUE_MSG";
+const string WAITING_MSG = "WAITING_MSG";
+const string MULTI_MSG = "MULTI_MSG";
 
 // PLAYER
 const int MAX_LIFES = 3;     

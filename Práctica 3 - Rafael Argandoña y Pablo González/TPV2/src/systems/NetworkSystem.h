@@ -26,9 +26,8 @@ private:
 	bool initClient();
 	void showHostMessage();
 
-	void convertInfo(string& str);
 	string revertInfo();
-	void decode(string, char separator);
+	void decode(string);
 	void sendMessage();
 	void decodeMessage(string line);
 

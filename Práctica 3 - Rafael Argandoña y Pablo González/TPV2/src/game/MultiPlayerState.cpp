@@ -20,4 +20,10 @@ MultiPlayerState::MultiPlayerState(Game* g) : GameState(g) {
 	m._state_data.st = MULTI_PLAYER;
 	m._state_data.g = g;
 	mng->send(m);
+
+	// Mensaje para reproducir música
+	Message m2;
+	m2.id = _m_PLAY_MUSIC;
+	m2._music_data.music = &sdlutils().musics().at(MULTI_MUSIC);
+	mng->send(m2);
 }

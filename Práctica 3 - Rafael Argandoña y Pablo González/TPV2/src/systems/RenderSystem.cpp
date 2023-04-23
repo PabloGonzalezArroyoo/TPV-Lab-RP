@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "../ecs/Manager.h"
 
+// Destructora para limpiar los nombres de los jugadores
 RenderSystem::~RenderSystem() {
 	for (Texture* txt : namesTxts) {
 		if (txt != nullptr) delete txt;
@@ -51,7 +52,7 @@ void RenderSystem::createTexts(){
 		case MAINMENU_STATE:
 			initializeText(MM_ST, 1);
 			initializeText(START_MESSAGE, 4);
-			initializeText("MULTI_MSG", 5);
+			initializeText(MULTI_MSG, 5);
 		break;
 		
 		// Pausa

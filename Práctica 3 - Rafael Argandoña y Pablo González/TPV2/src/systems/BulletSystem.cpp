@@ -11,7 +11,7 @@ void BulletSystem::receive(const Message& m) {
 			mes.id = _m_CREATED_BULLET;
 			mngr->send(mes);
 			break;
-
+		// Si el otro jugador disparo, instancio una bala en la capa de multijugador
 		case _m_GHOST_SHOT:
 			shoot(mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER)), _grp_MULTIPLAYER_BULLETS);
 			break;
@@ -28,6 +28,7 @@ void BulletSystem::update() {
 	moveBullets(_grp_MULTIPLAYER_BULLETS);
 }
 
+// Mueve un grupo de balas dado
 void BulletSystem::moveBullets(grpId group) {
 	// Cogemos el grupo de balas
 	vector<Entity*> entities = mngr->getEntities(group);

@@ -12,7 +12,6 @@ void CollisionsSystem::receive(const Message& m) {
 
 void CollisionsSystem::update() {
 	if (st != MULTI_PLAYER) checkCollisions();
-	// else otras colisiones
 	else checkMultiplayerCollisions();
 }
 
