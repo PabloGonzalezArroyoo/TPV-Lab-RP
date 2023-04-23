@@ -1,6 +1,7 @@
 #pragma once
 #include "../ecs/System.h"
 #include "../game/NetworkMessages.h"
+#include "../components/Transform.h"
 
 class NetworkSystem : public System{
 private:
@@ -15,6 +16,8 @@ private:
 	bool connected;
 	char buffer[256];
 
+	Transform* tr;
+	Transform* gtr;
 	string name;
 	string hostName;
 
@@ -27,6 +30,8 @@ private:
 	void decode(string, char separator);
 
 	void sendMessages();
+	void sendTransform();
+	void decodeTransform(string line);
 	void recInfo(string str);
 
 public:

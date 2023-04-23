@@ -21,13 +21,17 @@ void NetworkSystem::receive(const Message& m) {
 
 		case _m_I_MOVED:
 			inf = "m";
-			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			//SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 			break;
 
 		case _m_I_ROTATED:
 			if (m.my_data.sign == 0) inf = "r 0";
 			else inf = "r 1";
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+
+		case _m_INIT_STATE:
+			tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
+			gtr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER));
 		break;
 	}
 }
@@ -37,6 +41,9 @@ void NetworkSystem::initSystem() {
 }
 
 void NetworkSystem::update() {
+	// MANDO MI POSICION;
+	sendTransform();
+
 	if (SDLNet_CheckSockets(sockSet, 0) > 0) {
 		if (sock != nullptr && SDLNet_SocketReady(sock)) {
 			if (SDLNet_TCP_Recv(sock, buffer, 255) > 0) {
@@ -44,6 +51,42 @@ void NetworkSystem::update() {
 			}
 		}
 	}
+}
+
+void NetworkSystem::sendTransform() {
+	string info = "m ";
+	info += tr->getPosition().getX();
+	info += " ";
+	info += tr->getPosition().getY();
+	info += " ";
+	info += tr->getRotation();
+
+	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
+}
+
+void NetworkSystem::decodeTransform(string str) {
+	string posx = "", posy = "", rot = "";
+	int i = 2; bool found = false;
+	while (!found && i < str.size()) {
+		if (str[i] == ' ') found = true;
+		else posx += str[i];
+		i++;
+	}
+	found = false;
+	while (!found && i < str.size()) {
+		if (str[i] == ' ') found = true;
+		else posy += str[i];
+		i++;
+	}
+	found = false;
+	while (!found && i < str.size()) {
+		if (str[i] == ' ') found = true;
+		else rot += str[i];
+		i++;
+	}
+
+	gtr->setPosition(Vector2D(stof(posx), stof(posy)));
+	gtr->setRotation(stof(rot));
 }
 
 bool NetworkSystem::connect() {
@@ -200,9 +243,10 @@ string NetworkSystem::revertInfo() {
 void NetworkSystem::decode(string str, char separator) {
 	if (str[0] == 'm') {
 		// ENVIAR MENSAJE DE GHOST_MOVE
-		Message mes;
+		/*Message mes;
 		mes.id = _m_GHOST_MOVED;
-		mngr->send(mes);
+		mngr->send(mes);*/
+		decodeTransform(str);
 	}
 
 	else if (str[0] == 'r') {
