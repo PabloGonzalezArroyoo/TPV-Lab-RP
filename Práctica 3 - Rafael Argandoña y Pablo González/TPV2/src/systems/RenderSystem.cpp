@@ -45,6 +45,7 @@ void RenderSystem::createTexts(){
 		case MAINMENU_STATE:
 			initializeText(MM_ST, 1);
 			initializeText(START_MESSAGE, 4);
+			initializeText("MULTI_MSG", 5);
 		break;
 		
 		// Pausa

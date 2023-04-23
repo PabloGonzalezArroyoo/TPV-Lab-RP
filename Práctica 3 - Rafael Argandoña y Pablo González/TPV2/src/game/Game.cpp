@@ -67,7 +67,6 @@ void Game::run() {
 			InputHandler::instance()->refresh();
 			update();								// Actualizamos el estado del juego
 			refresh();
-			//startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
 			timeOffset += 5;
 		}
 

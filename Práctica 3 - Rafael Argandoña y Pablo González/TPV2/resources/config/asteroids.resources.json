@@ -25,7 +25,8 @@
     { "id": "CONTINUE_MSG", "text": "PRESS SPACE TO CONTINUE", "font": "CHIMERA20", "color": "0x000000ff", "bg": "0xffffffff" },
     { "id": "GAMEOVER_STATE", "text": "GAME OVER!", "font": "CHIMERA30", "color": "0x000000ff" },
     { "id": "GAMEOVER_MSG", "text": "YOU LOSE, LOSER!", "font": "CHIMERA20", "color": "0x000a57ff" },
-    { "id": "WAITING_MSG", "text": "Waiting for other player", "font": "CHIMERA20", "color": "0x000a57ff" }
+    { "id": "WAITING_MSG", "text": "Waiting for other player", "font": "CHIMERA20", "color": "0x000a57ff" },
+    { "id": "MULTI_MSG", "text": "PRESS M FOR LAN MULTIPLAYER", "font": "CHIMERA20", "color": "0x000000ff", "bg": "0xffffffff"}
   ],
 
   "sounds": [
