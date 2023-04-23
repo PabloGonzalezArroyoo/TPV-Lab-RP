@@ -1,6 +1,12 @@
 #include "RenderSystem.h"
 #include "../ecs/Manager.h"
 
+RenderSystem::~RenderSystem() {
+	for (Texture* txt : namesTxts) {
+		if (txt != nullptr) delete namesTxts;
+	}
+}
+
 // Recibir mensajes
 void RenderSystem::receive(const Message& m) {
 	switch (m.id) {

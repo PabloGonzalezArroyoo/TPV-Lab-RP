@@ -194,6 +194,7 @@ bool NetworkSystem::initClient() {
 	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
 
 	connected = true;
+	masterSocket = nullptr;
 }
 
 void NetworkSystem::showHostMessage() {
