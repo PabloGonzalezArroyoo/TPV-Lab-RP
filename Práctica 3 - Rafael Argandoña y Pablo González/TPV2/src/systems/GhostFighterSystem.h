@@ -3,7 +3,6 @@
 
 class GhostFighterSystem : public FighterSystem {
 private:
-	void applyVelocity(Vector2D v);
 	void applyRotation(int r);
 
 public:

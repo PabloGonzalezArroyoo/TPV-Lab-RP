@@ -18,6 +18,7 @@ void GameCtrlSystem::receive(const Message& m) {
 			state = m._state_data.st;
 			game = m._state_data.g;
 			if (state == PAUSE_STATE) mngr->getComponent<Health>(mngr->getHandler(_hdlr_FIGHTER))->setLives(m._state_data.l);
+			else if (state == MULTI_PLAYER) mngr->getComponent<Health>(mngr->getHandler(_hdlr_FIGHTER))->setLives(1);
 			break;
 		
 		// Daño del jugador

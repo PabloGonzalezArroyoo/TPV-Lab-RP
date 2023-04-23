@@ -13,6 +13,7 @@ void CollisionsSystem::receive(const Message& m) {
 void CollisionsSystem::update() {
 	if (st != MULTI_PLAYER) checkCollisions();
 	// else otras colisiones
+	else checkMultiplayerCollisions();
 }
 
 // Comprueba las colisiones entre asteroide y player/bullet
@@ -98,4 +99,64 @@ bool CollisionsSystem::collisionAsteroidsBullets(Transform* astTr) {
 		}
 	}
 	return collision;
+}
+
+// Comprueba las colisiones entre jugadores y balas, y jugadores con jugadores
+void CollisionsSystem::checkMultiplayerCollisions() {
+	
+	Transform* pl1 = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
+	Transform* pl2 = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER));
+
+	bool collPxP = Collisions::collidesWithRotation(
+		pl1->getPosition(), pl1->getWidth(), pl1->getHeight(), pl1->getRotation(),
+		pl2->getPosition(), pl2->getWidth(), pl2->getHeight(), pl2->getRotation());
+
+	// CHOCARON LOS PLAYERS
+	if (collPxP) {
+		bool c1 = collisionPlayerBullets(pl1, _grp_MULTIPLAYER_BULLETS);
+		bool c2 = collisionPlayerBullets(pl2, _grp_BULLETS);
+		// Si el jugador de este portatil colisiono
+		if (c1) {
+			SDL_Delay(1000);
+
+			Message m;
+			m.id = _m_PLAYER_DAMAGED;
+			mngr->send(m, true);
+		}
+		// Si el jugador del otro portatil colisiono
+		if (c2) {
+			SDL_Delay(1000);
+
+			Message m;
+			m.id = _m_PLAYER_WINS;
+			mngr->send(m, true);
+		}
+	}
+
+	// COMPRUEBO SI CHOCO UN PLAYER CON LAS BALAS CONTRARIAS
+}
+
+// Comprueba la colision de un jugador con una capa de balas
+bool CollisionsSystem::collisionPlayerBullets(Transform* pl, grpId group) {
+	vector<Entity*> layer = mngr->getEntities(group);
+	int i = 0; Transform* bullTr = nullptr;
+	bool collision = false;
+
+	while (!collision && i < layer.size()) {
+		// Si la entidad esta viva
+		if (mngr->isAlive(layer[i])) {
+			// Pillamos el transform de la bala y comprobamos colision
+			bullTr = mngr->getComponent<Transform>(layer[i]);
+			collision = Collisions::collidesWithRotation(
+				pl->getPosition(), pl->getWidth(), pl->getHeight(), pl->getRotation(),
+				bullTr->getPosition(), bullTr->getWidth(), bullTr->getHeight(), bullTr->getRotation());
+
+			// Si hay colision
+			if (collision) {
+				// Desactivamos la bala
+				mngr->setAlive(layer[i], false);
+			}
+		}
+		i++;
+	}
 }

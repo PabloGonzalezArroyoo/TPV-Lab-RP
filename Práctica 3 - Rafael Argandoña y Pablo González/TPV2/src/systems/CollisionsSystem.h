@@ -25,6 +25,10 @@ private:
 	bool collisionAsteroidsFighter(Entity* player, Transform* astTr);
 
 	bool collisionAsteroidsBullets(Transform* astTr);
+
+	void checkMultiplayerCollisions();
+
+	bool collisionPlayerBullets(Transform* pl, grpId group);
 	
 	STATE st;
 };

@@ -12,7 +12,7 @@ void GhostFighterSystem::initSystem() {
 		else tr = mngr->addComponent<Transform>(f, Vector2D(WIN_WIDTH - PLAYER_WIDTH, WIN_HEIGHT / 2 - PLAYER_HEIGHT / 2), PLAYER_WIDTH, PLAYER_HEIGHT, Vector2D(), -90);
 	}
 
-	mngr->addComponent<Health>(f);
+	mngr->addComponent<Health>(f, 1);
 	fc = mngr->addComponent<FighterCtrl>(f, tr->getRotation());
 
 	// Setea el handler de la nave
@@ -23,7 +23,7 @@ void GhostFighterSystem::receive(const Message& m) {
 	switch (m.id) {
 	case _m_GHOST_MOVED:
 		setFighterVelocity();
-		cout << tr->getVelocity().getX() << " " << tr->getVelocity().getY() << endl;
+		//cout << tr->getVelocity().getX() << " " << tr->getVelocity().getY() << endl;
 		break;
 	case _m_GHOST_ROTATED:
 		applyRotation(m.ghost_data.sign);
@@ -38,10 +38,6 @@ void GhostFighterSystem::update() {
 	tr->setPosition(tr->getPosition() + tr->getVelocity());
 	
 	showAtOppositeSide(tr);
-}
-
-void GhostFighterSystem::applyVelocity(Vector2D v) {
-	tr->setVelocity(v);
 }
 
 void GhostFighterSystem::applyRotation(int rot) {
