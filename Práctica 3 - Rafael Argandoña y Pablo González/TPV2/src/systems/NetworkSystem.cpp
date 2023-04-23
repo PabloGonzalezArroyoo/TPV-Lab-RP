@@ -1,7 +1,7 @@
 #include "NetworkSystem.h"
 #include "../ecs/Manager.h"
 
-NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip() { }
+NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip(), prevNBullets(0) { }
 
 NetworkSystem::~NetworkSystem() {
 	SDLNet_TCP_Close(sock);
@@ -14,18 +14,27 @@ void NetworkSystem::receive(const Message& m) {
 
 	switch (m.id)
 	{
-		case _m_CREATED_BULLET:
+		// Si se ha de crear una bala en el otro portatil
+		/*case _m_CREATED_BULLET:
 			inf = "b";
 			cout << "CREA BALA EN EL OTRO LADO" << endl;
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
-		break;
-
+		break;*/
+		// Inicializacion del estado
 		case _m_INIT_STATE:
 			tr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_FIGHTER));
 			gtr = mngr->getComponent<Transform>(mngr->getHandler(_hdlr_GHOST_FIGHTER));
 		break;
 
-		
+		case _m_PLAYER_WINS:
+			inf = "p";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			break;
+
+		case _m_PLAYER_DAMAGED:
+			inf = "w";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			break;
 	}
 }
 
@@ -43,10 +52,11 @@ void NetworkSystem::update() {
 		}
 	}
 
-	sendTransform();
+	sendMessage();
 }
 
-void NetworkSystem::sendTransform() {
+// Manda la informacion necesaria del transform del jugador de este portatil al otro
+void NetworkSystem::sendMessage() {
 	string info = "m ";
 	info += to_string(tr->getPosition().getX());
 	info += " ";
@@ -54,10 +64,17 @@ void NetworkSystem::sendTransform() {
 	info += " ";
 	info += to_string(tr->getRotation());
 
+	newNBullets = mngr->getEntities(_grp_BULLETS).size();
+	if (prevNBullets != newNBullets && prevNBullets < newNBullets) {
+		info += " ";
+		info += "s";
+	}
+
 	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
 }
 
-void NetworkSystem::decodeTransform(string str) {
+// Lee la informacion que se recibe del transform del jugador del otro portatil
+void NetworkSystem::decodeMessage(string str) {
 	string posx = "", posy = "", rot = "";
 	int i = 2; bool found = false;
 	while (!found && i < str.size()) {
@@ -77,18 +94,27 @@ void NetworkSystem::decodeTransform(string str) {
 		else rot += str[i];
 		i++;
 	}
+	
+	if (i < str.size()) {
+		Message mes;
+		mes.id = _m_GHOST_SHOT;
+		mngr->send(mes);
+	}
 
 	gtr->setPosition(Vector2D(stof(posx), stof(posy)));
 	gtr->setRotation(stof(rot));
 }
 
+// Metodo para la conexion inicial
 bool NetworkSystem::connect() {
 	string choice;
 	bool done = false, correct = false;
 
+	// Almacenamos el nombre del jugador
 	cout << "Cual es tu nombre?\n>";
 	cin >> name;
 
+	// Preguntamos su rol y actuamos en consecuencia
 	do {
 		cout << "\nEscoge tu rol\n  - CLIENTE\n  - HOST\n  - SALIR\n>";
 		cin >> choice;
@@ -110,6 +136,7 @@ bool NetworkSystem::connect() {
 	return done;
 }
 
+// Inicializa en el caso de ser host
 bool NetworkSystem::initHost() {
 	if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
 		cerr << "PUERTO NO VALIDO" << endl;
@@ -151,6 +178,7 @@ bool NetworkSystem::initHost() {
 	return true;
 }
 
+// Inicializa en el caso de ser cliente
 bool NetworkSystem::initClient() {
 	int result = 0;
 
@@ -236,22 +264,20 @@ string NetworkSystem::revertInfo() {
 
 void NetworkSystem::decode(string str, char separator) {
 	if (str[0] == 'm') {
-		decodeTransform(str);
+		decodeMessage(str);
 	}
 
-	else if (str[0] == 'b') {
-		// MANDAR MENSAJE DE GHOST_SHOT
+	//else if (str[0] == 'b') {
+	//	// MANDAR MENSAJE DE GHOST_SHOT
+	//	Message mes;
+	//	mes.id = _m_GHOST_SHOT;
+	//	mngr->send(mes);
+	//}
+
+	else if (str[0] == 'p' || str[0] == 'w') {
 		Message mes;
-		mes.id = _m_GHOST_SHOT;
-		mngr->send(mes);
-		cout << "bala nueva del ghost" << endl;
+		if (str[0] == 'p') mes.id = _m_PLAYER_DAMAGED;
+		else mes.id = _m_PLAYER_WINS;
+		mngr->send(mes, true);
 	}
-}
-
-void NetworkSystem::sendMessages() {
-
-}
-
-void NetworkSystem::recInfo(string str) {
-
 }

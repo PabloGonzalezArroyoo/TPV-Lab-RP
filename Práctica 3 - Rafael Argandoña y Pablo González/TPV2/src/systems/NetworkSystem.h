@@ -15,6 +15,7 @@ private:
 
 	bool connected;
 	char buffer[256];
+	int prevNBullets, newNBullets;
 
 	Transform* tr;
 	Transform* gtr;
@@ -28,11 +29,8 @@ private:
 	void convertInfo(string& str);
 	string revertInfo();
 	void decode(string, char separator);
-
-	void sendMessages();
-	void sendTransform();
-	void decodeTransform(string line);
-	void recInfo(string str);
+	void sendMessage();
+	void decodeMessage(string line);
 
 public:
 	static constexpr sysId id = _sys_NETWORK_;
