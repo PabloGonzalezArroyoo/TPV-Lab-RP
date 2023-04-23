@@ -29,7 +29,7 @@ private:
 
 	// Variables para el deltaTime
 	double deltaTime = 0.0;
-	Uint32 timeOffset = 0;
+	double timeOffset = 6;
 	uint32_t startTime;
 
 public:

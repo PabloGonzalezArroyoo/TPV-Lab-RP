@@ -32,7 +32,6 @@ Game::~Game() {
 
 // Bucle principal del juego
 void Game::run() {
-
 	/*Dani
 	uint32_t frameTime;
 	startTime = SDL_GetTicks();
@@ -63,12 +62,13 @@ void Game::run() {
 		NOW = SDL_GetPerformanceCounter();
 
 		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-
-		if (deltaTime * 10 >= 5) {				// Comprobamos si el tiempo de frame es mayor al ratio
+		timeOffset -= deltaTime;
+		if (timeOffset <= 0) {				// Comprobamos si el tiempo de frame es mayor al ratio
 			InputHandler::instance()->refresh();
 			update();								// Actualizamos el estado del juego
 			refresh();
-			startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
+			//startTime = SDL_GetTicks();				// Actualizamos el valor de nuestra variable al valor de este frame
+			timeOffset += 5;
 		}
 
 		//std::cout << deltaTime << " " << SDL_GetTicks() << " " << timeOffset << std::endl;
