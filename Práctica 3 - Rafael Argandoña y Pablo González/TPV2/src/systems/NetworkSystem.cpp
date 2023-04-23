@@ -16,6 +16,7 @@ void NetworkSystem::receive(const Message& m) {
 	{
 		case _m_CREATED_BULLET:
 			inf = "b";
+			cout << "CREA BALA EN EL OTRO LADO" << endl;
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 		break;
 
@@ -237,21 +238,12 @@ void NetworkSystem::decode(string str, char separator) {
 		decodeTransform(str);
 	}
 
-	else if (str[0] == 'r') {
-		// MANDAR MENSAJE DE GHOST_ROT con signo (0 negativa, 1 positiva)
-		int rot = str[2] - '0';
-		Message mes;
-		mes.id = _m_GHOST_ROTATED;
-		if (rot == 0) mes.ghost_data.sign = -2;
-		else mes.ghost_data.sign = 2;
-		mngr->send(mes);
-	}
-
 	else if (str[0] == 'b') {
 		// MANDAR MENSAJE DE GHOST_SHOT
 		Message mes;
 		mes.id = _m_GHOST_SHOT;
 		mngr->send(mes);
+		cout << "bala nueva del ghost" << endl;
 	}
 }
 

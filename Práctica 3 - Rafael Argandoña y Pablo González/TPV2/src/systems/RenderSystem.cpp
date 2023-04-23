@@ -3,7 +3,7 @@
 
 RenderSystem::~RenderSystem() {
 	for (Texture* txt : namesTxts) {
-		if (txt != nullptr) delete namesTxts;
+		if (txt != nullptr) delete txt;
 	}
 }
 
