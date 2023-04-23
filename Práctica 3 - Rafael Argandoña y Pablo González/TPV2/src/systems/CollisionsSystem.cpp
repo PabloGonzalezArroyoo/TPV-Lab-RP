@@ -159,4 +159,6 @@ bool CollisionsSystem::collisionPlayerBullets(Transform* pl, grpId group) {
 		}
 		i++;
 	}
+
+	return collision;
 }

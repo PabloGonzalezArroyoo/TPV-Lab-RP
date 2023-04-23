@@ -27,6 +27,11 @@ private:
 	// Máquina de estados
 	GameStateMachine* gsm;
 
+	// Variables para el deltaTime
+	double deltaTime = 0.0;
+	Uint32 timeOffset = 0;
+	uint32_t startTime;
+
 public:
 	// Constructora y destructora
 	Game();
