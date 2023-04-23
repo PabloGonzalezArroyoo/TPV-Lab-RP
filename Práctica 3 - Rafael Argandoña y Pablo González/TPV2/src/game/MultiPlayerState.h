@@ -5,5 +5,5 @@ class MultiPlayerState : public GameState {
 private:
 
 public:
-	MultiPlayerState();
+	MultiPlayerState(Game* g);
 };

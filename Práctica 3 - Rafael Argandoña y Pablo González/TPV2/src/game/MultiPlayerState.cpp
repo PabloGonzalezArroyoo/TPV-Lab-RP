@@ -1,6 +1,6 @@
 #include "MultiPlayerState.h"
 
-MultiPlayerState::MultiPlayerState() {
+MultiPlayerState::MultiPlayerState(Game* g) : GameState(g) {
 	mng = new Manager();
 
 	mng->addSystem<NetworkSystem>();
@@ -18,5 +18,6 @@ MultiPlayerState::MultiPlayerState() {
 	Message m;
 	m.id = _m_INIT_STATE;
 	m._state_data.st = MULTI_PLAYER;
+	m._state_data.g = g;
 	mng->send(m);
 }
