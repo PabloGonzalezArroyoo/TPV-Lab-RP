@@ -80,7 +80,7 @@ enum msgId : msgId_type {
 	_m_STOP_MUSIC,
 
 	_m_GHOST_SHOT,
-	_m_DISCONNETION
+	_m_DISCONNECTION
 };
 
 //En el mismo manager

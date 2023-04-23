@@ -63,7 +63,7 @@ void NetworkSystem::update() {
 			if (host) disconnect();
 			else {
 				Message mes;
-				mes.id = _m_DISCONNETION;
+				mes.id = _m_DISCONNECTION;
 				mngr->send(mes, true);
 			}
 		}
