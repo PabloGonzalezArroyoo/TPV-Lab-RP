@@ -22,30 +22,13 @@ void NetworkSystem::receive(const Message& m) {
 		// En caso de que ganemos, se le informa al otro portatil de que ha perdido
 		case _m_PLAYER_WINS:
 			inf = "p";
-			checkSend(inf);
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 			break;
 		// En el caso de que perdamos se le informa al otro portatil de que ha ganado
 		case _m_PLAYER_DAMAGED:
 			inf = "w";
-			checkSend(inf);
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 			break;
-	}
-}
-
-void NetworkSystem::checkSend(string info) {
-	bool confirm = false;
-	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
-	while (!confirm) {
-		if (SDLNet_CheckSockets(sockSet, 0) > 0) {
-
-			if (sock != nullptr && SDLNet_SocketReady(sock)) {
-				int result = SDLNet_TCP_Recv(sock, buffer, 255);
-				// Si recibo algo, decodifico el mensaje
-				if (result > 0) {
-					confirm = true;
-				}
-			}
-		}
 	}
 }
 
@@ -322,7 +305,6 @@ string NetworkSystem::revertInfo() {
 
 // Gestiona la informacion recibida del otro portatil
 void NetworkSystem::decode(string str) {
-	cout << str << endl;
 	// Si la informacion hace referencia al movimiento
 	if (str[0] == 'm') {
 		decodeMessage(str);
@@ -333,6 +315,5 @@ void NetworkSystem::decode(string str) {
 		if (str[0] == 'p') mes.id = _m_PLAYER_DAMAGED;
 		else mes.id = _m_PLAYER_WINS;
 		mngr->send(mes, true);
-		SDLNet_TCP_Send(sock, "check", 6);
 	}
 }
