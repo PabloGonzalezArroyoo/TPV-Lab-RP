@@ -29,6 +29,10 @@ void NetworkSystem::receive(const Message& m) {
 			inf = "w";
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 			break;
+		case _m_CREATED_BULLET:
+			inf = "b";
+			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			break;
 	}
 }
 
@@ -81,6 +85,23 @@ void NetworkSystem::update() {
 	sendMessage();
 }
 
+void NetworkSystem::checkSend(string info) {
+	bool confirm = false;
+	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
+	while (!confirm) {
+		if (SDLNet_CheckSockets(sockSet, 0) > 0) {
+
+			if (sock != nullptr && SDLNet_SocketReady(sock)) {
+				int result = SDLNet_TCP_Recv(sock, buffer, 255);
+				// Si recibo algo, decodifico el mensaje
+				if (result > 0) {
+					confirm = true;
+				}
+			}
+		}
+	}
+}
+
 // Manda la informacion necesaria del transform del jugador de este portatil al otro
 void NetworkSystem::sendMessage() {
 	// Mandamos posicion y rotacion del jugador de este portatil
@@ -91,13 +112,13 @@ void NetworkSystem::sendMessage() {
 	info += " ";
 	info += to_string(tr->getRotation());
 
-	// Si el numero de balas cambia (hay mas) se informa de que instancie una nueva
-	newNBullets = mngr->getEntities(_grp_BULLETS).size();
-	if (prevNBullets != newNBullets && prevNBullets < newNBullets) {
-		info += " ";
-		info += "s";
-	}
-	prevNBullets = newNBullets;
+	//// Si el numero de balas cambia (hay mas) se informa de que instancie una nueva
+	//newNBullets = mngr->getEntities(_grp_BULLETS).size();
+	//if (prevNBullets != newNBullets && prevNBullets < newNBullets) {
+	//	info += " ";
+	//	info += "s";
+	//}
+	//prevNBullets = newNBullets;
 
 	// Mandamos el mensaje
 	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
@@ -315,5 +336,11 @@ void NetworkSystem::decode(string str) {
 		if (str[0] == 'p') mes.id = _m_PLAYER_DAMAGED;
 		else mes.id = _m_PLAYER_WINS;
 		mngr->send(mes, true);
+	}
+
+	else if (str[0] == 'b') {
+		Message mes;
+		mes.id = _m_GHOST_SHOT;
+		mngr->send(mes);
 	}
 }

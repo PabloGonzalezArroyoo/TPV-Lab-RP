@@ -26,6 +26,7 @@ private:
 	bool initClient();
 	void showHostMessage();
 
+	void checkSend(string info);
 	string revertInfo();
 	void decode(string);
 	void sendMessage();
@@ -37,6 +38,7 @@ public:
 	NetworkSystem();
 	~NetworkSystem();
 
+	void sendBulletMessage();
 	void receive(const Message& m) override;
 	void initSystem() override;
 	void update() override;
