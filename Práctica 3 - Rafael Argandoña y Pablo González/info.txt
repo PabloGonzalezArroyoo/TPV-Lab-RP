@@ -1,0 +1,6 @@
+-- COMPONENTES DEL GRUPO --
+Pablo González Arroyo y Rafael Argandoña Blácido
+
+-- COSAS QUE NO FUNCIONAN CORRECTAMENTE --
+1. El sonido de "THRUST" suena muy saturado y no sabemos el porqué. De hecho, hemos creado un contador para evitar que se reproduzca muchas veces seguidas pero sigue ocurriendo lo mismo. Incluso, hemos probado a cambiar el sonido por otro, y no pasa en ninguno de los otros...
+2. No sabemos muy bien el por qué de este fallo pero se pierden datos de las balas de un portatil a otro, sobretodo del portatil cliente. Si el jugador dispara muy seguido, alguna bala no se instancia en el otro (por mas que intentamos mandar la información o bien no llega o no se manda). Esto afecta a la comprobacion de algunas colisiones, y hemos intentado corregir este fallo mandando mas mensajes sobre si se cambia de estado en un pc (para que el otro reaccione en consecuencia).
