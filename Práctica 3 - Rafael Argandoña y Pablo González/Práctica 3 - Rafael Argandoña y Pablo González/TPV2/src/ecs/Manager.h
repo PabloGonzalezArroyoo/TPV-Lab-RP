@@ -98,6 +98,15 @@ public:
 		return entsByGroup[gId];
 	}
 
+	// Devuelve el numero de entidades activas en un grupo
+	inline int getEntitiesAlive(grpId_type gId = _grp_GENERAL) {
+		int alive = 0;
+		for (int i = 0; i < entsByGroup[gId].size(); i++) {
+			if (isAlive(entsByGroup[gId][i])) alive++;
+		}
+		return alive;
+	}
+
 	// Devuelve un objeto especifico
 	inline Entity* getHandler(hdlrId_type hId) {
 		assert(handlers[hId] != nullptr);

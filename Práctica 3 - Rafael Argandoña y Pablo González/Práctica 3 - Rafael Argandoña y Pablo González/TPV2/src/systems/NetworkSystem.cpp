@@ -2,7 +2,8 @@
 #include "../ecs/Manager.h"
 #include "../systems/RenderSystem.h"
 
-NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false), ip(), prevNBullets(0) { }
+NetworkSystem::NetworkSystem() : host(false), sock(), sockSet(), port(1), connected(false),
+	ip(), prevNBullets(0), newBullet(false) { }
 
 // Destructora
 NetworkSystem::~NetworkSystem() {
@@ -10,6 +11,7 @@ NetworkSystem::~NetworkSystem() {
 	if (masterSocket) SDLNet_TCP_Close(masterSocket);
 }
 
+// Recibir mensaje
 void NetworkSystem::receive(const Message& m) {
 	string inf;
 	switch (m.id)
@@ -30,8 +32,9 @@ void NetworkSystem::receive(const Message& m) {
 			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
 			break;
 		case _m_CREATED_BULLET:
-			inf = "b";
-			SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			//inf = "b";
+			//SDLNet_TCP_Send(sock, inf.c_str(), inf.size() + 1);
+			newBullet = true;
 			break;
 	}
 }
@@ -85,21 +88,121 @@ void NetworkSystem::update() {
 	sendMessage();
 }
 
-void NetworkSystem::checkSend(string info) {
-	bool confirm = false;
-	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
-	while (!confirm) {
-		if (SDLNet_CheckSockets(sockSet, 0) > 0) {
+// Inicializa en el caso de ser host
+bool NetworkSystem::initHost() {
+	// Abrimos el puerto en este portatil y el masterSocket
+	if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
+		cerr << "PUERTO NO VALIDO" << endl;
+		return false;
+	}
+	cout << "El puerto disponible es: " << ip.port << endl;
+	masterSocket = SDLNet_TCP_Open(&ip);
 
-			if (sock != nullptr && SDLNet_SocketReady(sock)) {
-				int result = SDLNet_TCP_Recv(sock, buffer, 255);
-				// Si recibo algo, decodifico el mensaje
-				if (result > 0) {
-					confirm = true;
-				}
-			}
+	if (!masterSocket) {
+		cerr << "NO HAY MASTER SOCKET" << endl;
+		return false;
+	}
+
+	// Mostramos el mensaje esperando
+	showHostMessage();
+
+	// Creamos el socketSet y añadimos el masterSocket
+	sockSet = SDLNet_AllocSocketSet(2);
+	SDLNet_TCP_AddSocket(sockSet, masterSocket);
+	// Buscamos el socket Cliente y lo aceptamos
+	if (SDLNet_CheckSockets(sockSet, SDL_MAX_UINT32) > 0) {
+		if (SDLNet_SocketReady(masterSocket)) {
+			sock = SDLNet_TCP_Accept(masterSocket);
 		}
 	}
+	// Lo añadimos al socketSet
+	SDLNet_TCP_AddSocket(sockSet, sock);
+	// Mandamos el nombre para comprobar el flujo de informacion
+	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
+	// Recibimos el nombre del cliente
+	SDLNet_TCP_Recv(sock, buffer, 255);
+	name = (string)buffer;
+	// Informamos de que la conexion se consiguio
+	cout << "Se conecto un usuario:" << name << endl;
+
+	host = true;
+	connected = true;
+	return true;
+}
+
+// Inicializa en el caso de ser cliente
+bool NetworkSystem::initClient() {
+	// Pedimos informacion de la ip del host
+	int result = 0;
+	cout << "\nIntroduce el host:\n>";
+	cin >> hostName;
+	cout << "\nIntroduce el puerto:\n>";
+	cin >> port;
+
+	// Intentamnos conectarnos
+	auto h = hostName.c_str();
+	auto a = SDLNet_ResolveHost(&ip, h, port);
+	ip.port = port;
+	// Si no podemos
+	if (a < 0) {
+		cerr << "ERROR DE CONEXION AL HOST" << endl;
+		return false;
+	}
+	// Si se puede abrimos el socket y nos conectamos en la ip destino
+	sock = SDLNet_TCP_Open(&ip);
+	// Si no se puede
+	if (!sock) {
+		cerr << "NO SE HA CONSEGUIDO ESTABLECER LA CONEXION" << endl;
+		return false;
+	}
+	// Si se puede informo y me añado al socketSet
+	else {
+		cout << "> Me conecte al host " << ip.host << " en el puerto " << port << endl;
+		sockSet = SDLNet_AllocSocketSet(1);
+		SDLNet_TCP_AddSocket(sockSet, sock);
+	}
+
+	// ESPERAMOS POR CONFIRMACION DE CONEXION (se recibe informacion)
+	result = SDLNet_TCP_Recv(sock, buffer, 255);
+	// Si no se recibe
+	if (result < 0) {
+		SDLNetUtils::print_SDLNet_error();
+		return false;
+	}
+	// Si se rechaza
+	else if (result == 0) cout << "EL SERVIDOR CERRO LA CONEXION" << endl;
+	// Si se recibe
+	else {
+		hostName = buffer;
+		cout << "EL SERVIDOR ACEPTO LA CONEXION. HOSTNAME: " << hostName << endl;
+	}
+
+	// Mostramos el nombre y lo mandamos
+	cout << "TU NOMBRE ES: " << name.c_str() << endl;
+	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
+
+	connected = true;
+	masterSocket = nullptr;
+	return true;
+}
+
+// Metodo que muestra en pantalla el mensaje de espera
+void NetworkSystem::showHostMessage() {
+
+	SDL_RenderClear(sdlutils().renderer());
+	Texture* txt = &sdlutils().msgs().at(WAITING_MSG);
+	SDL_Rect r;
+	r.x = WIN_WIDTH / 2 - txt->width() / 2;
+	r.y = WIN_HEIGHT / 2 - txt->height() / 2;
+	r.w = txt->width(); r.h = txt->height();
+	txt->render(r);
+	SDL_RenderPresent(sdlutils().renderer());
+}
+
+// Devuelve el buffer convertido a string
+string NetworkSystem::revertInfo() {
+	buffer[255] = 0;
+	return (string)buffer;
 }
 
 // Manda la informacion necesaria del transform del jugador de este portatil al otro
@@ -113,15 +216,42 @@ void NetworkSystem::sendMessage() {
 	info += to_string(tr->getRotation());
 
 	//// Si el numero de balas cambia (hay mas) se informa de que instancie una nueva
-	//newNBullets = mngr->getEntities(_grp_BULLETS).size();
+	//newNBullets = mngr->getEntitiesAlive(_grp_BULLETS);
 	//if (prevNBullets != newNBullets && prevNBullets < newNBullets) {
 	//	info += " ";
 	//	info += "s";
 	//}
 	//prevNBullets = newNBullets;
 
+	if (newBullet) {
+		info += " ";
+		info += "s";
+		newBullet = false;
+	}
+
 	// Mandamos el mensaje
 	SDLNet_TCP_Send(sock, info.c_str(), info.size() + 1);
+}
+
+// Gestiona la informacion recibida del otro portatil
+void NetworkSystem::decode(string str) {
+	// Si la informacion hace referencia al movimiento
+	if (str[0] == 'm') {
+		decodeMessage(str);
+	}
+	// Si la informacion hace referencia a acabar la partida (posible solucion de la perdida de balas)
+	else if (str[0] == 'p' || str[0] == 'w') {
+		Message mes;
+		if (str[0] == 'p') mes.id = _m_PLAYER_DAMAGED;
+		else mes.id = _m_PLAYER_WINS;
+		mngr->send(mes, true);
+	}
+
+	/*else if (str[0] == 'b') {
+		Message mes;
+		mes.id = _m_GHOST_SHOT;
+		mngr->send(mes);
+	}*/
 }
 
 // Lee la informacion que se recibe del transform del jugador del otro portatil
@@ -196,117 +326,6 @@ bool NetworkSystem::connect() {
 	return done;
 }
 
-// Inicializa en el caso de ser host
-bool NetworkSystem::initHost() {
-	// Abrimos el puerto en este portatil y el masterSocket
-	if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
-		cerr << "PUERTO NO VALIDO" << endl;
-		return false;
-	}
-	cout << "El puerto disponible es: "  << ip.port << endl;
-	masterSocket = SDLNet_TCP_Open(&ip);
-
-	if (!masterSocket) {
-		cerr << "NO HAY MASTER SOCKET" << endl;
-		return false;
-	}
-
-	// Mostramos el mensaje esperando
-	showHostMessage();
-
-	// Creamos el socketSet y añadimos el masterSocket
-	sockSet = SDLNet_AllocSocketSet(2);
-	SDLNet_TCP_AddSocket(sockSet, masterSocket);
-	// Buscamos el socket Cliente y lo aceptamos
-	if (SDLNet_CheckSockets(sockSet, SDL_MAX_UINT32) > 0) {
-		if (SDLNet_SocketReady(masterSocket)) {
-			sock = SDLNet_TCP_Accept(masterSocket);
-		}
-	}
-	// Lo añadimos al socketSet
-	SDLNet_TCP_AddSocket(sockSet, sock);
-	// Mandamos el nombre para comprobar el flujo de informacion
-	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
-	// Recibimos el nombre del cliente
-	SDLNet_TCP_Recv(sock, buffer, 255);
-	name = (string)buffer;
-	// Informamos de que la conexion se consiguio
-	cout << "Se conecto un usuario:" << name << endl;
-
-	host = true;
-	connected = true;
-	return true;
-}
-
-// Inicializa en el caso de ser cliente
-bool NetworkSystem::initClient() {
-	// Pedimos informacion de la ip del host
-	int result = 0;
-	cout << "\nIntroduce el host:\n>";
-	cin >> hostName;
-	cout << "\nIntroduce el puerto:\n>"; 
-	cin >> port;
-
-	// Intentamnos conectarnos
-	auto h = hostName.c_str();
-	auto a = SDLNet_ResolveHost(&ip, h, port);
-	ip.port = port;
-	// Si no podemos
-	if (a < 0) {
-		cerr << "ERROR DE CONEXION AL HOST" << endl;
-		return false;
-	}
-	// Si se puede abrimos el socket y nos conectamos en la ip destino
-	sock = SDLNet_TCP_Open(&ip);
-	// Si no se puede
-	if (!sock) {
-		cerr << "NO SE HA CONSEGUIDO ESTABLECER LA CONEXION" << endl;
-		return false;
-	}
-	// Si se puede informo y me añado al socketSet
-	else {
-		cout << "> Me conecte al host " << ip.host << " en el puerto " << port << endl;
-		sockSet = SDLNet_AllocSocketSet(1);
-		SDLNet_TCP_AddSocket(sockSet, sock);
-	}
-
-	// ESPERAMOS POR CONFIRMACION DE CONEXION (se recibe informacion)
-	result = SDLNet_TCP_Recv(sock, buffer, 255);
-	// Si no se recibe
-	if (result < 0) {
-		SDLNetUtils::print_SDLNet_error();
-		return false;
-	}
-	// Si se rechaza
-	else if (result == 0) cout << "EL SERVIDOR CERRO LA CONEXION" << endl;
-	// Si se recibe
-	else {
-		hostName = buffer;
-		cout << "EL SERVIDOR ACEPTO LA CONEXION. HOSTNAME: " << hostName << endl;
-	}
-
-	// Mostramos el nombre y lo mandamos
-	cout << "TU NOMBRE ES: " << name.c_str() << endl;
-	SDLNet_TCP_Send(sock, name.c_str(), name.length() + 1);
-
-	connected = true;
-	masterSocket = nullptr;
-	return true;
-}
-
-// Metodo que muestra en pantalla el mensaje de espera
-void NetworkSystem::showHostMessage() {
-
-	SDL_RenderClear(sdlutils().renderer());
-	Texture* txt = &sdlutils().msgs().at(WAITING_MSG);
-	SDL_Rect r;
-	r.x = WIN_WIDTH / 2 - txt->width() / 2;
-	r.y = WIN_HEIGHT / 2 - txt->height() / 2;
-	r.w = txt->width(); r.h = txt->height();
-	txt->render(r);
-	SDL_RenderPresent(sdlutils().renderer());
-}
-
 // Desconectanmos los sockets
 void NetworkSystem::disconnect() {
 	if (connected) {
@@ -315,32 +334,5 @@ void NetworkSystem::disconnect() {
 			SDLNet_TCP_Close(masterSocket);
 		}
 		SDLNet_TCP_Close(sock);
-	}
-}
-
-// Devuelve el buffer convertido a string
-string NetworkSystem::revertInfo() {
-	buffer[255] = 0;
-	return (string)buffer;
-}
-
-// Gestiona la informacion recibida del otro portatil
-void NetworkSystem::decode(string str) {
-	// Si la informacion hace referencia al movimiento
-	if (str[0] == 'm') {
-		decodeMessage(str);
-	}
-	// Si la informacon hace referencia a acabar la partida (posible solucion de la perdida de balas)
-	else if (str[0] == 'p' || str[0] == 'w') {
-		Message mes;
-		if (str[0] == 'p') mes.id = _m_PLAYER_DAMAGED;
-		else mes.id = _m_PLAYER_WINS;
-		mngr->send(mes, true);
-	}
-
-	else if (str[0] == 'b') {
-		Message mes;
-		mes.id = _m_GHOST_SHOT;
-		mngr->send(mes);
 	}
 }
