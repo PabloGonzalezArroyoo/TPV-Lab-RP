@@ -58,8 +58,8 @@ void NetworkSystem::update() {
 				// Si no, se perdio la conexion
 				else if (result < 0) {
 					string err;
-					if (host) err = "CONEXIÓN PERDIDA CON EL CLIENTE";
-					else err = "CONEXIÓN PERDIDA CON EL HOST";
+					if (host) err = "CONEXION PERDIDA CON EL CLIENTE";
+					else err = "CONEXION PERDIDA CON EL HOST";
 					throw(err);
 				}
 			}
@@ -69,6 +69,12 @@ void NetworkSystem::update() {
 	// Manejo de desconexion
 	catch (string e) {
 		cout << e << endl;
+
+		Message m;
+		m.id = _m_STOP_MUSIC;
+		m._music_data.music = &sdlutils().musics().at(MULTI_MUSIC);
+		mngr->send(m);
+
 		// Si soy host, desconectamos del cliente, y nos preparamos para recibir uno nuevo
 		if (host) {
 			disconnect();
@@ -83,7 +89,7 @@ void NetworkSystem::update() {
 			mngr->send(mes, true);
 		}
 	}
-	
+
 	// Manda la informacion al otro portatil
 	sendMessage();
 }
@@ -215,18 +221,10 @@ void NetworkSystem::sendMessage() {
 	info += " ";
 	info += to_string(tr->getRotation());
 
-	//// Si el numero de balas cambia (hay mas) se informa de que instancie una nueva
-	//newNBullets = mngr->getEntitiesAlive(_grp_BULLETS);
-	//if (prevNBullets != newNBullets && prevNBullets < newNBullets) {
-	//	info += " ";
-	//	info += "s";
-	//}
-	//prevNBullets = newNBullets;
-
 	if (newBullet) {
 		info += " ";
 		info += "s";
-		newBullet = false;
+		newBullet = false; 
 	}
 
 	// Mandamos el mensaje
@@ -246,12 +244,6 @@ void NetworkSystem::decode(string str) {
 		else mes.id = _m_PLAYER_WINS;
 		mngr->send(mes, true);
 	}
-
-	/*else if (str[0] == 'b') {
-		Message mes;
-		mes.id = _m_GHOST_SHOT;
-		mngr->send(mes);
-	}*/
 }
 
 // Lee la informacion que se recibe del transform del jugador del otro portatil
